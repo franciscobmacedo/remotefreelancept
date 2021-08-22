@@ -126,21 +126,23 @@ export default new Vuex.Store({
         },
         grossIncome(state){
           const result = {};
-          switch (state.frequency) {
-            case frequencyItems.YEAR:
-              result.year = state.income;
-              result.month = state.income / state.nrMonthsDisplay;
-              result.day = state.income / YEAR_BUSINESS_DAYS;
-              break;
-            case frequencyItems.MONTH:
-              result.year = state.income * state.nrMonthsDisplay;
-              result.month = state.income;
-              result.day = state.income / MONTH_BUSINESS_DAYS;
-              break;
-            case frequencyItems.DAY:
-              result.year = state.income * YEAR_BUSINESS_DAYS;
-              result.month = state.income * MONTH_BUSINESS_DAYS;
-              result.day = state.income;
+          if(state.nrMonthsDisplay){
+            switch (state.frequency) {
+              case frequencyItems.YEAR:
+                result.year = state.income;
+                result.month = state.income / state.nrMonthsDisplay;
+                result.day = state.income / YEAR_BUSINESS_DAYS;
+                break;
+              case frequencyItems.MONTH:
+                result.year = state.income * state.nrMonthsDisplay;
+                result.month = state.income;
+                result.day = state.income / MONTH_BUSINESS_DAYS;
+                break;
+              case frequencyItems.DAY:
+                result.year = state.income * YEAR_BUSINESS_DAYS;
+                result.month = state.income * MONTH_BUSINESS_DAYS * 12 / state.nrMonthsDisplay;
+                result.day = state.income;
+            }
           }
           return result
         },
@@ -163,6 +165,7 @@ export default new Vuex.Store({
           state.displayFreq = frequency
       },
         setNrMonthsDisplay(state, nrMonths){
+          console.log('setting nr months display')
             state.nrMonthsDisplay = nrMonths
             
 
