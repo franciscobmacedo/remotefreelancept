@@ -18,7 +18,7 @@
         </v-btn>
       </v-btn-toggle>
     </div>
-    <v-row v-if="selectedFrequency == 'month'" align="center" justify="center">
+    <v-row align="center" justify="center">
       <v-col cols="10" md="8">
         Number of months to simulate your earnings
       </v-col>
@@ -26,6 +26,7 @@
         <v-form ref="form2">
           <v-text-field
             required
+            type="number"
             v-model="nrMonths"
             :rules="[(v) => (!!v && v > 0) || 'Months can\'t be 0...']"
             placeholder="maybe you meant 12...?"

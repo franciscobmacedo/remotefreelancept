@@ -27,11 +27,7 @@ export default new Vuex.Store({
         income: null,
         frequency: frequencyItems.YEAR,
         displayFreq: frequencyItems.MONTH,
-        grossIncome: {
-          month: 3700,
-          day: 170,
-          year: 40000
-        },
+       
         hasExpenses: false,
         nrMonthsDisplay: 12,
         colors:{
@@ -42,22 +38,22 @@ export default new Vuex.Store({
       },
       getters:{
         
-        ssPay(state) {
-          const monthSS = SOCIAL_SECURITY_TAX * state.grossIncome.month * 0.7
+        ssPay(state, getters) {
+          const monthSS = SOCIAL_SECURITY_TAX * getters.grossIncome.month * 0.7
           return {
-            year: SOCIAL_SECURITY_TAX * state.grossIncome.year * 0.7,
+            year: SOCIAL_SECURITY_TAX * getters.grossIncome.year * 0.7,
             month: monthSS,
             day: monthSS/MONTH_BUSINESS_DAYS,
           };
         },
         specificDeductions(state, getters){
-          return Math.max(4104, Math.min(getters.ssPay.year, 0.1 * state.grossIncome.year));
+          return Math.max(4104, Math.min(getters.ssPay.year, 0.1 * getters.grossIncome.year));
         },
         expenses(state, getters) {
           if (state.income === null) {
             return null;
           }
-          const grossIncome = state.grossIncome.year;
+          const grossIncome = getters.grossIncome.year;
           const diff = 0.15 * grossIncome - getters.specificDeductions
           return diff < 0 ? 0 : diff;
         },
@@ -69,12 +65,12 @@ export default new Vuex.Store({
             "to be granteed the 15% discount?"
           );
         },
-        taxableIncome(state) {
-          const grossIncome = state.grossIncome.year;
+        taxableIncome(state, getters) {
+          const grossIncome = getters.grossIncome.year;
           return state.hasExpenses ? grossIncome * 0.75 : grossIncome * 0.9;
         },
-        taxRank(state) {
-          const grossIncome = state.grossIncome.year;
+        taxRank(state, getters) {
+          const grossIncome = getters.grossIncome.year;
           return TAX_RANKS.filter((tr) => {
             if (tr.id == 7 && tr.min < grossIncome) {
               return tr;
@@ -120,29 +116,15 @@ export default new Vuex.Store({
           };
         },
         netIncome(state, getters) {
-          const monthIncome = state.grossIncome.month - getters.irsPay.month - getters.ssPay.month; 
+          const monthIncome = getters.grossIncome.month - getters.irsPay.month - getters.ssPay.month; 
           return {
-            year: state.grossIncome.year - getters.irsPay.year - getters.ssPay.year,
+            year: getters.grossIncome.year - getters.irsPay.year - getters.ssPay.year,
             month: monthIncome,
             day: monthIncome/MONTH_BUSINESS_DAYS,
             
           };
         },
-      },
-      mutations: {
-        valid(state, value){
-          state.valid = value
-        },
-      income (state, income) {
-          state.income = income
-      },
-      frequency (state, frequency) {
-          state.frequency = frequency
-      },
-      hasExpenses (state, hasExpenses) {
-        state.hasExpenses = hasExpenses
-      },
-      grossIncome(state){
+        grossIncome(state){
           const result = {};
           switch (state.frequency) {
             case frequencyItems.YEAR:
@@ -160,19 +142,35 @@ export default new Vuex.Store({
               result.month = state.income * MONTH_BUSINESS_DAYS;
               result.day = state.income;
           }
-          state.grossIncome = result;
+          return result
         },
+      },
+      mutations: {
+        valid(state, value){
+          state.valid = value
+        },
+      income (state, income) {
+          state.income = income
+      },
+      frequency (state, frequency) {
+          state.frequency = frequency
+      },
+      hasExpenses (state, hasExpenses) {
+        state.hasExpenses = hasExpenses
+      },
+     
         setDisplayFrequency(state, frequency){
           state.displayFreq = frequency
       },
         setNrMonthsDisplay(state, nrMonths){
             state.nrMonthsDisplay = nrMonths
+            
+
         }
       },
       actions:{
          validate (context) {
           context.commit('valid', true);
-          context.commit('grossIncome');
         },
         unvalid(context){
           context.commit('valid', false);

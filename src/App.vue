@@ -72,8 +72,8 @@ export default {
     },
   },
   computed: {
-    ...mapState(["valid", "grossIncome", "displayFreq"]),
-    ...mapGetters(["irsPay", "ssPay", "netIncome", "expenses"]),
+    ...mapState(["valid", "displayFreq"]),
+    ...mapGetters(["grossIncome", "irsPay", "ssPay", "netIncome", "expenses"]),
 
     datacollection() {
       return {

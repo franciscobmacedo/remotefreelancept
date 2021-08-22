@@ -118,8 +118,9 @@ import { mapGetters, mapState } from "vuex";
 import { currency } from "@/utils.js";
 export default {
   computed: {
-    ...mapState(["colors", "grossIncome", "displayFreq"]),
+    ...mapState(["colors", "displayFreq"]),
     ...mapGetters([
+      "grossIncome",
       "specificDeductions",
       "expenses",
       "irsPay",
