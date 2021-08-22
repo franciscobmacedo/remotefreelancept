@@ -1,16 +1,7 @@
 <template>
   <v-app>
-    <!-- <v-app-bar app color="primary" dark> asdas </v-app-bar> -->
-
     <v-main>
       <v-container :fill-height="validateCount < 1">
-        <!-- <v-row class="text-center">
-          <v-col class="mb-4">
-            <div class="display-1 font-weight-bold mb-3">
-              Portuguese Independent Worker
-            </div>
-          </v-col>
-        </v-row> -->
         <v-row align="center" justify="center">
           <v-col>
             <div class="text-center display-1 font-weight-bold mb-3">
@@ -21,16 +12,16 @@
         </v-row>
         <div v-if="valid">
           <Alert v-if="expenses > 0" />
-          <v-row class="mt-3">
-            <v-col cols="12" sm="6">
+          <v-row class="mt-3 mb-0 pb-o" align="center" justify="center">
+            <v-col class="mb-0 pb-0" cols="12" sm="6">
               <DisplayFreqToggler />
             </v-col>
-            <v-col cols="12" sm="6">
+            <v-col class="mb-0 pb-0" cols="12" sm="6">
               <MainInfo />
             </v-col>
           </v-row>
-          <v-row class="mt-5" align="center" justify="center">
-            <v-col cols="12" md="6">
+          <v-row class="mt-0 pt-0" align="center" justify="center">
+            <v-col cols="12" md="6" class="mt-0 pt-0">
               <Chart
                 v-if="valid"
                 :chartData="datacollection"
@@ -38,7 +29,7 @@
                 chartType="doughnut"
               />
             </v-col>
-            <v-col cols="12" md="6">
+            <v-col class="mt-0 pt-0" cols="12" md="6">
               <Details />
             </v-col>
           </v-row>

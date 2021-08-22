@@ -1,18 +1,23 @@
 <template>
-  <div class="d-flex flex-column justify-center align-center">
-    <div class="text-caption">Show Incom per</div>
-    <v-btn-toggle
-      tile
-      color="primary accent-3"
-      group
-      v-model="selectedFrequency"
-      :mandatory="true"
-    >
-      <v-btn v-for="(item, index) of frequencyItems" :key="index" :value="item">
-        {{ item }}
-      </v-btn>
-    </v-btn-toggle>
-
+  <div>
+    <div class="d-flex flex-row justify-center align-center">
+      <div class="text-caption">Show Incom per</div>
+      <v-btn-toggle
+        tile
+        color="primary accent-3"
+        group
+        v-model="selectedFrequency"
+        :mandatory="true"
+      >
+        <v-btn
+          v-for="(item, index) of frequencyItems"
+          :key="index"
+          :value="item"
+        >
+          {{ item }}
+        </v-btn>
+      </v-btn-toggle>
+    </div>
     <v-row v-if="selectedFrequency == 'month'" align="center" justify="center">
       <v-col cols="10" md="8">
         Number of months to simulate your earnings
