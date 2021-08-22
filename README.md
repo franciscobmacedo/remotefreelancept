@@ -1,5 +1,5 @@
-# taxes
-
+#  Simulator for independent workers in Portugal working for foreigner companies
+Simulate your earnings (year, month or day) and breakdown how much taxes you're going to pay.
 ## Project setup
 ```
 npm install
