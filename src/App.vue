@@ -1,24 +1,36 @@
 <template>
   <v-app>
-    <v-app-bar app color="primary" dark> asdas </v-app-bar>
+    <!-- <v-app-bar app color="primary" dark> asdas </v-app-bar> -->
 
     <v-main>
-      <v-container>
-        <v-row class="text-center">
+      <v-container :fill-height="validateCount < 1">
+        <!-- <v-row class="text-center">
           <v-col class="mb-4">
-            <h1 class="display-2 font-weight-bold mb-3">
+            <div class="display-1 font-weight-bold mb-3">
               Portuguese Independent Worker
-            </h1>
+            </div>
+          </v-col>
+        </v-row> -->
+        <v-row align="center" justify="center">
+          <v-col>
+            <div class="text-center display-1 font-weight-bold mb-3">
+              Portuguese Independent Worker
+            </div>
+            <Form />
           </v-col>
         </v-row>
-        <Form />
         <div v-if="valid">
-          <DisplayFreqToggler />
-          <v-row class="mt-5" align="center" justify="center">
-            <v-col offset="2" align="center">
+          <Alert v-if="expenses > 0" />
+          <v-row class="mt-3">
+            <v-col cols="12" sm="6">
+              <DisplayFreqToggler />
+            </v-col>
+            <v-col cols="12" sm="6">
               <MainInfo />
             </v-col>
-            <v-col>
+          </v-row>
+          <v-row class="mt-5" align="center" justify="center">
+            <v-col cols="12" md="6">
               <Chart
                 v-if="valid"
                 :chartData="datacollection"
@@ -26,7 +38,12 @@
                 chartType="doughnut"
               />
             </v-col>
+            <v-col cols="12" md="6">
+              <Details />
+            </v-col>
           </v-row>
+          <!-- <v-row align="center" justify="center">
+          </v-row> -->
         </div>
       </v-container>
     </v-main>
@@ -39,6 +56,8 @@ import Form from "@/components/Form";
 import DisplayFreqToggler from "@/components/DisplayFreqToggler";
 import MainInfo from "@/components/MainInfo";
 import Chart from "@/components/Chart";
+import Alert from "@/components/Alert";
+import Details from "@/components/Details";
 import { mapGetters, mapState } from "vuex";
 
 export default {
@@ -48,14 +67,26 @@ export default {
     DisplayFreqToggler,
     MainInfo,
     Chart,
+    Alert,
+    Details,
   },
-
+  data() {
+    return {
+      validateCount: 0,
+    };
+  },
+  watch: {
+    valid() {
+      this.validateCount++;
+    },
+  },
   computed: {
-    ...mapState(["valid", "frequencyIncome", "displayFreq"]),
-    ...mapGetters(["irsPay", "ssPay", "netIncome"]),
+    ...mapState(["valid", "grossIncome", "displayFreq"]),
+    ...mapGetters(["irsPay", "ssPay", "netIncome", "expenses"]),
+
     datacollection() {
       return {
-        labels: ["irs", "ss", "net income"],
+        labels: ["irs", "ss", "net \n income"],
         datasets: [
           {
             label: "My First Dataset",
@@ -96,9 +127,15 @@ export default {
             display: true,
             textAlign: "center",
             formatter: (val, ctx) => {
+              // ctx.chart.data.labels[ctx.dataIndex] + "\n" + currency(val)
+
               return (
-                // ctx.chart.data.labels[ctx.dataIndex] + "\n" + currency(val)
-                ctx.chart.data.labels[ctx.dataIndex]
+                ctx.chart.data.labels[ctx.dataIndex] +
+                "\n" +
+                round(
+                  (val / this.grossIncome[this.displayFreq]) * 100
+                ).toString() +
+                "%"
               );
             },
             color: "#fff",
@@ -110,7 +147,7 @@ export default {
           doughnutlabel: {
             labels: [
               {
-                text: currency(this.frequencyIncome[this.displayFreq]),
+                text: currency(this.grossIncome[this.displayFreq]),
                 font: {
                   size: 20,
                   weight: "bold",
@@ -127,3 +164,8 @@ export default {
   },
 };
 </script>
+<style scoped>
+body {
+  background-color: #f4f4f4;
+}
+</style>
