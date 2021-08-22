@@ -1,23 +1,65 @@
 <template>
-  <div justify="start">
-    <v-row
-      v-for="(item, index) of amounts"
-      :key="index"
-      class="mb-2"
-      justify="start"
-      align="center"
+  <v-row justify="space-between">
+    <v-col
+      class="
+        green
+        lighten-5
+        text-center
+        d-flex
+        flex-column
+        justify-space-between
+      "
     >
-      <v-chip
-        large
-        class="mr-2 text-h5 grey--text text--lighten-3"
-        :color="item.color"
-      >
-        {{ item.value }}
-        <div class="text-caption">/{{ displayFreq }}</div>
-      </v-chip>
-      {{ item.text }}
-    </v-row>
-  </div>
+      <div class="text-md-h6">
+        {{ netIncomeFormat }}<span class="caption">/{{ displayFreq }}</span>
+      </div>
+      <div class="font-weight-medium caption text-md-overline">Net Income</div>
+    </v-col>
+    <v-col class="red lighten-5 text-center offset-1">
+      <div class="text-md-h6 text-center">
+        {{ taxesFormat }}<span class="caption">/{{ displayFreq }}</span>
+      </div>
+      <div class="font-weight-medium caption text-md-overline">Taxes</div>
+      <v-row justify="center" align="center">
+        <v-col
+          cols="6"
+          class="
+            caption
+            d-flex
+            align-center
+            justify-center
+            flex-wrap flex-sm-row flex-column
+            text-center
+            pt-3
+            pb-0
+            pl-0
+            pr-0
+          "
+        >
+          <div class="pr-md-2">{{ irsFormat }}</div>
+          <div class="text-center red--text text--lighten-1 caption">IRS</div>
+        </v-col>
+        <v-col
+          cols="6"
+          class="
+            caption
+            d-flex
+            align-center
+            justify-center
+            flex-wrap flex-sm-row flex-column
+            text-center
+            pt-3
+            pb-0
+            pl-0
+            pr-0
+          "
+        >
+          <div class="pr-md-2">{{ ssFormat }}</div>
+          <div class="text-center blue--text text--lighten-1 caption">SS</div>
+        </v-col>
+      </v-row>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
@@ -26,39 +68,22 @@ import { currency } from "@/utils.js";
 
 export default {
   computed: {
-    ...mapState(["frequencyIncome", "displayFreq"]),
+    ...mapState(["colors", "displayFreq"]),
     ...mapGetters(["irsPay", "ssPay", "netIncome"]),
-    amounts() {
-      return [
-        {
-          text: "Net Income",
-          value: currency(this.netIncome[this.displayFreq]),
-          color: "#76c479",
-        },
-        {
-          text: "IRS",
-          value: currency(this.irsPay[this.displayFreq]),
-          color: "rgb(255, 99, 132)",
-        },
-        {
-          text: "Social Security",
-          value: currency(this.ssPay[this.displayFreq]),
-          color: "rgb(54, 162, 235)",
-        },
-      ];
+    netIncomeFormat() {
+      return currency(this.netIncome[this.displayFreq]);
+    },
+    taxesFormat() {
+      return currency(
+        this.irsPay[this.displayFreq] + this.ssPay[this.displayFreq]
+      );
+    },
+    irsFormat() {
+      return currency(this.irsPay[this.displayFreq]);
+    },
+    ssFormat() {
+      return currency(this.ssPay[this.displayFreq]);
     },
   },
-  //   methods: {
-  //     currency(val) {
-  //       return currency(val);
-  //     },
-  //   },
 };
 </script>
-
-<style scoped>
-.net-income {
-  background-color: rgb(255, 99, 132);
-  border-radius: 50%;
-}
-</style>

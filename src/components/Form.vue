@@ -2,19 +2,73 @@
   <div>
     <v-form ref="form">
       <v-container>
-        <v-row>
-          <v-col cols="12" md="4">
-            <v-text-field
-              @input="validate"
-              v-model="income"
-              type="number"
-              :rules="[
-                (v) => v > 0 || 'Your Income can\'t really be 0, can it?',
-              ]"
-              label="Income"
-            ></v-text-field>
-          </v-col>
-          <v-col cols="12" md="4">
+        <v-row align="center" justify="center">
+          {{ select }}
+
+          <v-hover v-slot="{ hover }">
+            <v-col cols="8" sm="5" md="4" style="position: relative">
+              <v-text-field
+                @click="showIncomeSugestions()"
+                @keydown="hideIncomeSugestions()"
+                v-click-outside="hideIncomeSugestions"
+                @input="validate"
+                v-model="income"
+                label="Income"
+                prepend-inner-icon="mdi-chevron-down"
+                append-icon="mdi-currency-eur"
+                :rules="[
+                  (v) =>
+                    (!!v && v.length > 0) ||
+                    'You must have some income, no...?',
+                ]"
+                @click:prepend-inner="showIncomeSugestions"
+              >
+              </v-text-field>
+              <span v-if="$vuetify.breakpoint.mdAndUp">
+                <v-btn
+                  v-if="hover"
+                  class="add-btn"
+                  x-small
+                  outlined
+                  color="primary lighten-3"
+                  @click="increase()"
+                  >+ {{ increaseAmount.text }}€</v-btn
+                >
+                <v-btn
+                  v-if="hover"
+                  class="less-btn"
+                  x-small
+                  outlined
+                  color="primary lighten-3"
+                  @click="decrease()"
+                  >- {{ increaseAmount.text }}€</v-btn
+                >
+              </span>
+              <v-slide-y-transition>
+                <div v-if="showsugestions" class="sugestion-box">
+                  <v-chip-group
+                    style="position: relative"
+                    @change="setDefaultIncome()"
+                    center-active
+                    show-arrows
+                    column
+                    v-model="defaultIncome"
+                  >
+                    <v-chip
+                      v-for="dincome in defaultIncomesCurr"
+                      :key="dincome"
+                      :value="dincome"
+                    >
+                      {{ dincome }}
+                    </v-chip>
+                  </v-chip-group>
+                </div>
+              </v-slide-y-transition>
+            </v-col>
+          </v-hover>
+
+          <div v-if="$vuetify.breakpoint.mdAndUp">/</div>
+          <v-col cols="4" sm="3">
             <v-select
               @input="validate"
               v-model="frequency"
@@ -25,96 +79,31 @@
               required
             ></v-select>
           </v-col>
-          <v-col cols="12" md="4">
-            <v-checkbox
-              v-model="hasExpenses"
-              :label="expensesLabelText"
-            ></v-checkbox>
-          </v-col>
         </v-row>
+        <v-row> </v-row>
       </v-container>
     </v-form>
-    <!-- <div v-if="valid">
-      <v-row>
-        <v-col cols="12" md="3"> Title </v-col>
-        <v-col cols="12" md="3"> Year Income </v-col>
-        <v-col cols="12" md="3"> Month Income </v-col>
-        <v-col cols="12" md="3"> Day Income </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="12" md="3"> Income </v-col>
-        <v-col cols="12" md="3"> {{ round(frequencyIncome.year) }} </v-col>
-        <v-col cols="12" md="3">
-          {{ round(frequencyIncome.month) }}
-        </v-col>
-        <v-col cols="12" md="3"> {{ round(frequencyIncome.day) }} </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="12" md="3"> Year Expenses </v-col>
-        <v-col cols="12" md="3"> {{ expenses }} </v-col>
-        <v-col cols="12" md="3"> - </v-col>
-        <v-col cols="12" md="3"> - </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="12" md="3"> SS </v-col>
-        <v-col cols="12" md="3"> {{ round(ssPay.year) }} </v-col>
-        <v-col cols="12" md="3"> {{ round(ssPay.month) }} </v-col>
-        <v-col cols="12" md="3"> - </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="12" md="3"> IRS </v-col>
-        <v-col cols="12" md="3"> {{ round(irsPay.year) }} </v-col>
-        <v-col cols="12" md="3"> {{ round(irsPay.month) }} </v-col>
-        <v-col cols="12" md="3"> - </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="12" md="3"> NET Income </v-col>
-        <v-col cols="12" md="3"> {{ round(netIncome.year) }} </v-col>
-        <v-col cols="12" md="3"> {{ round(netIncome.month) }} </v-col>
-        <v-col cols="12" md="3"> - </v-col>
-      </v-row>
-
-    </div> -->
   </div>
 </template>
 
 <script>
 import { frequencyItems } from "@/utils.js";
+import { currency, reverseCurrency, currencyNoSymbol } from "@/utils.js";
 
-// const TAX_RANKS = [
-//   { id: 1, min: 0, max: 7112, normalTax: 0.15, averageTax: 0.145 },
-//   { id: 2, min: 7112, max: 10732, normalTax: 0.23, averageTax: 0.1737 },
-//   { id: 3, min: 10732, max: 20322, normalTax: 0.29, averageTax: 0.2262 },
-//   { id: 4, min: 20322, max: 25075, normalTax: 0.35, averageTax: 0.2497 },
-//   { id: 5, min: 25075, max: 36967, normalTax: 0.37, averageTax: 0.2884 },
-//   { id: 6, min: 36967, max: 80882, normalTax: 0.45, averageTax: 0.3761 },
-//   { id: 7, min: 80882, normalTax: 0.48 },
-// ];
-import { mapState, mapGetters } from "vuex";
+import { mapState } from "vuex";
 
 export default {
   data: () => ({
+    select: null,
+    items: ["aa", "bb", "cc"],
+    showsugestions: false,
+    showIncrement: false,
+    defaultIncome: null,
     frequencyItems: Object.values(frequencyItems),
   }),
   computed: {
-    ...mapState(["valid", "frequencyIncome"]),
-    ...mapGetters([
-      "ssPay",
-      "expenses",
-      "taxableIncome",
-      "taxRank",
-      "taxRankAvg",
-      "irsPay",
-      "netIncome",
-    ]),
-    hasExpenses: {
-      get() {
-        return this.$store.state.hasExpenses;
-      },
-      set(value) {
-        this.$store.commit("hasExpenses", value);
-      },
-    },
+    ...mapState(["valid"]),
+
     frequency: {
       get() {
         return this.$store.state.frequency;
@@ -125,25 +114,52 @@ export default {
     },
     income: {
       get() {
-        return this.$store.state.income;
+        const income = this.$store.state.income;
+
+        return income === null || isNaN(income) || income === 0
+          ? null
+          : currencyNoSymbol(this.$store.state.income);
       },
       set(value) {
-        this.$store.commit("income", value);
+        this.$store.commit("income", reverseCurrency(value));
       },
     },
-    expensesLabelText() {
-      const expenseText = this.expenses === null ? "" : `(${this.expenses}€) `;
-      return (
-        "Can you have professional related expenses " +
-        expenseText +
-        "to be granteed the 15% discount?"
-      );
+    defaultIncomesCurr() {
+      return this.defaultIncomes.map((i) => currency(i));
+    },
+    increaseAmount() {
+      let result;
+      switch (this.frequency) {
+        case frequencyItems.YEAR:
+          result = { value: 5000, text: "5k" };
+          break;
+        case frequencyItems.MONTH:
+          result = { value: 1000, text: "1k" };
+          break;
+        case frequencyItems.DAY:
+          result = { value: 100, text: "100" };
+      }
+      return result;
+    },
+    defaultIncomes() {
+      let result;
+      switch (this.frequency) {
+        case frequencyItems.YEAR:
+          result = [30000, 50000, 60000, 70000, 100000];
+          break;
+        case frequencyItems.MONTH:
+          result = [3000, 5000, 6000, 7000, 10000];
+          break;
+        case frequencyItems.DAY:
+          result = [200, 300, 500, 700, 1000];
+      }
+      return result;
     },
   },
   methods: {
     validate() {
       const result = this.$refs.form.validate();
-      if (result) {
+      if (result && this.$store.state.income > 0) {
         this.$store.dispatch("validate");
       } else {
         this.$store.dispatch("unvalid");
@@ -153,6 +169,60 @@ export default {
     round(num) {
       return Math.round(num * 100) / 100;
     },
+    showIncomeSugestions() {
+      this.showsugestions = true;
+    },
+    hideIncomeSugestions() {
+      this.showsugestions = false;
+    },
+    setDefaultIncome() {
+      this.$store
+        .dispatch("income", reverseCurrency(this.defaultIncome))
+        .then(() => {
+          this.validate();
+        });
+    },
+    increase() {
+      this.$store
+        .dispatch(
+          "income",
+          this.$store.state.income + this.increaseAmount.value
+        )
+        .then(() => {
+          this.validate();
+        });
+    },
+    decrease() {
+      let result = this.$store.state.income - this.increaseAmount.value;
+      result = result <= 0 ? null : result;
+      this.$store.dispatch("income", result).then(() => {
+        this.validate();
+      });
+    },
   },
 };
 </script>
+<style lang="scss">
+@import "~vuetify/src/styles/main.sass";
+.sugestion-box {
+  position: absolute;
+  z-index: 2;
+  // left: -40px;
+  top: 70px;
+  background-color: map-get($grey, lighten-4);
+  border-radius: 10px;
+  padding-bottom: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.add-btn {
+  position: absolute !important;
+  top: 35px;
+  right: 40px;
+}
+.less-btn {
+  position: absolute !important;
+  top: 35px;
+  right: 105px;
+}
+</style>
