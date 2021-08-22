@@ -9,6 +9,7 @@ Vue.use(Vuex);
 
 const YEAR_BUSINESS_DAYS = 248;
 const MONTH_BUSINESS_DAYS = 22;
+
 const SOCIAL_SECURITY_TAX = 0.214;
 const TAX_RANKS = [
   { id: 1, min: 0, max: 7112, normalTax: 0.15, averageTax: 0.145 },
@@ -26,31 +27,38 @@ export default new Vuex.Store({
         income: null,
         frequency: frequencyItems.YEAR,
         displayFreq: frequencyItems.MONTH,
-        frequencyIncome: {
+        grossIncome: {
           month: 3700,
           day: 170,
           year: 40000
         },
         hasExpenses: false,
+        nrMonthsDisplay: 12,
+        colors:{
+          netIncome: "#76c479",
+          irs: "#ff6384",
+          ss: "#36a2eb",
+        }
       },
       getters:{
         
         ssPay(state) {
-          const monthSS = SOCIAL_SECURITY_TAX * state.frequencyIncome.month * 0.7
+          const monthSS = SOCIAL_SECURITY_TAX * state.grossIncome.month * 0.7
           return {
-            year: SOCIAL_SECURITY_TAX * state.frequencyIncome.year * 0.7,
+            year: SOCIAL_SECURITY_TAX * state.grossIncome.year * 0.7,
             month: monthSS,
             day: monthSS/MONTH_BUSINESS_DAYS,
           };
+        },
+        specificDeductions(state, getters){
+          return Math.max(4104, Math.min(getters.ssPay.year, 0.1 * state.grossIncome.year));
         },
         expenses(state, getters) {
           if (state.income === null) {
             return null;
           }
-          const grossIncome = state.frequencyIncome.year;
-          const diff =
-            0.15 * grossIncome -
-            Math.max(4104, Math.min(getters.ssPay.year, 0.1 * grossIncome));
+          const grossIncome = state.grossIncome.year;
+          const diff = 0.15 * grossIncome - getters.specificDeductions
           return diff < 0 ? 0 : diff;
         },
         expensesLabelText(state, getters) {
@@ -62,11 +70,11 @@ export default new Vuex.Store({
           );
         },
         taxableIncome(state) {
-          const grossIncome = state.frequencyIncome.year;
+          const grossIncome = state.grossIncome.year;
           return state.hasExpenses ? grossIncome * 0.75 : grossIncome * 0.9;
         },
         taxRank(state) {
-          const grossIncome = state.frequencyIncome.year;
+          const grossIncome = state.grossIncome.year;
           return TAX_RANKS.filter((tr) => {
             if (tr.id == 7 && tr.min < grossIncome) {
               return tr;
@@ -82,15 +90,29 @@ export default new Vuex.Store({
           const avgID = taxRank.id - 1;
           return TAX_RANKS.filter((tr) => tr.id == avgID)[0];
         },
+        taxIncomeAvg(state, getters){
+          if (getters.taxRank.id <= 1){
+            return getters.taxableIncome
+          }
+          return getters.taxRankAvg.max 
+        },
+        taxIncomeNormal(state, getters){
+          if (getters.taxRank.id <= 1){
+            return 0
+          }
+          return getters.taxableIncome - getters.taxIncomeAvg
+        },
+       
+  
         irsPay(state, getters) {
           if (getters.taxRankAvg === undefined) {
             return {};
           }
-          const taxIncomeAvg = getters.taxRankAvg.max;
+
           const yearIRS =
-            taxIncomeAvg * getters.taxRankAvg.averageTax +
-            (getters.taxableIncome - taxIncomeAvg) * getters.taxRank.normalTax;
-            const monthIRS = Math.max(yearIRS / 12, 0)
+            getters.taxIncomeAvg * getters.taxRankAvg.averageTax +
+            getters.taxIncomeNormal * getters.taxRank.normalTax;
+            const monthIRS = Math.max(yearIRS / state.nrMonthsDisplay, 0)
           return {
             year: Math.max(yearIRS, 0),
             month: monthIRS,
@@ -98,9 +120,9 @@ export default new Vuex.Store({
           };
         },
         netIncome(state, getters) {
-          const monthIncome = state.frequencyIncome.month - getters.irsPay.month - getters.ssPay.month; 
+          const monthIncome = state.grossIncome.month - getters.irsPay.month - getters.ssPay.month; 
           return {
-            year: state.frequencyIncome.year - getters.irsPay.year - getters.ssPay.year,
+            year: state.grossIncome.year - getters.irsPay.year - getters.ssPay.year,
             month: monthIncome,
             day: monthIncome/MONTH_BUSINESS_DAYS,
             
@@ -120,16 +142,16 @@ export default new Vuex.Store({
       hasExpenses (state, hasExpenses) {
         state.hasExpenses = hasExpenses
       },
-      frequencyIncome(state){
+      grossIncome(state){
           const result = {};
           switch (state.frequency) {
             case frequencyItems.YEAR:
               result.year = state.income;
-              result.month = state.income / 12;
+              result.month = state.income / state.nrMonthsDisplay;
               result.day = state.income / YEAR_BUSINESS_DAYS;
               break;
             case frequencyItems.MONTH:
-              result.year = state.income * 12;
+              result.year = state.income * state.nrMonthsDisplay;
               result.month = state.income;
               result.day = state.income / MONTH_BUSINESS_DAYS;
               break;
@@ -138,20 +160,25 @@ export default new Vuex.Store({
               result.month = state.income * MONTH_BUSINESS_DAYS;
               result.day = state.income;
           }
-          state.frequencyIncome = result;
+          state.grossIncome = result;
         },
         setDisplayFrequency(state, frequency){
-            state.displayFreq = frequency
+          state.displayFreq = frequency
+      },
+        setNrMonthsDisplay(state, nrMonths){
+            state.nrMonthsDisplay = nrMonths
         }
-
       },
       actions:{
          validate (context) {
           context.commit('valid', true);
-          context.commit('frequencyIncome');
+          context.commit('grossIncome');
         },
         unvalid(context){
           context.commit('valid', false);
+        },
+        income(context, income){
+          context.commit('income', income);
         }
       }
 });
