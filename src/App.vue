@@ -3,9 +3,18 @@
     <v-main>
       <v-container :fill-height="validateCount < 1">
         <v-row align="center" justify="center">
-          <v-col>
-            <div class="text-center display-1 font-weight-bold mb-3">
+          <v-col class="pt-0 mt-0">
+            <div
+              class="text-center font-weight-bold"
+              :class="valid ? 'text-h6' : 'display-1 mb-3'"
+            >
               Portuguese Independent Worker
+            </div>
+            <div
+              class="text-center text-h6 font-weight-light"
+              :class="valid ? 'text-caption' : 'text-h6 mb-3'"
+            >
+              simulate your net income
             </div>
             <Form />
           </v-col>
@@ -155,8 +164,8 @@ export default {
   },
 };
 </script>
-<style scoped>
-body {
-  background-color: #f4f4f4;
+<style >
+.v-application {
+  background-color: #f4f4f4 !important;
 }
 </style>
