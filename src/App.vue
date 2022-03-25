@@ -6,13 +6,13 @@
           <v-col class="pt-0 mt-0">
             <div
               class="text-center font-weight-bold"
-              :class="valid ? 'text-h6' : 'display-1 mb-3'"
+              :class="validateCount > 0 ? 'text-h6' : 'display-1 mb-3 mt-2'"
             >
-              Portuguese Independent Worker
+              Remote freelancer from Portugal 🇵🇹
             </div>
             <div
               class="text-center text-h6 font-weight-light"
-              :class="valid ? 'text-caption' : 'text-h6 mb-3'"
+              :class="validateCount > 0 ? 'text-caption' : 'text-h6 mb-3'"
             >
               simulate your net income
             </div>
@@ -42,8 +42,6 @@
               <Details />
             </v-col>
           </v-row>
-          <!-- <v-row align="center" justify="center">
-          </v-row> -->
         </div>
       </v-container>
     </v-main>
