@@ -24,7 +24,16 @@
       <v-col class="py-0 my-0" cols="2" md="1">
         <v-tooltip bottom>
           <template v-slot:activator="{ on, attrs }">
-            <v-btn @click="goToExternal()" icon v-bind="attrs" v-on="on">
+            <v-btn
+              @click="
+                goToExternal(
+                  'https://www.e-konomista.pt/irs-para-quem-passa-recibos-verdes/'
+                )
+              "
+              icon
+              v-bind="attrs"
+              v-on="on"
+            >
               <v-icon color="white">mdi-help-circle </v-icon>
             </v-btn>
           </template>
@@ -55,10 +64,8 @@ export default {
     },
   },
   methods: {
-    goToExternal() {
-      window.open(
-        "https://www.e-konomista.pt/irs-para-quem-passa-recibos-verdes/"
-      );
+    goToExternal(url) {
+      window.open(url);
     },
   },
 };
