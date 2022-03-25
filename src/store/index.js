@@ -56,15 +56,7 @@ export default new Vuex.Store({
       const diff = 0.15 * grossIncome - getters.specificDeductions;
       return diff < 0 ? 0 : diff;
     },
-    expensesLabelText(state, getters) {
-      const expenseText =
-        getters.expenses === null ? "" : `(${getters.expenses}€) `;
-      return (
-        "Can you have professional related expenses " +
-        expenseText +
-        "to be granteed the 15% discount?"
-      );
-    },
+
     taxableIncome(state, getters) {
       const grossIncome = getters.grossIncome.year;
       return state.hasExpenses ? grossIncome * 0.75 : grossIncome * 0.9;
