@@ -1,5 +1,5 @@
 <template>
-  <v-row justify="space-between">
+  <v-row justify="space-between" class="px-3">
     <v-col
       class="
         green
