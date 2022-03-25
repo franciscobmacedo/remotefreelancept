@@ -12,7 +12,7 @@
         </thead>
         <tbody>
           <tr>
-            <td>Gross Income</td>
+            <td>Gross income</td>
             <td class="text-no-wrap">
               {{ currency(grossIncome.year, decimalCases) }}
             </td>
@@ -34,7 +34,7 @@
             </td>
           </tr>
           <tr>
-            <td>Specific Deductions</td>
+            <td>Specific deductions</td>
             <td class="text-no-wrap">
               {{ currency(specificDeductions, decimalCases) }}
             </td>
@@ -42,13 +42,13 @@
             <td class="grey lighten-4"></td>
           </tr>
           <tr>
-            <td>Expenses Needed for the 15% discount</td>
+            <td>Expenses needed for the 15% discount</td>
             <td class="text-no-wrap">{{ currency(expenses, decimalCases) }}</td>
             <td class="grey lighten-4"></td>
             <td class="grey lighten-4"></td>
           </tr>
           <tr>
-            <td>Taxable Income</td>
+            <td>Taxable income</td>
             <td class="text-no-wrap">
               {{ currency(taxableIncome, decimalCases) }}
             </td>
@@ -56,7 +56,7 @@
             <td class="grey lighten-4"></td>
           </tr>
           <tr>
-            <td>Taxable Income for Average Tax</td>
+            <td>Taxable income for average tax</td>
             <td class="text-no-wrap">
               {{ currency(taxIncomeAvg, decimalCases) }}
             </td>
@@ -64,7 +64,7 @@
             <td class="grey lighten-4"></td>
           </tr>
           <tr>
-            <td>Taxable Income for Normal Tax</td>
+            <td>Taxable income for normal tax</td>
             <td class="text-no-wrap">
               {{ currency(taxIncomeNormal, decimalCases) }}
             </td>
@@ -84,7 +84,7 @@
             </td>
           </tr>
           <tr class="blue lighten-4">
-            <td>Social Security</td>
+            <td>Social security</td>
             <td class="text-no-wrap">
               {{ currency(ssPay.year, decimalCases) }}
             </td>
@@ -96,7 +96,7 @@
             </td>
           </tr>
           <tr class="green lighten-4">
-            <td>Net Income</td>
+            <td>Net income</td>
             <td class="text-no-wrap">
               {{ currency(netIncome.year, decimalCases) }}
             </td>

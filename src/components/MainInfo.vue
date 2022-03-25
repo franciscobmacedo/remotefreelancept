@@ -13,7 +13,7 @@
       <div class="text-md-h6">
         {{ netIncomeFormat }}<span class="caption">/{{ displayFreq }}</span>
       </div>
-      <div class="font-weight-medium caption text-md-overline">Net Income</div>
+      <div class="font-weight-medium caption text-md-overline">Net income</div>
     </v-col>
     <v-col class="red lighten-5 text-center offset-1">
       <div class="text-md-h6 text-center">

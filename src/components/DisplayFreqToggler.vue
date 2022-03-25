@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="d-flex flex-row justify-center align-center">
-      <div class="text-caption">Show Incom per</div>
+      <div class="text-caption">Show income per</div>
       <v-btn-toggle
         tile
         color="primary accent-3"
