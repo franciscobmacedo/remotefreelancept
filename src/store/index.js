@@ -12,12 +12,12 @@ const MONTH_BUSINESS_DAYS = 22;
 
 const SOCIAL_SECURITY_TAX = 0.214;
 const TAX_RANKS = [
-  { id: 1, min: 0, max: 7112, normalTax: 0.15, averageTax: 0.145 },
-  { id: 2, min: 7112, max: 10732, normalTax: 0.23, averageTax: 0.1737 },
-  { id: 3, min: 10732, max: 20322, normalTax: 0.29, averageTax: 0.2262 },
-  { id: 4, min: 20322, max: 25075, normalTax: 0.35, averageTax: 0.2497 },
-  { id: 5, min: 25075, max: 36967, normalTax: 0.37, averageTax: 0.2884 },
-  { id: 6, min: 36967, max: 80882, normalTax: 0.45, averageTax: 0.3761 },
+  { id: 1, min: 0, max: 7112, normalTax: 0.145, averageTax: 0.145 },
+  { id: 2, min: 7112, max: 10732, normalTax: 0.23, averageTax: 0.17367 },
+  { id: 3, min: 10732, max: 20322, normalTax: 0.285, averageTax: 0.22621 },
+  { id: 4, min: 20322, max: 25075, normalTax: 0.35, averageTax: 0.24967 },
+  { id: 5, min: 25075, max: 36967, normalTax: 0.37, averageTax: 0.28838 },
+  { id: 6, min: 36967, max: 80882, normalTax: 0.45, averageTax: 0.37613 },
   { id: 7, min: 80882, normalTax: 0.48 },
 ];
 
