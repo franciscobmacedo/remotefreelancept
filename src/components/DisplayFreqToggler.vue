@@ -19,20 +19,27 @@
       </v-btn-toggle>
     </div>
     <v-row align="center" justify="center">
-      <v-col cols="10" md="8">
-        Number of months to simulate your earnings
-      </v-col>
-      <v-col cols="2" md="4">
+      <v-col cols="8"> Number of months to simulate your earnings </v-col>
+      <v-col cols="2">
         <v-form ref="form2">
           <v-text-field
             required
             type="number"
             v-model="nrMonths"
-            :rules="[(v) => (!!v && v > 0) || 'Months can\'t be 0...']"
-            placeholder="maybe you meant 12...?"
+            :rules="[(v) => (!!v && v > 0) || 'this can\'t be 0...']"
           ></v-text-field>
         </v-form>
       </v-col>
+      <v-tooltip bottom max-width="360" color="grey darken-3">
+        <template v-slot:activator="{ on, attrs }">
+          <v-icon v-bind="attrs" v-on="on">mdi-help-circle</v-icon>
+        </template>
+        <span>
+          In a portugues company, you can get payed 2 extra months per year (for
+          holidays and christmas). If you want to compare your remote salary
+          with some local company, you should change this field to 14 months.
+        </span>
+      </v-tooltip>
     </v-row>
   </div>
 </template>
