@@ -1,5 +1,15 @@
 <template>
   <v-app>
+    <v-btn
+      elevation="5"
+      fab
+      absolute
+      class="github-btn"
+      @click="
+        goToExternal('https://github.com/franciscobmacedo/remotefreelancept/')
+      "
+      ><v-icon>mdi-github</v-icon></v-btn
+    >
     <v-main>
       <v-container :fill-height="validateCount < 1">
         <v-row align="center" justify="center">
@@ -76,6 +86,11 @@ export default {
   watch: {
     valid() {
       this.validateCount++;
+    },
+  },
+  methods: {
+    goToExternal(url) {
+      window.open(url);
     },
   },
   computed: {
@@ -165,5 +180,9 @@ export default {
 <style >
 .v-application {
   background-color: #f4f4f4 !important;
+}
+.github-btn {
+  right: 0.5em;
+  top: 0.5em;
 }
 </style>
