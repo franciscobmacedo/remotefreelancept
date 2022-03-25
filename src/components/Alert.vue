@@ -27,7 +27,7 @@
             <v-btn
               @click="
                 goToExternal(
-                  'https://www.e-konomista.pt/irs-para-quem-passa-recibos-verdes/'
+                  'https://www.e-konomista.pt/irs-para-quem-passa-recibos-verdes#h-quais-as-despesas-a-deduzir-no-irs-para-quem-passa-recibos-verdes'
                 )
               "
               icon
