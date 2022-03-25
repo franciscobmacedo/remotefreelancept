@@ -186,7 +186,7 @@ export default {
       this.$store
         .dispatch(
           "income",
-          this.$store.state.income + this.increaseAmount.value
+          (this.$store.state.income || 0) + this.increaseAmount.value
         )
         .then(() => {
           this.validate();
