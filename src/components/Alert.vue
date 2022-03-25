@@ -1,14 +1,14 @@
 <template>
-  <v-alert color="#ff5252" class="white--text mb-2">
+  <v-alert color="#ff5252" class="white--text my-0">
     <v-row align="center" justify="center">
-      <v-col cols="12" md="8" class="pb-1 pb-sm-3 text-center">
+      <v-col cols="12" md="8" class="py-0 my-0 text-center">
         Can you have
-        <span class="font-weight-bold expense-text pb-1 pt-1 px-2 px-md-3"
+        <span class="font-weight-bold expense-text px-2 px-md-3"
           >{{ expensesLabelText }} <span class="caption">/year</span></span
         >
         professional related expenses to be granteed the 15% discount?
       </v-col>
-      <v-col class="pt-0 pt-sm-3" cols="6" md="2">
+      <v-col class="py-0 my-0" cols="6" md="2">
         <v-row align="center" justify="center">
           <div class="mr-3">no</div>
           <v-switch
@@ -21,7 +21,7 @@
           <div>yes</div>
         </v-row>
       </v-col>
-      <v-col class="pt-0 pt-sm-3" cols="2" md="1">
+      <v-col class="py-0 my-0" cols="2" md="1">
         <v-tooltip bottom>
           <template v-slot:activator="{ on, attrs }">
             <v-btn @click="goToExternal()" icon v-bind="attrs" v-on="on">
