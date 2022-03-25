@@ -30,7 +30,11 @@
           ></v-text-field>
         </v-form>
       </v-col>
-      <v-tooltip bottom max-width="360" color="grey darken-3">
+      <v-tooltip
+        bottom
+        :max-width="$vuetify.breakpoint.smAndUp ? '360' : null"
+        color="grey darken-3"
+      >
         <template v-slot:activator="{ on, attrs }">
           <v-icon v-bind="attrs" v-on="on">mdi-help-circle</v-icon>
         </template>
