@@ -30,6 +30,25 @@
               <span class="text-caption pl-1 pl-md-3">
                 tax rank level
                 <span class="red--text">{{ taxRank.id }}</span> (out of 7)
+                <v-tooltip
+                  bottom
+                  :max-width="$vuetify.breakpoint.smAndUp ? '360' : null"
+                  color="grey darken-3"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      @click="showTaxRanksTable = true"
+                      icon
+                      v-bind="attrs"
+                      v-on="on"
+                    >
+                      <v-icon small v-bind="attrs" v-on="on"
+                        >mdi-help-circle</v-icon
+                      >
+                    </v-btn>
+                  </template>
+                  <span> show tax ranks table </span>
+                </v-tooltip>
               </span>
             </td>
           </tr>
@@ -110,13 +129,27 @@
         </tbody>
       </template>
     </v-simple-table>
+    <TaxRanksDialog
+      :dialog="showTaxRanksTable"
+      @closeDialog="showTaxRanksTable = false"
+    />
   </div>
 </template>
 
 <script>
 import { mapGetters, mapState } from "vuex";
 import { currency } from "@/utils.js";
+import TaxRanksDialog from "@/components/TaxRanksDialog";
+
 export default {
+  components: {
+    TaxRanksDialog,
+  },
+  data() {
+    return {
+      showTaxRanksTable: false,
+    };
+  },
   computed: {
     ...mapState(["colors", "displayFreq"]),
     ...mapGetters([
@@ -142,12 +175,3 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped>
-// table {
-//   width: 100% !important;
-// }
-
-// th.year-col {
-//   width: 95% !important;
-// }
-</style>
