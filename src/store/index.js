@@ -4,9 +4,6 @@ import { frequencyItems } from "@/utils.js";
 
 Vue.use(Vuex);
 
-const YEAR_BUSINESS_DAYS = 248;
-const MONTH_BUSINESS_DAYS = 22;
-
 const SOCIAL_SECURITY_TAX = 0.214;
 const TAX_RANKS = [
   { id: 1, min: 0, max: 7112, normalTax: 0.145, averageTax: 0.145 },
@@ -24,7 +21,8 @@ export default new Vuex.Store({
     income: null,
     frequency: frequencyItems.YEAR,
     displayFreq: frequencyItems.MONTH,
-
+    YEAR_BUSINESS_DAYS: 248,
+    MONTH_BUSINESS_DAYS: 22,
     hasExpenses: true,
     nrMonthsDisplay: 12,
     colors: {
@@ -39,7 +37,7 @@ export default new Vuex.Store({
       return {
         year: SOCIAL_SECURITY_TAX * getters.grossIncome.year * 0.7,
         month: monthSS,
-        day: monthSS / MONTH_BUSINESS_DAYS,
+        day: monthSS / state.MONTH_BUSINESS_DAYS,
       };
     },
     specificDeductions(state, getters) {
@@ -103,7 +101,7 @@ export default new Vuex.Store({
       return {
         year: Math.max(yearIRS, 0),
         month: monthIRS,
-        day: monthIRS / MONTH_BUSINESS_DAYS,
+        day: monthIRS / state.MONTH_BUSINESS_DAYS,
       };
     },
     netIncome(state, getters) {
@@ -113,7 +111,7 @@ export default new Vuex.Store({
         year:
           getters.grossIncome.year - getters.irsPay.year - getters.ssPay.year,
         month: monthIncome,
-        day: monthIncome / MONTH_BUSINESS_DAYS,
+        day: monthIncome / state.MONTH_BUSINESS_DAYS,
       };
     },
     grossIncome(state) {
@@ -123,17 +121,18 @@ export default new Vuex.Store({
           case frequencyItems.YEAR:
             result.year = state.income;
             result.month = state.income / state.nrMonthsDisplay;
-            result.day = state.income / YEAR_BUSINESS_DAYS;
+            result.day = state.income / state.YEAR_BUSINESS_DAYS;
             break;
           case frequencyItems.MONTH:
             result.year = state.income * state.nrMonthsDisplay;
             result.month = state.income;
-            result.day = state.income / MONTH_BUSINESS_DAYS;
+            result.day = state.income / state.MONTH_BUSINESS_DAYS;
             break;
           case frequencyItems.DAY:
-            result.year = state.income * YEAR_BUSINESS_DAYS;
+            result.year = state.income * state.YEAR_BUSINESS_DAYS;
             result.month =
-              (state.income * MONTH_BUSINESS_DAYS * 12) / state.nrMonthsDisplay;
+              (state.income * state.MONTH_BUSINESS_DAYS * 12) /
+              state.nrMonthsDisplay;
             result.day = state.income;
         }
       }
