@@ -54,6 +54,23 @@
           </v-row>
         </div>
       </v-container>
+      <v-footer
+        v-if="valid"
+        app
+        bottom
+        fixed
+        padless
+        align="center"
+        justify="center"
+      >
+        <v-col cols="12">
+          <v-divider></v-divider>
+          <div class="text-caption">
+            *Assuming {{ YEAR_BUSINESS_DAYS }} business days in a year and
+            {{ MONTH_BUSINESS_DAYS }} business days in a month.
+          </div>
+        </v-col>
+      </v-footer>
     </v-main>
   </v-app>
 </template>
@@ -94,7 +111,12 @@ export default {
     },
   },
   computed: {
-    ...mapState(["valid", "displayFreq"]),
+    ...mapState([
+      "valid",
+      "displayFreq",
+      "YEAR_BUSINESS_DAYS",
+      "MONTH_BUSINESS_DAYS",
+    ]),
     ...mapGetters(["grossIncome", "irsPay", "ssPay", "netIncome", "expenses"]),
 
     datacollection() {

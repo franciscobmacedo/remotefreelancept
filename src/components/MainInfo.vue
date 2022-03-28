@@ -11,13 +11,13 @@
       "
     >
       <div class="text-md-h6">
-        {{ netIncomeFormat }}<span class="caption">/{{ displayFreq }}</span>
+        {{ netIncomeFormat }}<span class="caption">/{{ displayFreq }}*</span>
       </div>
       <div class="font-weight-medium caption text-md-overline">Net income</div>
     </v-col>
     <v-col class="red lighten-5 text-center offset-1">
       <div class="text-md-h6 text-center">
-        {{ taxesFormat }}<span class="caption">/{{ displayFreq }}</span>
+        {{ taxesFormat }}<span class="caption">/{{ displayFreq }}*</span>
       </div>
       <div class="font-weight-medium caption text-md-overline">Taxes</div>
       <v-row justify="center" align="center">
