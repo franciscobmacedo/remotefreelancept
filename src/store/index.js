@@ -5,15 +5,6 @@ import { frequencyItems } from "@/utils.js";
 Vue.use(Vuex);
 
 const SOCIAL_SECURITY_TAX = 0.214;
-const TAX_RANKS = [
-  { id: 1, min: 0, max: 7112, normalTax: 0.145, averageTax: 0.145 },
-  { id: 2, min: 7112, max: 10732, normalTax: 0.23, averageTax: 0.17367 },
-  { id: 3, min: 10732, max: 20322, normalTax: 0.285, averageTax: 0.22621 },
-  { id: 4, min: 20322, max: 25075, normalTax: 0.35, averageTax: 0.24967 },
-  { id: 5, min: 25075, max: 36967, normalTax: 0.37, averageTax: 0.28838 },
-  { id: 6, min: 36967, max: 80882, normalTax: 0.45, averageTax: 0.37613 },
-  { id: 7, min: 80882, normalTax: 0.48 },
-];
 
 export default new Vuex.Store({
   state: {
@@ -23,6 +14,15 @@ export default new Vuex.Store({
     displayFreq: frequencyItems.MONTH,
     YEAR_BUSINESS_DAYS: 248,
     MONTH_BUSINESS_DAYS: 22,
+    TAX_RANKS: [
+      { id: 1, min: 0, max: 7112, normalTax: 0.145, averageTax: 0.145 },
+      { id: 2, min: 7112, max: 10732, normalTax: 0.23, averageTax: 0.17367 },
+      { id: 3, min: 10732, max: 20322, normalTax: 0.285, averageTax: 0.22621 },
+      { id: 4, min: 20322, max: 25075, normalTax: 0.35, averageTax: 0.24967 },
+      { id: 5, min: 25075, max: 36967, normalTax: 0.37, averageTax: 0.28838 },
+      { id: 6, min: 36967, max: 80882, normalTax: 0.45, averageTax: 0.37613 },
+      { id: 7, min: 80882, normalTax: 0.48 },
+    ],
     hasExpenses: true,
     nrMonthsDisplay: 12,
     colors: {
@@ -61,7 +61,7 @@ export default new Vuex.Store({
     },
     taxRank(state, getters) {
       const taxableIncome = getters.taxableIncome;
-      return TAX_RANKS.filter((tr) => {
+      return state.TAX_RANKS.filter((tr) => {
         if (tr.id == 7 && tr.min < taxableIncome) {
           return tr;
         }
@@ -74,7 +74,7 @@ export default new Vuex.Store({
         return taxRank;
       }
       const avgID = taxRank.id - 1;
-      return TAX_RANKS.filter((tr) => tr.id == avgID)[0];
+      return state.TAX_RANKS.filter((tr) => tr.id == avgID)[0];
     },
     taxIncomeAvg(state, getters) {
       if (getters.taxRank.id <= 1) {
