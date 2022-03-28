@@ -150,10 +150,7 @@ export default {
             label: function (tooltipItem, data) {
               const val =
                 data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
-              // const label = data.labels[tooltipItem.index];
-
               return currency(val, 2);
-              // return label + " " + currency(val, 2);
             },
           },
         },
@@ -162,8 +159,6 @@ export default {
             display: true,
             textAlign: "center",
             formatter: (val, ctx) => {
-              // ctx.chart.data.labels[ctx.dataIndex] + "\n" + currency(val)
-
               return (
                 ctx.chart.data.labels[ctx.dataIndex] +
                 "\n" +
@@ -177,7 +172,6 @@ export default {
             font: {
               size: "13",
             },
-            // backgroundColor: "#404040",
           },
           doughnutlabel: {
             labels: [
