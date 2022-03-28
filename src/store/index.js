@@ -140,16 +140,16 @@ export default new Vuex.Store({
     },
   },
   mutations: {
-    valid(state, value) {
+    setValid(state, value) {
       state.valid = value;
     },
-    income(state, income) {
+    setIncome(state, income) {
       state.income = income;
     },
-    frequency(state, frequency) {
+    setFrequency(state, frequency) {
       state.frequency = frequency;
     },
-    hasExpenses(state, hasExpenses) {
+    setHasExpenses(state, hasExpenses) {
       state.hasExpenses = hasExpenses;
     },
 
@@ -163,13 +163,13 @@ export default new Vuex.Store({
   },
   actions: {
     validate(context) {
-      context.commit("valid", true);
+      context.commit("setValid", true);
     },
     unvalid(context) {
-      context.commit("valid", false);
+      context.commit("setValid", false);
     },
     income(context, income) {
-      context.commit("income", income);
+      context.commit("setIncome", income);
     },
   },
 });

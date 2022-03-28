@@ -56,7 +56,7 @@ export default {
         return this.$store.state.hasExpenses;
       },
       set(value) {
-        this.$store.commit("hasExpenses", value);
+        this.$store.commit("setHasExpenses", value);
       },
     },
     expensesLabelText() {

@@ -109,7 +109,7 @@ export default {
         return this.$store.state.frequency;
       },
       set(value) {
-        this.$store.commit("frequency", value);
+        this.$store.commit("setFrequency", value);
       },
     },
     income: {
@@ -121,7 +121,7 @@ export default {
           : currencyNoSymbol(this.$store.state.income);
       },
       set(value) {
-        this.$store.commit("income", reverseCurrency(value));
+        this.$store.commit("setIncome", reverseCurrency(value));
       },
     },
     defaultIncomesCurr() {
