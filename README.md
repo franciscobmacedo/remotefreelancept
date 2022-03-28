@@ -1,6 +1,6 @@
-# Simulator for independent workers in Portugal working for foreign companies
+# Remote Freelancer from Portugal 🇵🇹
 
-Simulate your earnings (year, month or day) and breakdown how much taxes you're going to pay.
+Simulate your earnings (year, month or day) and breakdown how much taxes you're going to pay as a freelancer working from Portugal.
 
 ## Project setup
 
