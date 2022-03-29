@@ -65,9 +65,18 @@
       >
         <v-col cols="12">
           <v-divider></v-divider>
-          <div class="text-caption">
-            *Assuming {{ YEAR_BUSINESS_DAYS }} business days in a year and
-            {{ MONTH_BUSINESS_DAYS }} business days in a month.
+          <div class="d-flex justify-space-around">
+            <div class="text-caption">
+              *Assuming {{ YEAR_BUSINESS_DAYS }} business days in a year and
+              {{ MONTH_BUSINESS_DAYS }} business days in a month.
+            </div>
+            <div class="text-caption">
+              This is only valid for independent workers with green receipts
+              (trabalhadores independentes com recibos verdes).
+            </div>
+            <div class="text-caption">
+              VAT (IVA) is ignored (only for foreign clients).
+            </div>
           </div>
         </v-col>
       </v-footer>
