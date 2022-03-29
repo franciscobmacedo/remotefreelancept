@@ -67,10 +67,12 @@
         padless
         align="center"
         justify="center"
+        max-height="5em"
+        class="overflow-auto"
       >
         <v-col cols="12">
           <v-divider></v-divider>
-          <div class="d-flex justify-space-around">
+          <div class="d-flex flex-column flex-md-row justify-space-around">
             <div class="text-caption">
               *Assuming {{ YEAR_BUSINESS_DAYS }} business days in a year and
               {{ MONTH_BUSINESS_DAYS }} business days in a month.
