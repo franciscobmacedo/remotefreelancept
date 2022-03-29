@@ -31,14 +31,22 @@ export default new Vuex.Store({
       irs: "#ff6384",
       ss: "#36a2eb",
     },
+    ssDiscount: 0,
   },
   getters: {
     ssPay(state, getters) {
       const monthSS =
-        SS_TAX * Math.min(SS_MAX_MONTH_INCOME, getters.grossIncome.month * 0.7);
+        SS_TAX *
+        Math.min(
+          SS_MAX_MONTH_INCOME,
+          getters.grossIncome.month * 0.7 * (1 + state.ssDiscount)
+        );
       const yearSS =
         SS_TAX *
-        Math.min(SS_MAX_MONTH_INCOME * 12, getters.grossIncome.year * 0.7);
+        Math.min(
+          SS_MAX_MONTH_INCOME * 12,
+          getters.grossIncome.year * 0.7 * (1 + state.ssDiscount)
+        );
       return {
         year: Math.max(yearSS, 20 * 12),
         month: Math.max(monthSS, 20),
@@ -164,6 +172,9 @@ export default new Vuex.Store({
     setNrMonthsDisplay(state, nrMonths) {
       console.log("setting nr months display");
       state.nrMonthsDisplay = nrMonths;
+    },
+    setSsDiscount(state, ssDiscount) {
+      state.ssDiscount = ssDiscount;
     },
   },
   actions: {

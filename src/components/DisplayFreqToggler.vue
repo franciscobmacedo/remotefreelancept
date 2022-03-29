@@ -19,7 +19,9 @@
       </v-btn-toggle>
     </div>
     <v-row align="center" justify="center">
-      <v-col cols="8"> Number of months to simulate your earnings </v-col>
+      <v-col cols="8" class="text-caption text-sm-body-2">
+        Number of months to simulate your earnings
+      </v-col>
       <v-col cols="2">
         <v-form ref="form2">
           <v-text-field
