@@ -4,7 +4,8 @@ import { frequencyItems } from "@/utils.js";
 
 Vue.use(Vuex);
 
-const SOCIAL_SECURITY_TAX = 0.214;
+const SS_TAX = 0.214;
+const SS_MAX_MONTH_INCOME = 5318.4;
 
 export default new Vuex.Store({
   state: {
@@ -33,9 +34,13 @@ export default new Vuex.Store({
   },
   getters: {
     ssPay(state, getters) {
-      const monthSS = SOCIAL_SECURITY_TAX * getters.grossIncome.month * 0.7;
+      const monthSS =
+        SS_TAX * Math.min(SS_MAX_MONTH_INCOME, getters.grossIncome.month * 0.7);
+      const yearSS =
+        SS_TAX *
+        Math.min(SS_MAX_MONTH_INCOME * 12, getters.grossIncome.year * 0.7);
       return {
-        year: SOCIAL_SECURITY_TAX * getters.grossIncome.year * 0.7,
+        year: yearSS,
         month: monthSS,
         day: monthSS / state.MONTH_BUSINESS_DAYS,
       };
