@@ -39,14 +39,19 @@
               <MainInfo />
             </v-col>
           </v-row>
-          <v-row class="mt-0 pt-0" align="center" justify="center">
-            <v-col cols="12" md="6" class="mt-0 pt-0">
-              <Chart
-                v-if="valid"
-                :chartData="datacollection"
-                :chartOptions="options"
-                chartType="doughnut"
-              />
+          <v-row class="mt-0 pt-0" justify="center">
+            <v-col cols="12" md="6" class="mt-10 mt-sm-3 pt-0">
+              <div class="d-flex flex-column justify-center">
+                <span class="mb-2 mb-sm-0">
+                  <SSDiscount />
+                </span>
+                <Chart
+                  v-if="valid"
+                  :chartData="datacollection"
+                  :chartOptions="options"
+                  chartType="doughnut"
+                />
+              </div>
             </v-col>
             <v-col class="mt-0 pt-0" cols="12" md="6">
               <Details />
@@ -88,6 +93,7 @@
 import { round, currency } from "@/utils.js";
 import Form from "@/components/Form";
 import DisplayFreqToggler from "@/components/DisplayFreqToggler";
+import SSDiscount from "@/components/SSDiscount";
 import MainInfo from "@/components/MainInfo";
 import Chart from "@/components/Chart";
 import Alert from "@/components/Alert";
@@ -98,6 +104,7 @@ export default {
   name: "App",
   components: {
     Form,
+    SSDiscount,
     DisplayFreqToggler,
     MainInfo,
     Chart,
