@@ -40,8 +40,8 @@ export default new Vuex.Store({
         SS_TAX *
         Math.min(SS_MAX_MONTH_INCOME * 12, getters.grossIncome.year * 0.7);
       return {
-        year: yearSS,
-        month: monthSS,
+        year: Math.max(yearSS, 20 * 12),
+        month: Math.max(monthSS, 20),
         day: monthSS / state.MONTH_BUSINESS_DAYS,
       };
     },
