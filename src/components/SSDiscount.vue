@@ -36,7 +36,7 @@
         step="1"
         tick-size="6"
         ticks="always"
-        @click="setSsDiscount"
+        @change="setSsDiscount"
       >
       </v-slider>
     </v-col>
