@@ -29,7 +29,8 @@
               <b>IRS estimation</b>
               <span class="text-caption pl-1 pl-md-3">
                 tax rank level
-                <span class="red--text">{{ taxRank.id }}</span> (out of 7)
+                <span class="red--text">{{ taxRank.id }}</span> (out of
+                {{ TAX_RANKS.length }})
                 <v-tooltip
                   bottom
                   :max-width="$vuetify.breakpoint.smAndUp ? '360' : null"
@@ -151,7 +152,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(["colors", "displayFreq"]),
+    ...mapState(["colors", "displayFreq", "TAX_RANKS"]),
     ...mapGetters([
       "grossIncome",
       "specificDeductions",

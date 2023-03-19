@@ -76,8 +76,8 @@ export default new Vuex.Store({
     },
     taxRank(state, getters) {
       const taxableIncome = getters.taxableIncome;
-      return state.TAX_RANKS.filter((tr) => {
-        if (tr.id == 7 && tr.min < taxableIncome) {
+      return state.TAX_RANKS.filter((tr, index) => {
+        if (index == state.TAX_RANKS.length - 1 && tr.min < taxableIncome) {
           return tr;
         }
         return tr.min < taxableIncome && tr.max >= taxableIncome;
