@@ -18,7 +18,7 @@
           before:bg-transparent
           before:content-['']
           after:absolute
-          after:z-[2]
+          
           after:-mt-[0.1875rem]
           after:h-5
           after:w-5
@@ -30,7 +30,7 @@
           after:content-['']
           checked:bg-primary
           checked:after:absolute
-          checked:after:z-[2]
+          
           checked:after:-mt-[3px]
           checked:after:ml-[1.0625rem]
           checked:after:h-5
@@ -47,7 +47,7 @@
           focus:before:shadow-[3px_-1px_0px_13px_rgba(0,0,0,0.6)]
           focus:before:transition-[box-shadow_0.2s,transform_0.2s]
           focus:after:absolute
-          focus:after:z-[1]
+          
           focus:after:block
           focus:after:h-5
           focus:after:w-5
