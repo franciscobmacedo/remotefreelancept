@@ -130,15 +130,7 @@ const useTaxesStore = defineStore({
       const grossIncome = this.grossIncome.year;
       return (this.maxExpensesTax / 100) * grossIncome;
     },
-    // expenses() {
-    //   if (this.income === null) {
-    //     return null;
-    //   }
-    //   const grossIncome = this.grossIncome.year;
-    //   console.log(this.expensesTax)
-    //   const diff = this.expensesTax/100 * grossIncome - this.specificDeductions;
-    //   return diff < 0 ? 0 : diff;
-    // },
+
     hasExpenses() {
       return this.expenses > 0;
     },
@@ -148,8 +140,6 @@ const useTaxesStore = defineStore({
     },
     taxableIncome() {
       const grossIncome = this.grossIncome.year;
-      console.log(this.expenses);
-      console.log(typeof this.expenses);
       if (this.hasExpenses || this.expensesNeeded <= 0) {
         const expensesMissing =
           this.expensesNeeded > this.expenses
@@ -242,8 +232,6 @@ const useTaxesStore = defineStore({
   },
   actions: {
     setIncome(value: number) {
-      console.log("seting income", value);
-
       if (value <= 0) {
         this.income = null;
       } else {
