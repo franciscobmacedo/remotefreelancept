@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+      "target": "esnext",
+      "module": "esnext",
+      "moduleResolution": "node",
+      "jsx": "preserve",
+      "types": ["vitest/globals"],
+      "esModuleInterop": true,
+      "paths": {
+          "@/*": [
+              "./src/*"
+          ],
+      },
+    },
+    "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
+  }
+  
