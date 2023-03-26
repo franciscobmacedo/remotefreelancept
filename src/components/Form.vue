@@ -7,7 +7,7 @@
       <div class="relative md:h-44">
         <h4
           class="font-semibold"
-          :class="validationCount > 0 ? 'text-lg md:text-xl lg:text-2xl lg:w-[500px]' : 'text-4xl'"
+          :class="validationCount > 0 ? 'text-lg md:text-xl lg:text-2xl lg:w-[500px]' : 'text-lg sm:text-xl md:text-2-xl lg:text-3xl xl:text-4xl'"
         >
           Remote freelancer from Portugal 🇵🇹
         </h4>
@@ -32,7 +32,7 @@
                 class="
                   hidden
                   absolute
-                  group-hover:block
+                  
                   right-6
                   bottom-3
                   transition
@@ -40,6 +40,7 @@
                   duration-100
                   ease-in-out
                 "
+                :class="{'group-hover:block': breakpoint.mdAndUp}"
               >
                 <button
                   class="
@@ -136,10 +137,15 @@ import { ref, watch, computed } from "vue";
 import { CurrencyEuroIcon, ChevronDownIcon } from "@heroicons/vue/24/outline";
 import { storeToRefs } from "pinia";
 import { useTaxesStore } from "@/stores";
+import { useBreakpoint } from "@/composables/breakpoints";
 import CurrencyButton from "@/components/CurrencyButton.vue";
 import FormattedNumberInput from "@/components/FormattedNumberInput.vue";
 import FrequencyButton from "@/components/FrequencyButton.vue";
 import { FrequencyChoices } from "@/typings";
+
+
+const { breakpoint } = useBreakpoint();
+
 
 // store
 const { validationCount, defaultIncomes, incomeFrequency, income } =
