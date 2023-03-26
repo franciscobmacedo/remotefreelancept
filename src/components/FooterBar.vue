@@ -35,5 +35,19 @@
         VAT (IVA) is ignored (only for foreign clients).
       </div>
     </div>
+    <div class="flex justify-center">
+      <a
+        v-if="breakpoint.smAndDown"
+        className="cursor-pointer text-center text-blue-500 p-3 rounded-full shadow-sm hover:shadow-xl"
+        target="_blank"
+        href=""
+      >
+        <img src="@/assets/github.png" />
+      </a>
+    </div>
   </footer>
 </template>
+<script lang="ts" setup>
+import { useBreakpoint } from "@/composables/breakpoints";
+const { breakpoint } = useBreakpoint();
+</script>
