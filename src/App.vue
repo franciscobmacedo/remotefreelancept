@@ -4,7 +4,7 @@
       v-if="breakpoint.mdAndUp"
       className="cursor-pointer fixed top-5 right-5 text-blue-500 p-3 rounded-full shadow-sm hover:shadow-xl"
       target="_blank"
-      href=""
+      href="https://github.com/franciscobmacedo/remotefreelancept"
     >
       <img src="@/assets/github.png" />
     </a>
