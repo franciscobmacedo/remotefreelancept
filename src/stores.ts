@@ -21,6 +21,7 @@ interface TaxesState {
   taxRanks: TaxRank[];
   colors: Colors;
   rnh: boolean;
+  rnhTax: number;
   firstYear: boolean;
 }
 const useTaxesStore = defineStore({
@@ -49,6 +50,7 @@ const useTaxesStore = defineStore({
       { id: 9, min: 78834, normalTax: 0.48, max: null, averageTax: null },
     ],
     rnh: false,
+    rnhTax: 0.2,
     firstYear: false,
     colors: {
       netIncome: "#76c479",
@@ -139,6 +141,9 @@ const useTaxesStore = defineStore({
       return expenses > 0 ? expenses : 0;
     },
     taxableIncome() {
+      if (this.rnh) {
+        return this.grossIncome.year;
+      }
       const grossIncome = this.grossIncome.year;
       if (this.hasExpenses || this.expensesNeeded <= 0) {
         const expensesMissing =
@@ -170,12 +175,18 @@ const useTaxesStore = defineStore({
       return this.taxRanks.filter((taxRank: TaxRank) => taxRank.id == avgID)[0];
     },
     taxIncomeAvg() {
+      if (this.rnh){
+        return null
+      }
       if (this.taxRank.id <= 1) {
         return this.taxableIncome;
       }
       return this.taxRankAvg.max;
     },
     taxIncomeNormal() {
+      if (this.rnh){
+        return null
+      }
       if (this.taxRank.id <= 1) {
         return 0;
       }
@@ -186,10 +197,15 @@ const useTaxesStore = defineStore({
       if (this.taxRankAvg === undefined) {
         return {};
       }
+      let yearIRS;
+      if (this.rnh) {
+        yearIRS = this.taxableIncome * this.rnhTax;
+      } else {
+        yearIRS =
+          this.taxIncomeAvg * this.taxRankAvg.averageTax +
+          this.taxIncomeNormal * this.taxRank.normalTax;
+      }
 
-      const yearIRS =
-        this.taxIncomeAvg * this.taxRankAvg.averageTax +
-        this.taxIncomeNormal * this.taxRank.normalTax;
       const monthIRS = Math.max(yearIRS / this.nrMonthsDisplay, 0);
       return {
         year: Math.max(yearIRS, 0),

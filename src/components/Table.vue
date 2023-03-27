@@ -12,7 +12,7 @@
       @close="showTaxRanksTable = false"
     />
   </transition>
-  <table class="w-full text-sm text-left text-gray-700">
+  <table class="w-full text-xs md:text-sm text-left text-gray-700">
     <thead class="text-xs text-gray-700 uppercase border-b-2">
       <tr>
         <th class="py-3 text-left">Title</th>
@@ -75,7 +75,7 @@
       <tr class="border-b-2">
         <td class="pl-2 py-3">Taxable income for average tax</td>
         <td class="">
-          {{ asCurrency(taxIncomeAvg, decimalCases) }}
+          {{ taxIncomeAvg ? asCurrency(taxIncomeAvg, decimalCases) : "-" }}
         </td>
         <td class="grey lighten-4"></td>
         <td class="grey lighten-4"></td>
@@ -83,7 +83,9 @@
       <tr class="">
         <td class="pl-2 py-3">Taxable income for normal tax</td>
         <td class="">
-          {{ asCurrency(taxIncomeNormal, decimalCases) }}
+          {{
+            taxIncomeNormal ? asCurrency(taxIncomeNormal, decimalCases) : "-"
+          }}
         </td>
         <td class="grey lighten-4"></td>
         <td class="grey lighten-4"></td>
@@ -128,13 +130,14 @@
   </table>
 </template>
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { storeToRefs } from "pinia";
 import { useTaxesStore } from "@/stores";
 import { asCurrency } from "@/utils.js";
 import InfoButton from "@/components/InfoButton.vue";
 import TaxRanksDialog from "./TaxRanksDialog.vue";
-
+import { useBreakpoint } from "@/composables/breakpoints";
+const { breakpoint } = useBreakpoint();
 // store
 const {
   grossIncome,
@@ -150,6 +153,8 @@ const {
   taxRanks,
 } = storeToRefs(useTaxesStore());
 
-const decimalCases = 2;
+const decimalCases = computed(() => {
+  return breakpoint.smAndDown ? 0 : 2;
+});
 const showTaxRanksTable = ref(false);
 </script>

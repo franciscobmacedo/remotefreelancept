@@ -1,5 +1,5 @@
 <template>
-  <div class="grid grid-cols-1 md:grid-cols-2 md:space-x-10 mt-5 md:mt-5">
+  <div class="grid grid-cols-1 md:grid-cols-2 md:space-x-10 mt-5 md:mt-5 mb-20">
     <div>
       <!-- left side -->
       <div
@@ -67,7 +67,18 @@
           </p>
         </InfoButton>
       </div>
-      <div class="flex ml-3 md:ml-0 justify-start items-center mt-6 sm:space-x-2 md:space-x-4">
+      <div
+        class="
+          flex
+          ml-3
+          md:ml-0
+          justify-start
+          items-center
+          mt-6
+          sm:space-x-2
+          md:space-x-4
+        "
+      >
         <SwitchButton
           label="Are you within the first 12 months of starting your activity?"
           v-model:value="firstYear"
@@ -78,6 +89,30 @@
           <p class="text-sm w-64 text-center">
             You are exempt from paying social security in your first 12 months
             as a freelancer in Portugal. Click to see more.
+          </p>
+        </InfoButton>
+      </div>
+      <div
+        class="
+          flex
+          ml-3
+          md:ml-0
+          justify-start
+          items-center
+          mt-6
+          sm:space-x-2
+          md:space-x-4
+        "
+      >
+        <SwitchButton
+          label="Are you eligible to be in the NHR/RNH?"
+          v-model:value="rnh"
+        />
+        <InfoButton
+          link="https://info.portaldasfinancas.gov.pt/pt/apoio_contribuinte/Folhetos_informativos/Documents/Non_habitual_residents_Tax_regime.pdf"
+        >
+          <p class="text-sm w-64 text-center">
+            <b>NHR</b> (non-habitual residents) have a fixed IRS tax of {{ rnhTax }}. click for more information.
           </p>
         </InfoButton>
       </div>
@@ -108,7 +143,7 @@
           link="https://www.montepio.org/ei/pessoal/impostos/regime-simplificado-como-funciona-a-justificacao-de-despesas/"
         />
       </div>
-      <div class="flex justify-center my-12">
+      <div class="flex justify-center mt-8">
         <Chart />
       </div>
     </div>
@@ -203,6 +238,8 @@ const {
   grossIncome,
   expenses,
   firstYear,
+  rnh,
+  rnhTax,
 } = storeToRefs(useTaxesStore());
 
 const store = useTaxesStore();
