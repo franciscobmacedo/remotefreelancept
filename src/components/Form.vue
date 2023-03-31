@@ -7,11 +7,17 @@
       <div class="relative md:h-44">
         <h4
           class="font-semibold"
-          :class="validationCount > 0 ? 'text-lg md:text-xl lg:text-2xl lg:w-[500px]' : 'text-lg sm:text-xl md:text-2-xl lg:text-3xl xl:text-4xl'"
+          :class="
+            validationCount > 0
+              ? 'text-lg md:text-xl lg:text-2xl lg:w-[500px]'
+              : 'text-lg sm:text-xl md:text-2-xl lg:text-3xl xl:text-4xl'
+          "
         >
           Remote freelancer from Portugal 🇵🇹
         </h4>
-        <p class="md:mt-3 md:mb-5 text-sm md:text-xl text-neutral-600 font-light">
+        <p
+          class="md:mt-3 md:mb-5 text-sm md:text-xl text-neutral-600 font-light"
+        >
           simulate your net income
         </p>
         <div class="flex justify-around items-center">
@@ -32,7 +38,6 @@
                 class="
                   hidden
                   absolute
-                  
                   right-6
                   bottom-3
                   transition
@@ -40,7 +45,7 @@
                   duration-100
                   ease-in-out
                 "
-                :class="{'group-hover:block': breakpoint.mdAndUp}"
+                :class="{ 'group-hover:block': breakpoint.mdAndUp }"
               >
                 <button
                   class="
@@ -143,13 +148,12 @@ import FormattedNumberInput from "@/components/FormattedNumberInput.vue";
 import FrequencyButton from "@/components/FrequencyButton.vue";
 import { FrequencyChoices } from "@/typings";
 
-
 const { breakpoint } = useBreakpoint();
 
-
 // store
-const { validationCount, defaultIncomes, incomeFrequency, income } =
-  storeToRefs(useTaxesStore());
+const { validationCount, incomeFrequency, income } = storeToRefs(
+  useTaxesStore()
+);
 const store = useTaxesStore();
 
 // dropdwon
@@ -171,20 +175,25 @@ watch(
   }
 );
 
+const defaultIncomes = computed(() => {
+  switch (incomeFrequency.value) {
+    case FrequencyChoices.Year:
+      return [30000, 50000, 60000, 70000, 100000];
+    case FrequencyChoices.Month:
+      return [3000, 5000, 6000, 7000, 10000];
+    case FrequencyChoices.Day:
+      return [200, 300, 500, 700, 1000];
+  }
+});
+
 const changeAmount = computed(() => {
-  let result: {
-    value: number;
-    text: string;
-  };
   switch (incomeFrequency.value) {
     case FrequencyChoices.Month:
-      result = { value: 1000, text: "1k" };
-      break;
+      return { value: 1000, text: "1k" };
     case FrequencyChoices.Day:
-      result = { value: 100, text: "100" };
+      return { value: 100, text: "100" };
     default:
-      result = { value: 5000, text: "5k" };
+      return { value: 5000, text: "5k" };
   }
-  return result;
 });
 </script>
