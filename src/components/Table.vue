@@ -25,13 +25,13 @@
       <tr>
         <td class="py-3">Gross income</td>
         <td class="py-3">
-          {{ asCurrency(grossIncome.year, 0) }}
+          {{ renderCellValue(grossIncome.year) }}
         </td>
         <td class="py-3">
-          {{ asCurrency(grossIncome.month, decimalCases) }}
+          {{ renderCellValue(grossIncome.month) }}
         </td>
         <td class="py-3">
-          {{ asCurrency(grossIncome.day, decimalCases) }}
+          {{ renderCellValue(grossIncome.day) }}
         </td>
       </tr>
 
@@ -53,21 +53,21 @@
       <tr class="border-b-2">
         <td class="pl-2 py-3">Specific deductions</td>
         <td class="">
-          {{ asCurrency(specificDeductions, decimalCases) }}
+          {{ renderCellValue(specificDeductions) }}
         </td>
         <td class="grey lighten-4"></td>
         <td class="grey lighten-4"></td>
       </tr>
       <tr class="border-b-2">
         <td class="pl-2 py-3">Expenses</td>
-        <td class="">{{ asCurrency(expenses, decimalCases) }}</td>
+        <td class="">{{ renderCellValue(expenses) }}</td>
         <td class="grey lighten-4"></td>
         <td class="grey lighten-4"></td>
       </tr>
       <tr class="border-b-2">
         <td class="pl-2 py-3">Taxable income</td>
         <td class="">
-          {{ asCurrency(taxableIncome, decimalCases) }}
+          {{ renderCellValue(taxableIncome) }}
         </td>
         <td class="grey lighten-4"></td>
         <td class="grey lighten-4"></td>
@@ -75,7 +75,7 @@
       <tr class="border-b-2">
         <td class="pl-2 py-3">Taxable income for average tax</td>
         <td class="">
-          {{ taxIncomeAvg ? asCurrency(taxIncomeAvg, decimalCases) : "-" }}
+          {{ renderCellValue(taxIncomeAvg) }}
         </td>
         <td class="grey lighten-4"></td>
         <td class="grey lighten-4"></td>
@@ -83,9 +83,7 @@
       <tr class="">
         <td class="pl-2 py-3">Taxable income for normal tax</td>
         <td class="">
-          {{
-            taxIncomeNormal ? asCurrency(taxIncomeNormal, decimalCases) : "-"
-          }}
+          {{ renderCellValue(taxIncomeNormal) }}
         </td>
         <td class="grey lighten-4"></td>
         <td class="grey lighten-4"></td>
@@ -93,37 +91,37 @@
       <tr class="bg-red-100">
         <td class="pl-2 py-3">IRS</td>
         <td class="">
-          {{ asCurrency(irsPay.year, decimalCases) }}
+          {{ renderCellValue(irsPay.year) }}
         </td>
         <td class="">
-          {{ asCurrency(irsPay.month, decimalCases) }}
+          {{ renderCellValue(irsPay.month) }}
         </td>
         <td class="">
-          {{ asCurrency(irsPay.day, decimalCases) }}
+          {{ renderCellValue(irsPay.day) }}
         </td>
       </tr>
       <tr class="bg-blue-100">
         <td class="pl-2 py-3">Social security</td>
         <td class="">
-          {{ asCurrency(ssPay.year, decimalCases) }}
+          {{ renderCellValue(ssPay.year) }}
         </td>
         <td class="">
-          {{ asCurrency(ssPay.month, decimalCases) }}
+          {{ renderCellValue(ssPay.month) }}
         </td>
         <td class="">
-          {{ asCurrency(ssPay.day, decimalCases) }}
+          {{ renderCellValue(ssPay.day) }}
         </td>
       </tr>
       <tr class="bg-green-100">
         <td class="pl-2 py-3">Net income</td>
         <td class="">
-          {{ asCurrency(netIncome.year, decimalCases) }}
+          {{ renderCellValue(netIncome.year) }}
         </td>
         <td class="">
-          {{ asCurrency(netIncome.month, decimalCases) }}
+          {{ renderCellValue(netIncome.month) }}
         </td>
         <td class="">
-          {{ asCurrency(netIncome.day, decimalCases) }}
+          {{ renderCellValue(netIncome.day) }}
         </td>
       </tr>
     </tbody>
@@ -156,5 +154,9 @@ const {
 const decimalCases = computed(() => {
   return breakpoint.smAndDown ? 0 : 2;
 });
+
+const renderCellValue = (value: number) => {
+  return value ? asCurrency(value, decimalCases.value) : "-";
+};
 const showTaxRanksTable = ref(false);
 </script>
