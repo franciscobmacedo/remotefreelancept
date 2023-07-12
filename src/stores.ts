@@ -4,7 +4,7 @@ import { asCurrency } from "@/utils.js";
 
 const YEAR_BUSINESS_DAYS = 248;
 const MONTH_BUSINESS_DAYS = 22;
-const SS_MAX_MONTH_INCOME = 5318.4;
+const SS_MAX_MONTH_INCOME = 5765.16;
 
 interface TaxesState {
   income: number | null;
