@@ -140,7 +140,7 @@
         >
         </AdjustCounter>
         <InfoButton
-          link="https://www.montepio.org/ei/pessoal/impostos/regime-simplificado-como-funciona-a-justificacao-de-despesas/"
+          link="https://www.cgd.pt/Site/Saldo-Positivo/leis-e-impostos/Pages/deducoes-especificas.aspx#:~:text=Empresariais%20e%20Profissionais%20(Categoria%20B)&text=Se%20estiver%20enquadrado%20no%20regime,bruto%20(antes%20dos%20descontos)."
         />
       </div>
       <div class="flex justify-center mt-8">
