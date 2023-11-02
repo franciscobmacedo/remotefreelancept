@@ -141,9 +141,6 @@ const useTaxesStore = defineStore({
       return expenses > 0 ? expenses : 0;
     },
     taxableIncome() {
-      if (this.rnh) {
-        return this.grossIncome.year;
-      }
       const grossIncome = this.grossIncome.year;
       if (this.hasExpenses || this.expensesNeeded <= 0) {
         const expensesMissing =
