@@ -7,13 +7,9 @@ live at https://franciscobmacedo.github.io/remotefreelancept/
 
 ![preview](img/preview.gif)
 
-# Vue 3 + Vite
+## Contributing
 
-This tool uses Vue 3 in Vite, with the Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
-
-## Recommended IDE Setup
-
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar)
+Contributions are welcome. Although I enjoy helping people with their financial burdens, I do have limited time to work on this. Feel free to open an issue or submit a pull request. If you're not sure where to start, mention me in the comments!
 
 ## Local setup
 
