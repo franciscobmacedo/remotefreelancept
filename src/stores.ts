@@ -23,6 +23,7 @@ interface TaxesState {
   rnh: boolean;
   rnhTax: number;
   firstYear: boolean;
+  secondYear: boolean;
 }
 const useTaxesStore = defineStore({
   id: "taxes",
@@ -52,6 +53,7 @@ const useTaxesStore = defineStore({
     rnh: false,
     rnhTax: 0.2,
     firstYear: false,
+    secondYear: false,
     colors: {
       netIncome: "#76c479",
       irs: "#ff6384",
@@ -148,9 +150,9 @@ const useTaxesStore = defineStore({
             ? this.expensesNeeded - this.expenses
             : 0;
 
-        return grossIncome * 0.75 + expensesMissing;
+        return grossIncome * (this.firstYear ? 0.375 : this.secondYear ? 0.5625 :   0.75) + expensesMissing;
       }
-      return grossIncome * 0.9;
+      return grossIncome * (this.firstYear ? 0.45 : this.secondYear ? 0.675 :   0.9);
     },
     taxRank(): TaxRank {
       return this.taxRanks.filter((taxRank: TaxRank, index: number) => {
