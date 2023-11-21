@@ -35,12 +35,12 @@
           </button>
         </div>
       </div>
-      <div class="flex ml-3 md:ml-0 justify-start items-center mt-6 space-x-4">
+      <div class="flex ml-3 md:ml-0 justify-start items-center mt-2 space-x-4">
         <p class="text-sm w-fit">Nr. of months to simulate your earnings</p>
         <AdjustCounter v-model:value="nrMonthsDisplay" :min="1" unit="months" />
         <InfoButton>
           <p class="text-sm w-64 text-center">
-            In a portugues company, you can get payed 2 extra months per year
+            In a portuguese company, you can get payed 2 extra months per year
             (for holidays and christmas). If you want to compare your remote
             salary with some local company, you should change this field to 14
             months.
@@ -48,7 +48,7 @@
         </InfoButton>
       </div>
 
-      <div class="flex ml-3 md:ml-0 justify-start items-center mt-6 space-x-4">
+      <div class="flex ml-3 md:ml-0 justify-start items-center mt-2 space-x-4">
         <p class="text-sm w-fit">Adjust your contribution to social security</p>
         <AdjustCounter
           v-model:value="ssDiscountPosition"
@@ -68,7 +68,7 @@
         </InfoButton>
       </div>
       <div
-        class="
+          class="
           flex
           ml-3
           md:ml-0
@@ -80,11 +80,11 @@
         "
       >
         <SwitchButton
-          label="Are you within the first 12 months of starting your activity?"
-          v-model:value="firstYear"
+            label="Are you within the first 12 months of starting your activity?"
+            v-model="ssFirstYear"
         />
         <InfoButton
-          link="https://www.montepio.org/ei/pessoal/emprego-e-formacao/seguranca-social-guia-com-as-regras-para-os-trabalhadores-independentes#"
+            link="https://www.montepio.org/ei/pessoal/emprego-e-formacao/seguranca-social-guia-com-as-regras-para-os-trabalhadores-independentes#"
         >
           <p class="text-sm w-64 text-center">
             You are exempt from paying social security in your first 12 months
@@ -105,8 +105,59 @@
         "
       >
         <SwitchButton
+          label="Are you in your first fiscal year of activity?"
+          v-model="firstYear"
+          :key="firstYearKey"
+        />
+        <InfoButton
+          link="https://www.cgd.pt/Site/Saldo-Positivo/leis-e-impostos/Pages/irs-trabalhadores-independentes.aspx"
+        >
+          <p class="text-sm w-64 text-center">
+            You get a 50% discount on your taxable income (IRS), on your first year of activity.
+            This could be less than 12 months if you start your activity after the month January. Click to see more.
+          </p>
+        </InfoButton>
+      </div>
+      <div
+          class="
+          flex
+          ml-3
+          md:ml-0
+          justify-start
+          items-center
+          mt-6
+          sm:space-x-2
+          md:space-x-4
+        "
+      >
+        <SwitchButton
+            label="Are you in your second fiscal year of activity?"
+            v-model="secondYear"
+            :key="secondYearKey"
+        />
+        <InfoButton
+            link="https://www.cgd.pt/Site/Saldo-Positivo/leis-e-impostos/Pages/irs-trabalhadores-independentes.aspx"
+        >
+          <p class="text-sm w-64 text-center">
+            You get a 25% discount on your taxable income (IRS), on your second year of activity. Click to see more.
+          </p>
+        </InfoButton>
+      </div>
+      <div
+        class="
+          flex
+          ml-3
+          md:ml-0
+          justify-start
+          items-center
+          mt-6
+          sm:space-x-2
+          md:space-x-4
+        "
+      >
+        <SwitchButton
           label="Are you eligible to be in the NHR/RNH?"
-          v-model:value="rnh"
+          v-model="rnh"
         />
         <InfoButton
           link="https://info.portaldasfinancas.gov.pt/pt/apoio_contribuinte/Folhetos_informativos/Documents/Non_habitual_residents_Tax_regime.pdf"
@@ -238,11 +289,15 @@ const {
   grossIncome,
   expenses,
   firstYear,
+  secondYear,
+  ssFirstYear,
   rnh,
   rnhTax,
 } = storeToRefs(useTaxesStore());
 
 const store = useTaxesStore();
+const firstYearKey = ref(0);
+const secondYearKey = ref(0);
 
 // frequency
 const setFrequency = (frequencyChoice: string) => {
@@ -258,9 +313,29 @@ watch(
   () => ssDiscountPosition.value,
   (newPosition) => {
     store.setSsDiscount(ssDiscountChoices[newPosition]);
-  }
+  },
 );
 const ssDiscountDisplay = computed(() => {
   return `${store.ssDiscount > 0 ? "+" : ""}${store.ssDiscount * 100}%`;
 });
+
+// Automatically switch first and second year
+watch(
+    () => firstYear.value,
+    (value) => {
+      if(value === true) {
+        secondYear.value = false;
+        secondYearKey.value++;
+      }
+    },
+);
+watch(
+    () => secondYear.value,
+    (value) => {
+      if(value === true) {
+        firstYear.value = false;
+        firstYearKey.value++;
+      }
+    },
+);
 </script>

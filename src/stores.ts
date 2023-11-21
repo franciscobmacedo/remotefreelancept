@@ -23,6 +23,8 @@ interface TaxesState {
   rnh: boolean;
   rnhTax: number;
   firstYear: boolean;
+  secondYear: boolean;
+  ssFirstYear: boolean;
 }
 const useTaxesStore = defineStore({
   id: "taxes",
@@ -52,6 +54,8 @@ const useTaxesStore = defineStore({
     rnh: false,
     rnhTax: 0.2,
     firstYear: false,
+    secondYear: false,
+    ssFirstYear: false,
     colors: {
       netIncome: "#76c479",
       irs: "#ff6384",
@@ -93,7 +97,7 @@ const useTaxesStore = defineStore({
       return result;
     },
     ssPay() {
-      if (this.firstYear) {
+      if (this.ssFirstYear) {
         return {
           year: 0,
           month: 0,
@@ -101,17 +105,18 @@ const useTaxesStore = defineStore({
         };
       }
       const monthSS =
-        this.ssTax *
-        Math.min(
+        this.ssTax
+        * Math.min(
           SS_MAX_MONTH_INCOME,
-          this.grossIncome.month * 0.7 * (1 + this.ssDiscount)
-        );
+          this.grossIncome.month * 0.7)
+        * (1 + this.ssDiscount);
       const yearSS =
-        this.ssTax *
-        Math.min(
-          SS_MAX_MONTH_INCOME * 12,
-          this.grossIncome.year * 0.7 * (1 + this.ssDiscount)
-        );
+        this.ssTax
+        * Math.min(
+          SS_MAX_MONTH_INCOME,
+          this.grossIncome.month * 0.7)
+        * (1 + this.ssDiscount)
+        * 12;
       return {
         year: Math.max(yearSS, 20 * 12),
         month: Math.max(monthSS, 20),
@@ -148,9 +153,9 @@ const useTaxesStore = defineStore({
             ? this.expensesNeeded - this.expenses
             : 0;
 
-        return grossIncome * 0.75 + expensesMissing;
+        return grossIncome * (this.firstYear ? 0.375 : this.secondYear ? 0.5625 :   0.75) + expensesMissing;
       }
-      return grossIncome * 0.9;
+      return grossIncome * (this.firstYear ? 0.45 : this.secondYear ? 0.675 :   0.9);
     },
     taxRank(): TaxRank {
       return this.taxRanks.filter((taxRank: TaxRank, index: number) => {
