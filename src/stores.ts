@@ -105,16 +105,17 @@ const useTaxesStore = defineStore({
         };
       }
       const monthSS =
-        this.ssTax *
-        Math.min(
+        this.ssTax
+        * Math.min(
           SS_MAX_MONTH_INCOME,
-          this.grossIncome.month * 0.7 * (1 + this.ssDiscount)
-        );
+          this.grossIncome.month * 0.7)
+        * (1 + this.ssDiscount);
       const yearSS =
-        this.ssTax *
-        Math.min(
+        this.ssTax
+        * Math.min(
           SS_MAX_MONTH_INCOME * 12,
           this.grossIncome.year * 0.7 * (1 + this.ssDiscount)
+          * (1 + this.ssDiscount)
         );
       return {
         year: Math.max(yearSS, 20 * 12),
