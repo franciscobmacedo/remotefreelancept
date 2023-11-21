@@ -96,6 +96,5 @@ defineProps({
 const updateValue = (event: Event) => {
   const target = event.target as HTMLInputElement;
   emits("update:modelValue", target.checked);
-  emits("input", target.checked);
 };
 </script>

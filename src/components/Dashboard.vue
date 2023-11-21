@@ -40,7 +40,7 @@
         <AdjustCounter v-model:value="nrMonthsDisplay" :min="1" unit="months" />
         <InfoButton>
           <p class="text-sm w-64 text-center">
-            In a portugues company, you can get payed 2 extra months per year
+            In a portuguese company, you can get payed 2 extra months per year
             (for holidays and christmas). If you want to compare your remote
             salary with some local company, you should change this field to 14
             months.
@@ -68,6 +68,31 @@
         </InfoButton>
       </div>
       <div
+          class="
+          flex
+          ml-3
+          md:ml-0
+          justify-start
+          items-center
+          mt-6
+          sm:space-x-2
+          md:space-x-4
+        "
+      >
+        <SwitchButton
+            label="Are you within the first 12 months of starting your activity?"
+            v-model="ssFirstYear"
+        />
+        <InfoButton
+            link="https://www.montepio.org/ei/pessoal/emprego-e-formacao/seguranca-social-guia-com-as-regras-para-os-trabalhadores-independentes#"
+        >
+          <p class="text-sm w-64 text-center">
+            You are exempt from paying social security in your first 12 months
+            as a freelancer in Portugal. Click to see more.
+          </p>
+        </InfoButton>
+      </div>
+      <div
         class="
           flex
           ml-3
@@ -80,16 +105,16 @@
         "
       >
         <SwitchButton
-          label="Are you within the first 12 months of starting your activity?"
+          label="Are you in your first fiscal year of activity?"
           v-model="firstYear"
           :key="firstYearKey"
         />
         <InfoButton
-          link="https://www.montepio.org/ei/pessoal/emprego-e-formacao/seguranca-social-guia-com-as-regras-para-os-trabalhadores-independentes#"
+          link="https://www.cgd.pt/Site/Saldo-Positivo/leis-e-impostos/Pages/irs-trabalhadores-independentes.aspx"
         >
           <p class="text-sm w-64 text-center">
-            You are exempt from paying social security in your first 12 months
-            as a freelancer in Portugal. Click to see more.
+            You get a 50% discount on your taxable income (IRS), on your first year of activity.
+            This could be less than 12 months if you start your activity after the month January. Click to see more.
           </p>
         </InfoButton>
       </div>
@@ -106,7 +131,7 @@
         "
       >
         <SwitchButton
-            label="Are you within your first 24 months of starting your activity?"
+            label="Are you in your second fiscal year of activity?"
             v-model="secondYear"
             :key="secondYearKey"
         />
@@ -114,7 +139,7 @@
             link="https://www.cgd.pt/Site/Saldo-Positivo/leis-e-impostos/Pages/irs-trabalhadores-independentes.aspx"
         >
           <p class="text-sm w-64 text-center">
-            You get a 50% discount on your IRS tax in your first 12 months, and a 25% discount on your first 24 months. Click to see more.
+            You get a 25% discount on your taxable income (IRS), on your second year of activity. Click to see more.
           </p>
         </InfoButton>
       </div>
@@ -265,6 +290,7 @@ const {
   expenses,
   firstYear,
   secondYear,
+  ssFirstYear,
   rnh,
   rnhTax,
 } = storeToRefs(useTaxesStore());

@@ -24,6 +24,7 @@ interface TaxesState {
   rnhTax: number;
   firstYear: boolean;
   secondYear: boolean;
+  ssFirstYear: boolean;
 }
 const useTaxesStore = defineStore({
   id: "taxes",
@@ -54,6 +55,7 @@ const useTaxesStore = defineStore({
     rnhTax: 0.2,
     firstYear: false,
     secondYear: false,
+    ssFirstYear: false,
     colors: {
       netIncome: "#76c479",
       irs: "#ff6384",
@@ -95,7 +97,7 @@ const useTaxesStore = defineStore({
       return result;
     },
     ssPay() {
-      if (this.firstYear) {
+      if (this.ssFirstYear) {
         return {
           year: 0,
           month: 0,
