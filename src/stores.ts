@@ -147,15 +147,12 @@ const useTaxesStore = defineStore({
     },
     taxableIncome() {
       const grossIncome = this.grossIncome.year;
-      if (this.hasExpenses || this.expensesNeeded <= 0) {
-        const expensesMissing =
-          this.expensesNeeded > this.expenses
-            ? this.expensesNeeded - this.expenses
-            : 0;
+      const expensesMissing =
+        this.expensesNeeded > this.expenses
+          ? this.expensesNeeded - this.expenses
+          : 0;
 
-        return grossIncome * (this.firstYear ? 0.375 : this.secondYear ? 0.5625 :   0.75) + expensesMissing;
-      }
-      return grossIncome * (this.firstYear ? 0.45 : this.secondYear ? 0.675 :   0.9);
+      return grossIncome * (this.firstYear ? 0.375 : this.secondYear ? 0.5625 : 0.75) + expensesMissing;
     },
     taxRank(): TaxRank {
       return this.taxRanks.filter((taxRank: TaxRank, index: number) => {
