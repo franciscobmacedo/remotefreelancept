@@ -5,7 +5,7 @@ import { asCurrency } from "@/utils.js";
 const YEAR_BUSINESS_DAYS = 248;
 const MONTH_BUSINESS_DAYS = 22;
 const SS_MAX_MONTH_INCOME = 5765.16;
-type TaxRankYear = 2023 | 2024;
+export const SUPPORTED_TAX_RANK_YEARS = [2023, 2024];
 
 interface TaxesState {
   income: number | null;
@@ -19,8 +19,8 @@ interface TaxesState {
   maxExpensesTax: number;
   expenses: number;
   ssDiscount: number;
-  currentTaxRankYear: TaxRankYear;
-  taxRanks: { [K in TaxRankYear]: TaxRank[] };
+  currentTaxRankYear: (typeof SUPPORTED_TAX_RANK_YEARS)[number];
+  taxRanks: { [K in (typeof SUPPORTED_TAX_RANK_YEARS)[number]]: TaxRank[] };
   colors: Colors;
   rnh: boolean;
   rnhTax: number;
@@ -193,6 +193,9 @@ const useTaxesStore = defineStore({
     getTaxRanks(): TaxRank[] {
       return this.taxRanks[this.currentTaxRankYear];
     },
+    getCurrentTaxRankYear(): (typeof SUPPORTED_TAX_RANK_YEARS)[number] {
+      return this.currentTaxRankYear;
+    },
     taxRankAvg(): TaxRank {
       if (this.taxRank === undefined || this.taxRank.id === 1) {
         return this.taxRank;
@@ -292,8 +295,10 @@ const useTaxesStore = defineStore({
     setDisplayFrequency(frequency: FrequencyChoices) {
       this.displayFrequency = frequency;
     },
-    setCurrentTaxRankYear(taxRankYear: TaxRankYear) {
-      this.taxRankYear = taxRankYear;
+    setCurrentTaxRankYear(
+      taxRankYear: (typeof SUPPORTED_TAX_RANK_YEARS)[number]
+    ) {
+      this.currentTaxRankYear = taxRankYear;
     },
   },
 });
