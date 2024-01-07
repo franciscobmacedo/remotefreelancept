@@ -42,7 +42,7 @@
             <span class="text-xs ml-3">
               tax rank level
               <span class="text-red-400">{{ taxRank.id }}</span> (out of
-              {{ taxRanks.length }})
+              {{ getTaxRanks.length }})
             </span>
             <InfoButton @onClick="showTaxRanksTable = true">
               <p class="text-xs xl:w-32 text-center">Show tax ranks table</p>
@@ -148,7 +148,7 @@ const {
   irsPay,
   taxIncomeNormal,
   taxIncomeAvg,
-  taxRanks,
+  getTaxRanks,
 } = storeToRefs(useTaxesStore());
 
 const decimalCases = computed(() => {

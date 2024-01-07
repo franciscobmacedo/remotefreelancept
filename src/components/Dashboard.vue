@@ -67,6 +67,21 @@
           </p>
         </InfoButton>
       </div>
+      <div class="flex ml-3 md:ml-0 justify-start items-center mt-2 space-x-4">
+        <p class="text-sm w-fit">IRS tax rank year</p>
+        <div class="w-16">
+          <DropDown
+            :choices="SUPPORTED_TAX_RANK_YEARS"
+            @change="changeCurrentTaxRankYear"
+            :value="getCurrentTaxRankYear.toString()"
+          />
+        </div>
+        <InfoButton>
+          <p class="text-sm w-64 text-center">
+            IRS tax rank year that is being simulated
+          </p>
+        </InfoButton>
+      </div>
       <div
           class="
           flex
@@ -269,13 +284,14 @@ import { storeToRefs } from "pinia";
 
 import { asCurrency } from "@/utils.js";
 import { FrequencyChoices } from "@/typings";
-import { useTaxesStore } from "@/stores";
+import { SUPPORTED_TAX_RANK_YEARS, useTaxesStore } from "@/stores";
 
 import Chart from "@/components/Chart.vue";
 import AdjustCounter from "@/components/AdjustCounter.vue";
 import Table from "@/components/Table.vue";
 import InfoButton from "@/components/InfoButton.vue";
 import SwitchButton from "@/components/SwitchButton.vue";
+import DropDown from "@/components/DropDown.vue";
 
 // store
 const {
@@ -293,11 +309,19 @@ const {
   ssFirstYear,
   rnh,
   rnhTax,
+  getCurrentTaxRankYear,
 } = storeToRefs(useTaxesStore());
 
 const store = useTaxesStore();
 const firstYearKey = ref(0);
 const secondYearKey = ref(0);
+
+//current TaxRank year
+const changeCurrentTaxRankYear = (
+  taxRank: (typeof SUPPORTED_TAX_RANK_YEARS)[number]
+) => {
+  store.setCurrentTaxRankYear(taxRank);
+};
 
 // frequency
 const setFrequency = (frequencyChoice: string) => {

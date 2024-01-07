@@ -78,7 +78,7 @@
             </thead>
             <tbody>
               <tr
-                v-for="item in taxRanks"
+                v-for="item in getTaxRanks"
                 :key="item.id"
                 :class="{ 'bg-neutral-300': item.id === taxRank.id }"
               >
@@ -112,7 +112,7 @@ import { computed } from "vue";
 import { storeToRefs } from "pinia";
 import { XMarkIcon } from "@heroicons/vue/24/outline";
 // store
-const { taxRanks, taxRank, taxableIncome } = storeToRefs(useTaxesStore());
+const { getTaxRanks, taxRank, taxableIncome } = storeToRefs(useTaxesStore());
 
 // taxRank
 const taxRankMinText = computed(() => {
