@@ -169,9 +169,9 @@ const useTaxesStore = defineStore({
             ? this.expensesNeeded - this.expenses
             : 0;
 
-          return grossIncome * (this.firstYear ? 0.375 : this.secondYear ? 0.5625 : 0.75) + expensesMissing;
+        return grossIncome * (this.firstYear ? 0.375 : this.secondYear ? 0.5625 :   0.75) + expensesMissing;
       }
-      return grossIncome * (this.firstYear ? 0.45 : this.secondYear ? 0.675 : 0.9);
+      return grossIncome * (this.firstYear ? 0.45 : this.secondYear ? 0.675 :   0.9);
     },
     taxRank(): TaxRank {
       return this.taxRanks[this.currentTaxRankYear].filter((taxRank: TaxRank, index: number) => {
@@ -199,8 +199,8 @@ const useTaxesStore = defineStore({
       return this.taxRanks[this.currentTaxRankYear].filter((taxRank: TaxRank) => taxRank.id == avgID)[0];
     },
     taxIncomeAvg() {
-      if (this.rnh) {
-        return null;
+      if (this.rnh){
+        return null
       }
       if (this.taxRank.id <= 1) {
         return this.taxableIncome;
@@ -208,8 +208,8 @@ const useTaxesStore = defineStore({
       return this.taxRankAvg.max;
     },
     taxIncomeNormal() {
-      if (this.rnh) {
-        return null;
+      if (this.rnh){
+        return null
       }
       if (this.taxRank.id <= 1) {
         return 0;
