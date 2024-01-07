@@ -3,10 +3,32 @@
     id="defaultModal"
     tabindex="-1"
     aria-hidden="true"
-    class="fixed top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] md:h-full"
+    class="
+      fixed
+      top-0
+      left-0
+      right-0
+      z-50
+      w-full
+      p-4
+      overflow-x-hidden overflow-y-auto
+      md:inset-0
+      h-[calc(100%-1rem)]
+      md:h-full
+    "
   >
     <div
-      class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full h-full max-w-2xl md:h-auto"
+      class="
+        absolute
+        top-1/2
+        left-1/2
+        transform
+        -translate-x-1/2 -translate-y-1/2
+        w-full
+        h-full
+        max-w-2xl
+        md:h-auto
+      "
     >
       <!-- Modal content -->
       <div class="relative bg-neutral-200 rounded-lg shadow">
@@ -15,7 +37,17 @@
           <h3 class="text-xl font-semibold text-gray-900">Tax Ranks</h3>
           <button
             type="button"
-            class="text-gray-400 bg-transparent hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
+            class="
+              text-gray-400
+              bg-transparent
+              hover:text-gray-900
+              rounded-lg
+              text-sm
+              p-1.5
+              ml-auto
+              inline-flex
+              items-center
+            "
             data-modal-hide="defaultModal"
             @click="$emit('close')"
           >
