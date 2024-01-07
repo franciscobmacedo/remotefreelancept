@@ -345,21 +345,21 @@ const ssDiscountDisplay = computed(() => {
 
 // Automatically switch first and second year
 watch(
-  () => firstYear.value,
-  (value) => {
-    if (value === true) {
-      secondYear.value = false;
-      secondYearKey.value++;
-    }
-  }
+   () => firstYear.value,
+   (value) => {
+     if(value === true) {
+       secondYear.value = false;
+       secondYearKey.value++;
+     }
+   }
 );
 watch(
-  () => secondYear.value,
-  (value) => {
-    if (value === true) {
-      firstYear.value = false;
-      firstYearKey.value++;
-    }
-  }
+   () => secondYear.value,
+   (value) => {
+     if(value === true) {
+       firstYear.value = false;
+       firstYearKey.value++;
+     }
+   }
 );
 </script>

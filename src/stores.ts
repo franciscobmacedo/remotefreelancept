@@ -121,14 +121,18 @@ const useTaxesStore = defineStore({
         };
       }
       const monthSS =
-        this.ssTax *
-        Math.min(SS_MAX_MONTH_INCOME, this.grossIncome.month * 0.7) *
-        (1 + this.ssDiscount);
+        this.ssTax
+        * Math.min(
+          SS_MAX_MONTH_INCOME,
+          this.grossIncome.month * 0.7)
+        * (1 + this.ssDiscount);
       const yearSS =
-        this.ssTax *
-        Math.min(SS_MAX_MONTH_INCOME, this.grossIncome.month * 0.7) *
-        (1 + this.ssDiscount) *
-        12;
+        this.ssTax
+        * Math.min(
+          SS_MAX_MONTH_INCOME,
+          this.grossIncome.month * 0.7)
+        * (1 + this.ssDiscount)
+        * 12;
       return {
         year: Math.max(yearSS, 20 * 12),
         month: Math.max(monthSS, 20),
@@ -165,30 +169,21 @@ const useTaxesStore = defineStore({
             ? this.expensesNeeded - this.expenses
             : 0;
 
-        return (
-          grossIncome *
-            (this.firstYear ? 0.375 : this.secondYear ? 0.5625 : 0.75) +
-          expensesMissing
-        );
+          return grossIncome * (this.firstYear ? 0.375 : this.secondYear ? 0.5625 : 0.75) + expensesMissing;
       }
-      return (
-        grossIncome * (this.firstYear ? 0.45 : this.secondYear ? 0.675 : 0.9)
-      );
+      return grossIncome * (this.firstYear ? 0.45 : this.secondYear ? 0.675 : 0.9);
     },
     taxRank(): TaxRank {
-      return this.taxRanks[this.currentTaxRankYear].filter(
-        (taxRank: TaxRank, index: number) => {
-          const isLastRank =
-            index === this.taxRanks[this.currentTaxRankYear].length - 1;
-          const isBiggerThanMin = taxRank.min < this.taxableIncome;
-          const isSmallerThanMax = taxRank.max >= this.taxableIncome;
+      return this.taxRanks[this.currentTaxRankYear].filter((taxRank: TaxRank, index: number) => {
+        const isLastRank = index === this.taxRanks[this.currentTaxRankYear].length - 1;
+        const isBiggerThanMin = taxRank.min < this.taxableIncome;
+        const isSmallerThanMax = taxRank.max >= this.taxableIncome;
 
-          if (isLastRank && isBiggerThanMin) {
-            return taxRank;
-          }
-          return isBiggerThanMin && isSmallerThanMax;
+        if (isLastRank && isBiggerThanMin) {
+          return taxRank;
         }
-      )[0];
+        return isBiggerThanMin && isSmallerThanMax;
+      })[0];
     },
     getTaxRanks(): TaxRank[] {
       return this.taxRanks[this.currentTaxRankYear];
@@ -201,9 +196,7 @@ const useTaxesStore = defineStore({
         return this.taxRank;
       }
       const avgID = this.taxRank.id - 1;
-      return this.taxRanks[this.currentTaxRankYear].filter(
-        (taxRank: TaxRank) => taxRank.id == avgID
-      )[0];
+      return this.taxRanks[this.currentTaxRankYear].filter((taxRank: TaxRank) => taxRank.id == avgID)[0];
     },
     taxIncomeAvg() {
       if (this.rnh) {
