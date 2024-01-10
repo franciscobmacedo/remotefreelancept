@@ -9,7 +9,6 @@ export default defineConfig({
   test: {
     globals: true,
     environment: "jsdom",
-    setupFiles: ['./src/testSetup.ts'],
   },
   root: ".", //Define the root
   resolve: {

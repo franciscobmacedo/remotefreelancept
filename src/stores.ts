@@ -2,9 +2,9 @@ import { defineStore } from "pinia";
 import { FrequencyChoices, GrossIncome, TaxRank, Colors } from "@/typings";
 import { asCurrency } from "@/utils.js";
 
-const YEAR_BUSINESS_DAYS = 248;
-const MONTH_BUSINESS_DAYS = 22;
-const SS_MAX_MONTH_INCOME = 5765.16;
+export const YEAR_BUSINESS_DAYS = 248;
+export const MONTH_BUSINESS_DAYS = 22;
+export const SS_MAX_MONTH_INCOME = 5765.16;
 export const SUPPORTED_TAX_RANK_YEARS = [2023, 2024];
 
 interface TaxesState {
