@@ -3,7 +3,7 @@
 
 Simulate your earnings (year, month or day) and breakdown how much taxes you're going to pay as a freelancer working from Portugal.
 
-live at https://franciscobmacedo.github.io/remotefreelancept/
+live at https://freelancept.fmacedo.com/
 
 ![preview](img/preview.gif)
 
