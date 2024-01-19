@@ -1,9 +1,6 @@
 name: Deploy static content to Pages
 
-on:
-  push:
-    branches: ['main']
-  workflow_dispatch:
+on: [push]
 
 permissions:
   contents: read
@@ -32,6 +29,7 @@ jobs:
 
   deploy:
     needs: test
+    if: github.ref == 'refs/heads/main'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
