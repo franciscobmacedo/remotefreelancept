@@ -1,4 +1,4 @@
-name: Deploy static content to Pages
+name: tests and deploy
 
 on: [push]
 
@@ -8,11 +8,11 @@ permissions:
   id-token: write
 
 concurrency:
-  group: 'pages'
+  group: "pages"
   cancel-in-progress: true
 
 jobs:
-  test:
+  vitest:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -21,14 +21,27 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
-          cache: 'npm'
+          cache: "npm"
       - name: Install dependencies
         run: npm install
       - name: Run tests
         run: npm test
 
+  cypress-run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      # Install npm dependencies, cache them correctly
+      # and run all Cypress tests
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
+        with:
+          start: npm run cy:e2e:run
   deploy:
-    needs: test
+    needs:
+      - vitest
+      - cypress-run
     if: github.ref == 'refs/heads/main'
     environment:
       name: github-pages
@@ -41,7 +54,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
-          cache: 'npm'
+          cache: "npm"
       - name: Install dependencies
         run: npm install
       - name: Build
@@ -51,7 +64,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
-          path: './dist'
+          path: "./dist"
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v1

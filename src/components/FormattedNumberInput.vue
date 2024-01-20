@@ -1,8 +1,5 @@
 <template>
-  <input
-    v-model="internalValue"
-    type="text"
-    class="
+  <input v-model="internalValue" type="text" class="
       z-0
       inline-flex
       w-full
@@ -13,10 +10,7 @@
       border-b-[1px] border-neutral-600
       relative
       focus:outline-none focus:border-primary
-    "
-    :class="class"
-    :placeholder="placeholder"
-  />
+    " :class="class" :placeholder="placeholder" />
 </template>
 <script setup lang="ts">
 import { computed } from "vue";
@@ -42,16 +36,17 @@ const props = defineProps({
 const internalValue = computed({
   get() {
     const _value = props.value;
+    console.log('get internalValue', _value)
     return _value === null ||
       isNaN(_value) ||
-      _value === 0 ||
       _value === undefined
       ? null
       : spacedNumber(_value);
   },
   set(newValue) {
     const _newValue = newValue.replace(/\D/g, "");
-    emits("update:value", _newValue ? reverseCurrency(_newValue) : 0);
+    console.log('set internalValue', _newValue)
+    emits("update:value", reverseCurrency(_newValue));
   },
 });
 </script>

@@ -21,5 +21,5 @@ export const asPercentage = (num: number) => {
 
 export const reverseCurrency = (num: string) => {
   const result = parseFloat(num.replaceAll(" ", "").replaceAll("€", ""));
-  return result <= 0 ? NaN : result;
+  return isNaN(result) ? 0 : result;
 };

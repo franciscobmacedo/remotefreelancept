@@ -1,9 +1,5 @@
 <template>
-  <div
-    id="defaultModal"
-    tabindex="-1"
-    aria-hidden="true"
-    class="
+  <div id="defaultModal" tabindex="-1" aria-hidden="true" class="
       fixed
       top-0
       left-0
@@ -15,10 +11,8 @@
       md:inset-0
       h-[calc(100%-1rem)]
       md:h-full
-    "
-  >
-    <div
-      class="
+    ">
+    <div class="
         absolute
         top-1/2
         left-1/2
@@ -28,16 +22,13 @@
         h-full
         max-w-2xl
         md:h-auto
-      "
-    >
+      " v-click-outside="close">
       <!-- Modal content -->
-      <div class="relative bg-neutral-200 rounded-lg shadow">
+      <div class="relative bg-neutral-200 rounded-lg shadow-lg">
         <!-- Modal header -->
         <div class="flex items-start justify-between p-4 border-b rounded-t">
           <h3 class="text-xl font-semibold text-gray-900">Tax Ranks</h3>
-          <button
-            type="button"
-            class="
+          <button type="button" class="
               text-gray-400
               bg-transparent
               hover:text-gray-900
@@ -47,10 +38,7 @@
               ml-auto
               inline-flex
               items-center
-            "
-            data-modal-hide="defaultModal"
-            @click="$emit('close')"
-          >
+            " data-modal-hide="defaultModal" @click="close">
             <XMarkIcon class="w-5 h-5" />
             <span class="sr-only">Close modal</span>
           </button>
@@ -60,11 +48,9 @@
         <div class="p-6 space-y-6">
           Your taxable income (<span class="text-income">{{
             asCurrency(taxableIncome)
-          }}</span
-          >) is in level
+          }}</span>) is in level
           <span class="text-red-500">{{ taxRank.id }}</span>
-          <span class="text-sm" v-html="taxRankMinText"></span
-          ><span class="text-sm" v-html="taxRankMaxText"></span>.
+          <span class="text-sm" v-html="taxRankMinText"></span><span class="text-sm" v-html="taxRankMaxText"></span>.
 
           <table class="w-full text-sm text-left text-gray-700 table-auto">
             <thead class="text-xs text-gray-700 uppercase border-b-2">
@@ -77,15 +63,8 @@
               </tr>
             </thead>
             <tbody>
-              <tr
-                v-for="item in getTaxRanks"
-                :key="item.id"
-                :class="{ 'bg-neutral-300': item.id === taxRank.id }"
-              >
-                <td
-                  class="py-1 text-center"
-                  :class="{ 'text-red-500': item.id === taxRank.id }"
-                >
+              <tr v-for="item in getTaxRanks" :key="item.id" :class="{ 'bg-neutral-300': item.id === taxRank.id }">
+                <td class="py-1 text-center" :class="{ 'text-red-500': item.id === taxRank.id }">
                   {{ item.id }}
                 </td>
                 <td class="py-1 text-center">{{ asCurrency(item.min) }}</td>
@@ -106,7 +85,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useTaxesStore } from "@/stores";
+import { useTaxesStore } from "@/store";
 import { asCurrency, asPercentage } from "@/utils";
 import { computed } from "vue";
 import { storeToRefs } from "pinia";
@@ -114,20 +93,25 @@ import { XMarkIcon } from "@heroicons/vue/24/outline";
 // store
 const { getTaxRanks, taxRank, taxableIncome } = storeToRefs(useTaxesStore());
 
+const emits = defineEmits(["close"]);
+
 // taxRank
 const taxRankMinText = computed(() => {
   return taxRank.value.min
     ? ` (bigger than <span class="text-neutral-600">${asCurrency(
-        taxRank.value.min
-      )}</span>`
+      taxRank.value.min
+    )}</span>`
     : null;
 });
 const taxRankMaxText = computed(() => {
   const preText = taxRankMinText.value ? " and" : " (";
   return taxRank.value.max
     ? `${preText} lower than <span class="text-neutral-600">${asCurrency(
-        taxRank.value.max
-      )})</span>`
+      taxRank.value.max
+    )})</span>`
     : ")";
 });
+const close = () => {
+  emits("close");
+};
 </script>

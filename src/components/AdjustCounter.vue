@@ -1,7 +1,6 @@
 <template>
   <div class="flex justify-start items-center">
-    <button
-      class="
+    <button class="
         bg-neutral-300
         text-neutral-600
         rounded-full
@@ -10,23 +9,16 @@
         py-1
         hover:bg-neutral-400 hover:text-neutral-100
         disabled:bg-neutral-200 disabled:text-neutral-400
-      "
-      @click="decreaseValue"
-      :disabled="counter <= min"
-    >
+      " @click="decreaseValue" :disabled="counter <= min">
       <MinusIcon class="w-3" />
     </button>
     <span type="number" class="text-center py-2 w-20">
       <slot>
-        <FormattedNumberInput
-          v-model:value="counterDisplay"
-          class="text-center"
-        />
+        <FormattedNumberInput v-model:value="counterDisplay" class="text-center" />
       </slot>
     </span>
     <span class="mr-2 text-neutral-500 text-xs" v-if="unit">{{ unit }}</span>
-    <button
-      class="
+    <button class="
         bg-neutral-300
         text-neutral-600
         rounded-full
@@ -35,10 +27,7 @@
         py-1
         hover:bg-neutral-400 hover:text-neutral-100
         disabled:bg-neutral-200 disabled:text-neutral-400
-      "
-      @click="increaseValue"
-      :disabled="counter >= max!"
-    >
+      " @click="increaseValue" :disabled="counter >= max!">
       <PlusIcon class="w-3" />
     </button>
   </div>
@@ -94,15 +83,19 @@ const decreaseValue = () => {
 const counter = ref(props.value);
 const counterDisplay = computed({
   get() {
+    console.log('get counterDisplay in adjustcounter', counter.value)
     return counter.value;
   },
   set(value) {
     let _value = value;
+    console.log('set counterDisplay in adjustcounter', _value)
     if (props.max && _value > props.max) {
       _value = props.max;
-    } else if (props.min && _value < props.min) {
+    } else if (props.min && (_value < props.min || isNaN(_value))) {
       _value = props.min;
     }
+    console.log('value2', _value)
+
     counter.value = _value;
     emits("update:value", counter.value);
   },

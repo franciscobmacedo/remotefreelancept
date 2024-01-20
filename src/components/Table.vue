@@ -130,7 +130,7 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import { storeToRefs } from "pinia";
-import { useTaxesStore } from "@/stores";
+import { useTaxesStore } from "@/store";
 import { asCurrency } from "@/utils.js";
 import InfoButton from "@/components/InfoButton.vue";
 import TaxRanksDialog from "./TaxRanksDialog.vue";

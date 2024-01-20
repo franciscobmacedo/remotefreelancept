@@ -7,7 +7,7 @@ import {
   SUPPORTED_TAX_RANK_YEARS,
   YEAR_BUSINESS_DAYS,
   useTaxesStore,
-} from "@/stores";
+} from "@/store";
 import { FrequencyChoices } from "@/typings";
 import { asCurrency } from "@/utils";
 

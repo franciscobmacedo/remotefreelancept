@@ -1,8 +1,7 @@
 <template>
   <div class="flex justify-center flex-wrap">
     <div>
-      <input
-        class="
+      <input class="
           mt-[0.3rem]
           mr-2
           h-3.5
@@ -63,17 +62,9 @@
           dark:after:bg-neutral-500
           dark:checked:bg-primary
           dark:checked:after:bg-primary
-        "
-        type="checkbox"
-        role="switch"
-        id="flexSwitchCheckDefault"
-        :value="modelValue"
-        @input="updateValue($event)"
-      />
-      <label
-        class="text-xs md:text-sm hover:cursor-pointer "
-        for="flexSwitchCheckDefault"
-      >
+        " type="checkbox" role="switch" id="flexSwitchCheckDefault" :value="modelValue" @input="updateValue($event)"
+        :checked="modelValue" />
+      <label class="text-xs md:text-sm hover:cursor-pointer " for="flexSwitchCheckDefault">
         {{ label }}
       </label>
     </div>
@@ -81,7 +72,7 @@
 </template>
 <script lang="ts" setup>
 const emits = defineEmits(["update:modelValue", "input"]);
-defineProps({
+const props = defineProps({
   label: {
     type: String,
     required: false,
