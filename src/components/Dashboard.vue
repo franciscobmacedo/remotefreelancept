@@ -284,7 +284,7 @@ import { storeToRefs } from "pinia";
 
 import { asCurrency } from "@/utils.js";
 import { FrequencyChoices } from "@/typings";
-import { SUPPORTED_TAX_RANK_YEARS, useTaxesStore } from "@/stores";
+import { SUPPORTED_TAX_RANK_YEARS, useTaxesStore } from "@/store";
 
 import Chart from "@/components/Chart.vue";
 import AdjustCounter from "@/components/AdjustCounter.vue";

@@ -80,7 +80,7 @@
               target="_blank"
               href="https://github.com/franciscobmacedo/remotefreelancept"
             >
-              <img src="@/assets/github.png" />
+              <img src="@/assets/github-mark.svg" />
             </a>
           </div>
         </div>
@@ -90,7 +90,7 @@
 </template>
 <script lang="ts" setup>
 import { storeToRefs } from "pinia";
-import { useTaxesStore } from "@/stores";
+import { useTaxesStore } from "@/store";
 import { useBreakpoint } from "@/composables/breakpoints";
 import { XMarkIcon } from "@heroicons/vue/24/outline";
 import { ref } from "vue";

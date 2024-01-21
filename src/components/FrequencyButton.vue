@@ -8,7 +8,7 @@
 <script setup lang="ts">
 import { FrequencyChoices } from "@/typings";
 import { storeToRefs } from "pinia";
-import { useTaxesStore } from "@/stores";
+import { useTaxesStore } from "@/store";
 
 import DropDown from "@/components/DropDown.vue";
 

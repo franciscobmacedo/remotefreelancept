@@ -141,7 +141,7 @@
 import { ref, watch, computed } from "vue";
 import { CurrencyEuroIcon, ChevronDownIcon } from "@heroicons/vue/24/outline";
 import { storeToRefs } from "pinia";
-import { useTaxesStore } from "@/stores";
+import { useTaxesStore } from "@/store";
 import { useBreakpoint } from "@/composables/breakpoints";
 import CurrencyButton from "@/components/CurrencyButton.vue";
 import FormattedNumberInput from "@/components/FormattedNumberInput.vue";

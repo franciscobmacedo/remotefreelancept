@@ -8,7 +8,7 @@
 </template>
 <script lang="ts" setup>
 import { asCurrency } from "@/utils.js";
-import { useTaxesStore } from "@/stores";
+import { useTaxesStore } from "@/store";
 
 const store = useTaxesStore();
 defineProps({ value: { type: Number } });
