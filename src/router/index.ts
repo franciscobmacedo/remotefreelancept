@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from "vue-router";
+import { createRouter, createWebHashHistory } from "vue-router";
 import Simulator from "@/views/SimulatorView.vue";
 import About from "@/views/AboutView.vue";
 
@@ -16,7 +16,7 @@ const routes = [
 ];
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHashHistory(),
   routes,
   linkActiveClass: "hover:text-neutral-600 decoration-neutral-600",
   linkExactActiveClass: "underline underline-offset-8",
