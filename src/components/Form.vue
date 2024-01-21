@@ -159,7 +159,7 @@
 </template>
 <script setup lang="ts">
 import { ref, watch, computed } from "vue";
-import { CurrencyEuroIcon, ChevronDownIcon } from "@heroicons/vue/24/outline";
+import { CurrencyEuroIcon, ChevronDownIcon, ArrowPathIcon, ShareIcon } from "@heroicons/vue/24/outline";
 import { storeToRefs } from "pinia";
 import { useTaxesStore } from "@/store";
 import { useBreakpoint } from "@/composables/breakpoints";
