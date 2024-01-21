@@ -21,10 +21,11 @@ const router = createRouter({
   linkActiveClass: "hover:text-neutral-600 decoration-neutral-600",
   linkExactActiveClass: "underline underline-offset-8",
 });
-
-export const updateUrlQuery = (param: string, value: any) => {
+export const updateUrlQuery = (paramValuePair: object) => {
   const queryParams = { ...router.currentRoute.value.query };
-  queryParams[param] = value;
+  for (const [param, value] of Object.entries(paramValuePair)) {
+    queryParams[param] = value;
+  }
   router.push({ query: queryParams });
 };
 

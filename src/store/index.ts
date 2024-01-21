@@ -285,29 +285,29 @@ const useTaxesStore = defineStore({
         this.income = value ? value : 0;
         this.setExpenses(this.expensesNeeded);
       }
-      updateUrlQuery("income", this.income);
+      updateUrlQuery({ income: this.income });
     },
     setSsDiscount(value: number) {
       this.ssDiscount = value;
-      updateUrlQuery("ssDiscount", this.ssDiscount);
+      updateUrlQuery({ ssDiscount: this.ssDiscount });
     },
     setIncomeFrequency(frequency: FrequencyChoices) {
       this.incomeFrequency = frequency;
-      updateUrlQuery("incomeFrequency", this.incomeFrequency);
+      updateUrlQuery({ incomeFrequency: this.incomeFrequency });
     },
     setDisplayFrequency(frequency: FrequencyChoices) {
       this.displayFrequency = frequency;
-      updateUrlQuery("displayFrequency", this.displayFrequency);
+      updateUrlQuery({ displayFrequency: this.displayFrequency });
     },
     setNrMonthsDisplay(nrMonthsDisplay: number) {
       this.nrMonthsDisplay = nrMonthsDisplay;
-      updateUrlQuery("nrMonthsDisplay", this.nrMonthsDisplay);
+      updateUrlQuery({ nrMonthsDisplay: this.nrMonthsDisplay });
     },
     setCurrentTaxRankYear(
       taxRankYear: (typeof SUPPORTED_TAX_RANK_YEARS)[number],
     ) {
       this.currentTaxRankYear = taxRankYear;
-      updateUrlQuery("currentTaxRankYear", this.currentTaxRankYear);
+      updateUrlQuery({ currentTaxRankYear: this.currentTaxRankYear });
     },
     setExpenses(value: number) {
       if (value < 0) {
@@ -315,23 +315,41 @@ const useTaxesStore = defineStore({
       } else {
         this.expenses = value;
       }
-      updateUrlQuery("expenses", this.expenses);
+      updateUrlQuery({ expenses: this.expenses });
     },
     setSsFirstYear(value: boolean) {
       this.ssFirstYear = value;
-      updateUrlQuery("ssFirstYear", this.ssFirstYear);
+      updateUrlQuery({ ssFirstYear: this.ssFirstYear });
     },
     setFirstYear(value: boolean) {
+      console.log("firstYear store", value);
       this.firstYear = value;
-      updateUrlQuery("firstYear", this.firstYear);
+      if (value === true && this.secondYear === true) {
+        this.secondYear = false;
+        updateUrlQuery({
+          firstYear: this.firstYear,
+          secondYear: this.secondYear,
+        });
+      } else {
+        updateUrlQuery({ firstYear: this.firstYear });
+      }
     },
     setSecondYear(value: boolean) {
+      console.log("secondYear store", value);
       this.secondYear = value;
-      updateUrlQuery("secondYear", this.secondYear);
+      if (value === true) {
+        this.firstYear = false;
+        updateUrlQuery({
+          firstYear: this.firstYear,
+          secondYear: this.secondYear,
+        });
+      } else {
+        updateUrlQuery({ secondYear: this.secondYear });
+      }
     },
     setRnh(value: boolean) {
       this.rnh = value;
-      updateUrlQuery("rnh", this.rnh);
+      updateUrlQuery({ rnh: this.rnh });
     },
 
     setParameterFromUrl(
