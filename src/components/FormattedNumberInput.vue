@@ -43,15 +43,15 @@ const internalValue = computed({
   get() {
     const _value = props.value;
     return _value === null ||
-      isNaN(_value) ||
-      _value === 0 ||
+      isNaN(_value)  ||
       _value === undefined
       ? null
       : spacedNumber(_value);
   },
   set(newValue) {
     const _newValue = newValue.replace(/\D/g, "");
-    emits("update:value", _newValue ? reverseCurrency(_newValue) : 0);
+    const result = reverseCurrency(_newValue)
+    emits("update:value", result ? result : 0);
   },
 });
 </script>
