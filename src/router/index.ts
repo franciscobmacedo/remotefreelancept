@@ -22,4 +22,14 @@ const router = createRouter({
   linkExactActiveClass: "underline underline-offset-8",
 });
 
+export const updateUrlQuery = (param: string, value: any) => {
+  const queryParams = { ...router.currentRoute.value.query };
+  queryParams[param] = value;
+  router.push({ query: queryParams });
+};
+
+export const clearUrlQuery = () => {
+  router.push({ query: undefined });
+};
+
 export default router;
