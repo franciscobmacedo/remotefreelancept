@@ -106,7 +106,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useTaxesStore } from "@/stores";
+import { useTaxesStore } from "@/store";
 import { asCurrency, asPercentage } from "@/utils";
 import { computed } from "vue";
 import { storeToRefs } from "pinia";

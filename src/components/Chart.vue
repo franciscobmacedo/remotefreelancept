@@ -25,7 +25,7 @@ import { Chart, registerables } from "chart.js";
 import { storeToRefs } from "pinia";
 import { asCurrency, asPercentage } from "@/utils.js";
 
-import { useTaxesStore } from "@/stores";
+import { useTaxesStore } from "@/store";
 import ChartDataLabels from "chartjs-plugin-datalabels";
 
 const { grossIncome, netIncome, irsPay, ssPay, colors, displayFrequency } =

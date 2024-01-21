@@ -1,4 +1,3 @@
-
 # Remote Freelancer from Portugal 🇵🇹
 
 Simulate your earnings (year, month or day) and breakdown how much taxes you're going to pay as a freelancer working from Portugal.
@@ -29,4 +28,26 @@ npm run dev
 
 ```
 npm run build
+```
+
+### Tests
+
+**vitest**
+
+```
+npm run vitest
+```
+
+**cypress end to end**
+
+open:
+
+```
+npm run cy:e2e:open
+```
+
+run:
+
+```
+npm run cy:e2e:run
 ```
