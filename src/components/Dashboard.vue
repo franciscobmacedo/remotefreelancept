@@ -288,18 +288,12 @@ const ssDiscountDisplay = computed(() => {
 
 const setFirstYear = (value: boolean) => {
   store.setFirstYear(value);
-  if (value === true) {
-    store.setFirstYear(false);
-  }
   secondYearKey.value++;
 
 };
 
 const setSecondYear = (value: boolean) => {
   store.setSecondYear(value);
-  if (value === true) {
-    store.setSecondYear(true);
-  }
   firstYearKey.value++;
 
 };
