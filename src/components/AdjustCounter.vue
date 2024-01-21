@@ -13,6 +13,7 @@
       "
       @click="decreaseValue"
       :disabled="counter <= min"
+      data-cy="counter-decrease"
     >
       <MinusIcon class="w-3" />
     </button>
@@ -38,6 +39,7 @@
       "
       @click="increaseValue"
       :disabled="counter >= max!"
+      data-cy="counter-increase"
     >
       <PlusIcon class="w-3" />
     </button>

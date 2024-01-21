@@ -2,6 +2,7 @@
   <DropDown
     :choices="Object.keys(FrequencyChoices)"
     @change="changeFrequency"
+    data-cy="frequency-dropdown"
     :value="incomeFrequency"
   />
 </template>

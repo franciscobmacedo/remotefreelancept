@@ -7,8 +7,10 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "test": "vitest",
+    "vitest": "vitest",
     "coverage": "vitest run --coverage",
+    "cy:e2e:open": "start-server-and-test 'vite dev --port 8261' http://localhost:8261 'cypress open --e2e'",
+    "cy:e2e:run": "start-server-and-test 'vite dev --port 8261' http://localhost:8261 'cypress run --e2e'",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore --fix src",
     "format": "prettier .  --write"
   },
@@ -28,6 +30,7 @@
     "@vitejs/plugin-vue": "^3.2.0",
     "@vue/test-utils": "^2.2.4",
     "autoprefixer": "^10.4.11",
+    "cypress": "^13.6.3",
     "eslint": "^8.56.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-vue": "^9.20.1",
@@ -36,7 +39,9 @@
     "postcss": "^8.4.16",
     "prettier": "^3.2.4",
     "sass": "^1.56.1",
+    "start-server-and-test": "^2.0.3",
     "tailwindcss": "^3.1.8",
+    "typescript": "^4.9",
     "vite": "^3.1.0",
     "vitest": "^0.25.3"
   }
