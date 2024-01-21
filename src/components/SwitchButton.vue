@@ -68,6 +68,7 @@
         role="switch"
         id="flexSwitchCheckDefault"
         :value="modelValue"
+        :checked="modelValue"
         @input="updateValue($event)"
       />
       <label
