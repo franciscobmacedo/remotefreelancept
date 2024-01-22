@@ -8,12 +8,7 @@
     @mouseleave="hover = false"
   >
     <QuestionMarkCircleIcon
-      class="
-        w-6
-        fill-neutral-200
-        text-neutral-500
-        hover:fill-secondary hover:text-neutral-800
-      "
+      class="w-6 fill-neutral-200 text-neutral-500 hover:fill-secondary hover:text-neutral-800"
     />
     <transition
       enter-active-class="duration-300 ease-out"

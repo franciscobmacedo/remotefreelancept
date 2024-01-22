@@ -19,7 +19,7 @@ export interface TaxRank {
 }
 
 export interface Colors {
-    netIncome: string,
-    irs: string,
-    ss: string
+  netIncome: string;
+  irs: string;
+  ss: string;
 }

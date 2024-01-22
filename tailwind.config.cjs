@@ -9,7 +9,6 @@ module.exports = {
         tertiary: "#d4c722",
         defaultbg: "#f5f5f5",
         income: "#76c479",
-        
       },
     },
     fontFamily: {

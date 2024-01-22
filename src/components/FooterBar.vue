@@ -1,17 +1,7 @@
 <template>
   <div v-if="showDashboard">
     <footer
-      class="
-        fixed
-        bottom-0
-        w-full
-        left-0
-        text-center
-        border-t-[1px] border-neutral-200
-        bg-neutral-100
-        overflow-scroll
-        max-h-24
-      "
+      class="fixed bottom-0 w-full left-0 text-center border-t-[1px] border-neutral-200 bg-neutral-100 overflow-scroll max-h-24"
       :class="{ 'py-5 md:py-2': breakpoint.mdAndUp }"
     >
       <button
@@ -31,14 +21,7 @@
       >
         <div
           v-if="breakpoint.mdAndUp || showFooterNotes"
-          class="
-            flex flex-col
-            lg:flex-row
-            justify-around
-            items-center
-            space-y-3
-            sm:space-y-0
-          "
+          class="flex flex-col lg:flex-row justify-around items-center space-y-3 sm:space-y-0"
           :class="{
             'bg-neutral-300 fixed right-0 w-full top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-4':
               breakpoint.smAndDown,
@@ -47,17 +30,7 @@
           <button
             v-if="showFooterNotes"
             type="button"
-            class="
-              text-gray-400
-              bg-transparent
-              hover:text-gray-900
-              rounded-lg
-              text-sm
-              p-1.5
-              ml-auto
-              inline-flex
-              items-center
-            "
+            class="text-gray-400 bg-transparent hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
             @click="showFooterNotes = !showFooterNotes"
           >
             <XMarkIcon class="w-5 h-5" />

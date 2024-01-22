@@ -57,7 +57,8 @@ export const useBreakpoint = () => {
     breakpoint.w = window.innerWidth;
     breakpoint.h = window.innerHeight;
     breakpoint.is = point;
-    breakpoint.smAndDown = point == BreakPointEnum.xs || point == BreakPointEnum.sm;
+    breakpoint.smAndDown =
+      point == BreakPointEnum.xs || point == BreakPointEnum.sm;
     breakpoint.smAndUp = point != BreakPointEnum.xs;
     breakpoint.mdAndUp =
       point != BreakPointEnum.xs && point != BreakPointEnum.sm;

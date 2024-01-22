@@ -9,9 +9,9 @@
     "baseUrl": "./",
     "paths": {
       "@/*": ["./src/*"],
-      "@cy/*": ["cypress/*"]
+      "@cy/*": ["cypress/*"],
     },
-    "lib": ["esnext", "dom", "dom.iterable", "scripthost"]
+    "lib": ["esnext", "dom", "dom.iterable", "scripthost"],
   },
-  "include": ["vite.config.*", "src/**/*.ts", "src/**/*.vue"]
+  "include": ["vite.config.*", "src/**/*.ts", "src/**/*.vue"],
 }

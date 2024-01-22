@@ -4,19 +4,19 @@
       <div class="flex items-center justify-start gap-5">
         <router-link class="flex items-center justify-center space-x-3" to="/">
           <img src="@/assets/world.svg" class="h-7" />
-          <span>
-            simulator
-          </span>
+          <span> simulator </span>
         </router-link>
         <router-link class="flex items-center justify-center" to="/about">
           about
         </router-link>
-
       </div>
       <div>
         <a
-          v-if="breakpoint.mdAndUp" className="cursor-pointer p-3"
-          target="_blank" href="https://github.com/franciscobmacedo/remotefreelancept">
+          v-if="breakpoint.mdAndUp"
+          className="cursor-pointer p-3"
+          target="_blank"
+          href="https://github.com/franciscobmacedo/remotefreelancept"
+        >
           <img src="@/assets/github-mark.svg" class="h-7" />
         </a>
       </div>
@@ -26,5 +26,4 @@
 <script lang="ts" setup>
 import { useBreakpoint } from "@/composables/breakpoints";
 const { breakpoint } = useBreakpoint();
-
 </script>

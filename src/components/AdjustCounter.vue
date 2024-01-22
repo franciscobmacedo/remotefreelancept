@@ -1,16 +1,7 @@
 <template>
   <div class="flex justify-start items-center">
     <button
-      class="
-        bg-neutral-300
-        text-neutral-600
-        rounded-full
-        font-bold
-        px-1
-        py-1
-        hover:bg-neutral-400 hover:text-neutral-100
-        disabled:bg-neutral-200 disabled:text-neutral-400
-      "
+      class="bg-neutral-300 text-neutral-600 rounded-full font-bold px-1 py-1 hover:bg-neutral-400 hover:text-neutral-100 disabled:bg-neutral-200 disabled:text-neutral-400"
       @click="decreaseValue"
       :disabled="counter <= min"
       data-cy="counter-decrease"
@@ -27,16 +18,7 @@
     </span>
     <span class="mr-2 text-neutral-500 text-xs" v-if="unit">{{ unit }}</span>
     <button
-      class="
-        bg-neutral-300
-        text-neutral-600
-        rounded-full
-        font-bold
-        px-1
-        py-1
-        hover:bg-neutral-400 hover:text-neutral-100
-        disabled:bg-neutral-200 disabled:text-neutral-400
-      "
+      class="bg-neutral-300 text-neutral-600 rounded-full font-bold px-1 py-1 hover:bg-neutral-400 hover:text-neutral-100 disabled:bg-neutral-200 disabled:text-neutral-400"
       @click="increaseValue"
       :disabled="counter >= max!"
       data-cy="counter-increase"
@@ -110,12 +92,11 @@ const counterDisplay = computed({
   },
 });
 
-
 // value updates counter
 watch(
   () => props.value,
   (newValue) => {
     counter.value = newValue;
-  }
+  },
 );
 </script>

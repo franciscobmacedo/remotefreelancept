@@ -2,13 +2,7 @@
   <div class="relative w-fit">
     <canvas id="chart"></canvas>
     <div
-      class="
-        absolute
-        top-1/2
-        left-1/2
-        transform
-        -translate-x-1/2 -translate-y-1/2
-      "
+      class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
     >
       <p class="text-center font-semibold text-lg text-neutral-600">
         {{ asCurrency(grossIncome[displayFrequency]) }}
@@ -96,7 +90,7 @@ watch(
       chart.data.datasets[i].data = d.data;
     });
     chart.update();
-  }
+  },
 );
 const buildChart = () => {
   const canvas = document.getElementById("chart") as HTMLCanvasElement;

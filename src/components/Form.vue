@@ -3,7 +3,7 @@
     class="text-center transition delay-5 duration-100 ease-in-out flex"
     :class="{ 'h-screen': validationCount === 0 }"
   >
-  <div class="m-auto container  max-w-2xl">
+    <div class="m-auto container max-w-2xl">
       <div class="relative md:h-44">
         <h4
           class="font-semibold"
@@ -22,7 +22,7 @@
         </p>
         <div class="flex justify-around items-center">
           <div
-            class="relative group" 
+            class="relative group"
             :class="income === null ? 'w-7/12' : 'w-6/12'"
           >
             <div class="relative">
@@ -39,45 +39,17 @@
                 class="absolute h-4 left-2 bottom-3 text-neutral-600"
               />
               <div
-                class="
-                  hidden
-                  absolute
-                  right-6
-                  bottom-3
-                  transition
-                  delay-5
-                  duration-100
-                  ease-in-out
-                "
+                class="hidden absolute right-6 bottom-3 transition delay-5 duration-100 ease-in-out"
                 :class="{ 'group-hover:block': breakpoint.mdAndUp }"
               >
                 <button
-                  class="
-                    uppercase
-                    text-primary text-xs
-                    border-[0.5px] border-primary
-                    rounded-full
-                    px-5
-                    py-[2px]
-                    hover:border-primary hover:text-primary
-                    focus:bg-sky-100
-                  "
+                  class="uppercase text-primary text-xs border-[0.5px] border-primary rounded-full px-5 py-[2px] hover:border-primary hover:text-primary focus:bg-sky-100"
                   @click="store.setIncome(store.income - changeAmount.value)"
                 >
                   - {{ changeAmount.text }}
                 </button>
                 <button
-                  class="
-                    uppercase
-                    text-primary text-xs
-                    border-[0.5px] border-primary
-                    rounded-full
-                    px-5
-                    py-[2px]
-                    ml-1
-                    hover:border-primary hover:text-primary
-                    focus:bg-sky-100
-                  "
+                  class="uppercase text-primary text-xs border-[0.5px] border-primary rounded-full px-5 py-[2px] ml-1 hover:border-primary hover:text-primary focus:bg-sky-100"
                   @click="store.setIncome(store.income + changeAmount.value)"
                 >
                   + {{ changeAmount.text }}
@@ -99,29 +71,10 @@
                 v-click-outside="() => (showDropdown = false)"
                 @click="showDropdown = false"
                 v-if="showDropdown"
-                class="
-                  transition
-                  delay-5
-                  duration-100
-                  pt-5
-                  pb-5
-                  ease-in-out
-                  absolute
-                  w-full
-                  h-fit
-                  bg-neutral-100
-                  rounded-md
-                "
+                class="transition delay-5 duration-100 pt-5 pb-5 ease-in-out absolute w-full h-fit bg-neutral-100 rounded-md"
               >
                 <div
-                  class="
-                    flex flex-wrap
-                    gap-2
-                    content-center
-                    justify-items-center
-                    place-items-center place-content-center
-                    text-center
-                  "
+                  class="flex flex-wrap gap-2 content-center justify-items-center place-items-center place-content-center text-center"
                 >
                   <CurrencyButton
                     v-for="defaultIncome in defaultIncomes"
@@ -133,33 +86,43 @@
             </transition>
           </div>
           <div class="w-1/12">/</div>
-          <div
-            :class="income === null
-            ? 'w-4/12'
-            : 'w-3/12'
-            ">
+          <div :class="income === null ? 'w-4/12' : 'w-3/12'">
             <FrequencyButton />
           </div>
           <button
             v-if="income !== null"
             class="text-sm hover:text-income hover:font-medium pl-5 py-5 flex gap-2 items-center"
-            @click="store.reset()">reset
+            @click="store.reset()"
+          >
+            reset
             <ArrowPathIcon class="h-3" />
           </button>
           <button
             v-if="income !== null"
-            class="text-sm hover:text-secondary hover:font-medium pl-5 py-5 flex gap-2 items-center" @click="share">share
+            class="text-sm hover:text-secondary hover:font-medium pl-5 py-5 flex gap-2 items-center"
+            @click="share"
+          >
+            share
             <ShareIcon class="h-3" />
           </button>
         </div>
       </div>
     </div>
-    <ToastDialog v-if="showToast" text="sharable link copied to clipboard" @close="closeToast" />
+    <ToastDialog
+      v-if="showToast"
+      text="sharable link copied to clipboard"
+      @close="closeToast"
+    />
   </div>
 </template>
 <script setup lang="ts">
 import { ref, watch, computed } from "vue";
-import { CurrencyEuroIcon, ChevronDownIcon, ArrowPathIcon, ShareIcon } from "@heroicons/vue/24/outline";
+import {
+  CurrencyEuroIcon,
+  ChevronDownIcon,
+  ArrowPathIcon,
+  ShareIcon,
+} from "@heroicons/vue/24/outline";
 import { storeToRefs } from "pinia";
 import { useTaxesStore } from "@/store";
 import { useBreakpoint } from "@/composables/breakpoints";
@@ -172,9 +135,8 @@ import { FrequencyChoices } from "@/typings";
 const { breakpoint } = useBreakpoint();
 
 // store
-const { validationCount, incomeFrequency, income } = storeToRefs(
-  useTaxesStore()
-);
+const { validationCount, incomeFrequency, income } =
+  storeToRefs(useTaxesStore());
 const store = useTaxesStore();
 
 // dropdwon
@@ -193,7 +155,7 @@ watch(
   () => income.value,
   () => {
     validationCount.value++;
-  }
+  },
 );
 
 const defaultIncomes = computed(() => {

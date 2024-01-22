@@ -2,17 +2,7 @@
   <div class="relative" @click="showDropdown = !showDropdown">
     <input
       type="button"
-      class="
-        cursor-pointer
-        w-full
-        text-start
-        py-2
-        placeholder:text-neutral-400
-        bg-inherit
-        border-b-2 border-neutral-400
-        relative
-        focus:outline-none focus:border-indigo-400
-      "
+      class="cursor-pointer w-full text-start py-2 placeholder:text-neutral-400 bg-inherit border-b-2 border-neutral-400 relative focus:outline-none focus:border-indigo-400"
       :value="value"
       id="menu-button"
       aria-expanded="true"
@@ -25,27 +15,11 @@
     />
     <div
       v-if="showDropdown"
-      class="
-        absolute
-        top-5
-        shadow-lg
-        bg-defaultbg
-        w-full
-        overflow-scroll
-        h-max-64
-      "
+      class="absolute top-5 shadow-lg bg-defaultbg w-full overflow-scroll h-max-64"
     >
       <button
         v-for="choice in choices"
-        class="
-          text-gray-700
-          block
-          px-4
-          py-2
-          text-sm
-          hover:bg-neutral-200
-          w-full
-        "
+        class="text-gray-700 block px-4 py-2 text-sm hover:bg-neutral-200 w-full"
         @click="changeChoice(choice)"
       >
         {{ choice }}

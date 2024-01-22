@@ -2,18 +2,7 @@
   <input
     v-model="internalValue"
     type="text"
-    class="
-      z-0
-      inline-flex
-      w-full
-      justify-start
-      py-2
-      placeholder:text-neutral-400
-      bg-inherit
-      border-b-[1px] border-neutral-600
-      relative
-      focus:outline-none focus:border-primary
-    "
+    class="z-0 inline-flex w-full justify-start py-2 placeholder:text-neutral-400 bg-inherit border-b-[1px] border-neutral-600 relative focus:outline-none focus:border-primary"
     :class="class"
     :placeholder="placeholder"
   />
@@ -38,19 +27,16 @@ const props = defineProps({
   },
 });
 
-
 const internalValue = computed({
   get() {
     const _value = props.value;
-    return _value === null ||
-      isNaN(_value)  ||
-      _value === undefined
+    return _value === null || isNaN(_value) || _value === undefined
       ? null
       : spacedNumber(_value);
   },
   set(newValue) {
     const _newValue = newValue.replace(/\D/g, "");
-    const result = reverseCurrency(_newValue)
+    const result = reverseCurrency(_newValue);
     emits("update:value", result ? result : 0);
   },
 });

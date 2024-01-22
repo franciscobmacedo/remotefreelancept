@@ -35,7 +35,7 @@ describe("Taxes Store", () => {
     expect(taxesStore.grossIncome.year).toBe(DEFAULT_INCOME);
     expect(taxesStore.grossIncome.month).toBe(DEFAULT_INCOME / MONTHS_IN_YEAR);
     expect(taxesStore.grossIncome.day).toBe(
-      DEFAULT_INCOME / YEAR_BUSINESS_DAYS
+      DEFAULT_INCOME / YEAR_BUSINESS_DAYS,
     );
   });
 
@@ -48,7 +48,7 @@ describe("Taxes Store", () => {
     expect(taxesStore.grossIncome.year).toBe(newGrossIncome * MONTHS_IN_YEAR);
     expect(taxesStore.grossIncome.month).toBe(newGrossIncome);
     expect(taxesStore.grossIncome.day).toBe(
-      newGrossIncome / MONTH_BUSINESS_DAYS
+      newGrossIncome / MONTH_BUSINESS_DAYS,
     );
   });
 
@@ -59,10 +59,10 @@ describe("Taxes Store", () => {
     taxesStore.setIncomeFrequency(FrequencyChoices.Day);
 
     expect(taxesStore.grossIncome.year).toBe(
-      newGrossIncome * YEAR_BUSINESS_DAYS
+      newGrossIncome * YEAR_BUSINESS_DAYS,
     );
     expect(taxesStore.grossIncome.month).toBe(
-      newGrossIncome * MONTH_BUSINESS_DAYS
+      newGrossIncome * MONTH_BUSINESS_DAYS,
     );
     expect(taxesStore.grossIncome.day).toBe(newGrossIncome);
   });
@@ -85,10 +85,12 @@ describe("Taxes Store", () => {
 
       expect(taxesStore.ssPay.year).toBe(SS_TAX * (newGrossIncome * 0.7));
       expect(taxesStore.ssPay.month).toBe(
-        (SS_TAX * (newGrossIncome * 0.7)) / MONTHS_IN_YEAR
+        (SS_TAX * (newGrossIncome * 0.7)) / MONTHS_IN_YEAR,
       );
       expect(taxesStore.ssPay.day).toBe(
-        (SS_TAX * (newGrossIncome * 0.7)) / MONTHS_IN_YEAR / MONTH_BUSINESS_DAYS
+        (SS_TAX * (newGrossIncome * 0.7)) /
+          MONTHS_IN_YEAR /
+          MONTH_BUSINESS_DAYS,
       );
     });
 
@@ -97,11 +99,11 @@ describe("Taxes Store", () => {
       taxesStore.setIncome(newGrossIncome);
 
       expect(taxesStore.ssPay.year).toBe(
-        SS_TAX * SS_MAX_MONTH_INCOME * MONTHS_IN_YEAR
+        SS_TAX * SS_MAX_MONTH_INCOME * MONTHS_IN_YEAR,
       );
       expect(taxesStore.ssPay.month).toBe(SS_TAX * SS_MAX_MONTH_INCOME);
       expect(taxesStore.ssPay.day).toBe(
-        (SS_TAX * SS_MAX_MONTH_INCOME) / MONTH_BUSINESS_DAYS
+        (SS_TAX * SS_MAX_MONTH_INCOME) / MONTH_BUSINESS_DAYS,
       );
     });
 
@@ -111,11 +113,11 @@ describe("Taxes Store", () => {
       taxesStore.setSsDiscount(0.5);
 
       expect(taxesStore.ssPay.year).toBe(
-        SS_TAX * SS_MAX_MONTH_INCOME * 1.5 * MONTHS_IN_YEAR
+        SS_TAX * SS_MAX_MONTH_INCOME * 1.5 * MONTHS_IN_YEAR,
       );
       expect(taxesStore.ssPay.month).toBe(SS_TAX * SS_MAX_MONTH_INCOME * 1.5);
       expect(taxesStore.ssPay.day).toBe(
-        (SS_TAX * SS_MAX_MONTH_INCOME * 1.5) / MONTH_BUSINESS_DAYS
+        (SS_TAX * SS_MAX_MONTH_INCOME * 1.5) / MONTH_BUSINESS_DAYS,
       );
     });
 
@@ -125,11 +127,11 @@ describe("Taxes Store", () => {
       taxesStore.setSsDiscount(-0.5);
 
       expect(taxesStore.ssPay.year).toBe(
-        SS_TAX * SS_MAX_MONTH_INCOME * 0.5 * MONTHS_IN_YEAR
+        SS_TAX * SS_MAX_MONTH_INCOME * 0.5 * MONTHS_IN_YEAR,
       );
       expect(taxesStore.ssPay.month).toBe(SS_TAX * SS_MAX_MONTH_INCOME * 0.5);
       expect(taxesStore.ssPay.day).toBe(
-        (SS_TAX * SS_MAX_MONTH_INCOME * 0.5) / MONTH_BUSINESS_DAYS
+        (SS_TAX * SS_MAX_MONTH_INCOME * 0.5) / MONTH_BUSINESS_DAYS,
       );
     });
   });
@@ -155,7 +157,7 @@ describe("Taxes Store", () => {
 
   it("should calculate correctly the expenses needed", () => {
     expect(taxesStore.expensesNeeded).toBe(
-      taxesStore.maxExpenses - taxesStore.specificDeductions
+      taxesStore.maxExpenses - taxesStore.specificDeductions,
     );
   });
 
@@ -182,7 +184,7 @@ describe("Taxes Store", () => {
       taxesStore.expenses = 1000;
 
       expect(taxesStore.taxableIncome).toBe(
-        newGrossIncome * 0.75 + taxesStore.expensesNeeded - taxesStore.expenses
+        newGrossIncome * 0.75 + taxesStore.expensesNeeded - taxesStore.expenses,
       );
     });
   });
@@ -197,7 +199,7 @@ describe("Taxes Store", () => {
       taxesStore.currentTaxRankYear = year;
 
       expect(taxesStore.currentTaxRankYear).toEqual(
-        taxesStore.getCurrentTaxRankYear
+        taxesStore.getCurrentTaxRankYear,
       );
       expect(taxesStore.taxRanks[year]).toEqual(taxesStore.getTaxRanks);
     });
@@ -206,7 +208,7 @@ describe("Taxes Store", () => {
   it("should get the correct taxRankAvg value", () => {
     const average = taxesStore.getTaxRanks.find(
       (taxRank) =>
-        taxesStore.taxRank.id === 1 || taxRank.id === taxesStore.taxRank.id - 1
+        taxesStore.taxRank.id === 1 || taxRank.id === taxesStore.taxRank.id - 1,
     );
     expect(taxesStore.taxRankAvg.max).toEqual(average.max);
     expect(taxesStore.taxRankAvg.min).toEqual(average.min);
@@ -222,7 +224,7 @@ describe("Taxes Store", () => {
 
   it("should get the correct taxIncomeNormal value", () => {
     expect(taxesStore.taxIncomeNormal).toBe(
-      DEFAULT_TAXABLE_INCOME - taxesStore.taxIncomeAvg
+      DEFAULT_TAXABLE_INCOME - taxesStore.taxIncomeAvg,
     );
 
     taxesStore.setIncome(9000);
@@ -245,7 +247,7 @@ describe("Taxes Store", () => {
     expect(taxesStore.irsPay?.year).toBe(yearIRSCalculation);
     expect(taxesStore.irsPay?.month).toBe(yearIRSCalculation / MONTHS_IN_YEAR);
     expect(taxesStore.irsPay?.day).toBe(
-      yearIRSCalculation / MONTHS_IN_YEAR / MONTH_BUSINESS_DAYS
+      yearIRSCalculation / MONTHS_IN_YEAR / MONTH_BUSINESS_DAYS,
     );
   });
 
@@ -256,35 +258,35 @@ describe("Taxes Store", () => {
 
     expect(taxesStore.irsPay?.year).toBe(yearNHRIRSCalculation);
     expect(taxesStore.irsPay?.month).toBe(
-      yearNHRIRSCalculation / MONTHS_IN_YEAR
+      yearNHRIRSCalculation / MONTHS_IN_YEAR,
     );
     expect(taxesStore.irsPay?.day).toBe(
-      yearNHRIRSCalculation / MONTHS_IN_YEAR / MONTH_BUSINESS_DAYS
+      yearNHRIRSCalculation / MONTHS_IN_YEAR / MONTH_BUSINESS_DAYS,
     );
   });
 
   it("should show taxes displayed correctly", () => {
     expect(taxesStore.taxesDisplay).toBe(
-      asCurrency(taxesStore.irsPay?.month + taxesStore.ssPay?.month)
+      asCurrency(taxesStore.irsPay?.month + taxesStore.ssPay?.month),
     );
   });
 
   it("should calculate correctly the net income", () => {
     expect(taxesStore.netIncome.year).toBe(
-      DEFAULT_INCOME - taxesStore.irsPay?.year - taxesStore.ssPay?.year
+      DEFAULT_INCOME - taxesStore.irsPay?.year - taxesStore.ssPay?.year,
     );
 
     expect(taxesStore.netIncome.month).toBe(
       DEFAULT_INCOME / MONTHS_IN_YEAR -
         taxesStore.irsPay?.month -
-        taxesStore.ssPay?.month
+        taxesStore.ssPay?.month,
     );
 
     expect(taxesStore.netIncome.day).toBe(
       (DEFAULT_INCOME / MONTHS_IN_YEAR -
         taxesStore.irsPay?.month -
         taxesStore.ssPay?.month) /
-        MONTH_BUSINESS_DAYS
+        MONTH_BUSINESS_DAYS,
     );
   });
 
@@ -298,13 +300,13 @@ describe("Taxes Store", () => {
     tests.forEach(({ key, payProperty }) => {
       it(`should calculate correctly the ${key} frequency`, () => {
         expect(taxesStore[`${key}Frequency`]).toBe(
-          taxesStore[payProperty]?.month
+          taxesStore[payProperty]?.month,
         );
       });
 
       it(`should show ${key} displayed correctly`, () => {
         expect(taxesStore[`${key}Display`]).toBe(
-          asCurrency(taxesStore[`${key}Frequency`])
+          asCurrency(taxesStore[`${key}Frequency`]),
         );
       });
     });

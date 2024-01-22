@@ -7,7 +7,7 @@ export const formatNumber = (num: string) => {
 };
 
 export const spacedNumber = (num: number, decimalPlaces = 0) => {
-  if (num === null) return ""
+  if (num === null) return "";
   return formatNumber(num.toFixed(decimalPlaces));
 };
 
@@ -16,7 +16,7 @@ export const asCurrency = (num: number, decimalPlaces = 0) => {
 };
 
 export const asPercentage = (num: number) => {
-  return round(num*100).toString() + "%";
+  return round(num * 100).toString() + "%";
 };
 
 export const reverseCurrency = (num: string) => {
