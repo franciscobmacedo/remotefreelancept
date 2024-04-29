@@ -111,6 +111,18 @@ describe("pass expenses to url parameters", () => {
   });
 });
 
+describe("unset expenses from url parameters on expensesAuto", () => {
+    it("successfully reset expenses", () => {
+    cy.visit("/#/?income=50000");
+    cy.get('[data-cy="expenses"] input:first-of-type')
+      .invoke("val", "")
+      .type("3500");
+    cy.url().should("include", "expenses=3500");
+    cy.get('#setExpensesAutoButton').click();
+    cy.url().should("not.include", "expenses=");
+  });
+});
+
 describe("pass currentTaxRankYear to url parameters", () => {
   it("successfully uses currentTaxRankYear from simulator", () => {
     cy.visit("/#/?income=50000");
