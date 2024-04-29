@@ -19,6 +19,7 @@ interface TaxesState {
   expensesTax: number;
   maxExpensesTax: number;
   expenses: number;
+  expensesAuto: boolean;
   ssDiscount: number;
   ssDiscountChoices: number[];
   currentTaxRankYear: (typeof SUPPORTED_TAX_RANK_YEARS)[number];
@@ -46,6 +47,7 @@ const useTaxesStore = defineStore({
     expensesTax: 15,
     maxExpensesTax: 15,
     expenses: 0,
+    expensesAuto: true,
     ssTax: 0.214,
     currentTaxRankYear: 2023,
     taxRanks: {
@@ -283,7 +285,9 @@ const useTaxesStore = defineStore({
         this.income = null;
       } else {
         this.income = value ? value : 0;
-        this.setExpenses(this.expensesNeeded);
+        if (this.expensesAuto) {
+          this.setExpenses(this.expensesNeeded);
+        }
       }
       updateUrlQuery({ income: this.income });
     },
@@ -316,6 +320,17 @@ const useTaxesStore = defineStore({
         this.expenses = value;
       }
       updateUrlQuery({ expenses: this.expenses });
+    },
+    setExpensesManual(value: number) {
+      this.expensesAuto = false;
+      this.setExpenses(value);
+    },
+    setExpensesAuto(v: any) {
+      this.expensesAuto = true;
+      this.setExpenses(this.expensesNeeded);
+      updateUrlQuery({
+        expenses: undefined,
+      });
     },
     setSsFirstYear(value: boolean) {
       this.ssFirstYear = value;
@@ -421,7 +436,7 @@ const useTaxesStore = defineStore({
       );
       this.setParameterFromUrl(
         params["expenses"],
-        this.setExpenses,
+        this.setExpensesManual,
         parseInt,
         numericValidator,
       );
