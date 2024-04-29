@@ -65,3 +65,9 @@ build a production image (image named as `remotefreelancept:latest`) (listening 
 ```
 docker build -t remotefreelancept:latest .
 ```
+
+Run tests (vitest):
+
+```
+docker build -t remotefreelancept:test --target=test .
+```
