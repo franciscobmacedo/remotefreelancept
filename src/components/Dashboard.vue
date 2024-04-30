@@ -81,6 +81,7 @@
         class="flex ml-3 md:ml-0 justify-start items-center mt-6 sm:space-x-2 md:space-x-4"
       >
         <SwitchButton
+          id="ssExemptSwitchButton"
           label="Are you within the first 12 months of starting your activity?"
           :model-value="store.ssFirstYear"
           @update:model-value="store.setSsFirstYear"
@@ -99,6 +100,7 @@
         class="flex ml-3 md:ml-0 justify-start items-center mt-6 sm:space-x-2 md:space-x-4"
       >
         <SwitchButton
+          id="firstYearSwitchButton"
           label="Are you in your first fiscal year of activity?"
           :model-value="store.firstYear"
           @update:model-value="setFirstYear"
@@ -119,6 +121,7 @@
         class="flex ml-3 md:ml-0 justify-start items-center mt-6 sm:space-x-2 md:space-x-4"
       >
         <SwitchButton
+          id="secondYearSwitchButton"
           label="Are you in your second fiscal year of activity?"
           :model-value="secondYear"
           @update:model-value="setSecondYear"
@@ -138,6 +141,7 @@
         class="flex ml-3 md:ml-0 justify-start items-center mt-6 sm:space-x-2 md:space-x-4"
       >
         <SwitchButton
+          id="nrmElegibleSwitchButton"
           label="Are you eligible to be in the NHR/RNH?"
           :model-value="store.rnh"
           @update:model-value="store.setRnh"
