@@ -325,7 +325,7 @@ const useTaxesStore = defineStore({
       this.expensesAuto = false;
       this.setExpenses(value);
     },
-    setExpensesAuto(v: any) {
+    setExpensesAuto() {
       this.expensesAuto = true;
       this.setExpenses(this.expensesNeeded);
       updateUrlQuery({
