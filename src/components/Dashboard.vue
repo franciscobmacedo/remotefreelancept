@@ -186,15 +186,13 @@
             class="flex flex-col items-center"
             link="https://www.cgd.pt/Site/Saldo-Positivo/leis-e-impostos/Pages/deducoes-especificas.aspx#:~:text=Empresariais%20e%20Profissionais%20(Categoria%20B)&text=Se%20estiver%20enquadrado%20no%20regime,bruto%20(antes%20dos%20descontos)."
           />
-          <Transition>
-            <button
-              class="text-xs text-neutral-500 flex flex-col items-center"
-              v-if="!store.expensesAuto"
-              @click="store.setExpensesAuto()"
-              id="setExpensesAutoButton"
-            >auto<ArrowPathIcon class="h-3" />
-            </button>
-          </Transition>
+          <button
+            class="text-xs text-neutral-500 flex flex-col items-center transition duration-500"
+            :class="store.expensesAuto ? 'invisible' : 'visible'"
+            @click="store.setExpensesAuto()"
+            id="setExpensesAutoButton"
+          >auto<ArrowPathIcon class="h-3" />
+          </button>
         </span>
       </div>
       <div class="flex justify-center mt-8">
