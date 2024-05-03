@@ -26,7 +26,7 @@
 
         <!-- Modal body -->
         <div class="p-6 space-y-6">
-          Your taxable income (<span class="text-income">{{
+          Your taxable income (<span class="text-income whitespace-nowrap">{{
             asCurrency(taxableIncome)
           }}</span
           >) is in level
@@ -56,12 +56,12 @@
                 >
                   {{ item.id }}
                 </td>
-                <td class="py-1 text-center">{{ asCurrency(item.min) }}</td>
-                <td class="py-1 text-center">{{ asCurrency(item.max) }}</td>
-                <td class="py-1 text-center">
+                <td class="py-1 text-center whitespace-nowrap">{{ asCurrency(item.min) }}</td>
+                <td class="py-1 text-center whitespace-nowrap">{{ asCurrency(item.max) }}</td>
+                <td class="py-1 text-center whitespace-nowrap">
                   {{ asPercentage(item.normalTax) }}
                 </td>
-                <td class="py-1 text-center">
+                <td class="py-1 text-center whitespace-nowrap">
                   {{ asPercentage(item.averageTax) }}
                 </td>
               </tr>

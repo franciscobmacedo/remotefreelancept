@@ -24,13 +24,13 @@
     <tbody>
       <tr>
         <td class="py-3">Gross income</td>
-        <td class="py-3">
+        <td class="py-3 whitespace-nowrap">
           {{ renderCellValue(grossIncome.year) }}
         </td>
-        <td class="py-3">
+        <td class="py-3 whitespace-nowrap">
           {{ renderCellValue(grossIncome.month) }}
         </td>
-        <td class="py-3">
+        <td class="py-3 whitespace-nowrap">
           {{ renderCellValue(grossIncome.day) }}
         </td>
       </tr>
@@ -52,7 +52,7 @@
       </tr>
       <tr class="border-b-2">
         <td class="pl-2 py-3">Specific deductions</td>
-        <td class="">
+        <td class="whitespace-nowrap">
           {{ renderCellValue(specificDeductions) }}
         </td>
         <td class="grey lighten-4"></td>
@@ -60,13 +60,13 @@
       </tr>
       <tr class="border-b-2">
         <td class="pl-2 py-3">Expenses</td>
-        <td class="">{{ renderCellValue(expenses) }}</td>
+        <td class="whitespace-nowrap">{{ renderCellValue(expenses) }}</td>
         <td class="grey lighten-4"></td>
         <td class="grey lighten-4"></td>
       </tr>
       <tr class="border-b-2">
         <td class="pl-2 py-3">Taxable income</td>
-        <td class="">
+        <td class="whitespace-nowrap">
           {{ renderCellValue(taxableIncome) }}
         </td>
         <td class="grey lighten-4"></td>
@@ -74,7 +74,7 @@
       </tr>
       <tr class="border-b-2">
         <td class="pl-2 py-3">Taxable income for average tax</td>
-        <td class="">
+        <td class="whitespace-nowrap">
           {{ renderCellValue(taxIncomeAvg) }}
         </td>
         <td class="grey lighten-4"></td>
@@ -82,7 +82,7 @@
       </tr>
       <tr class="">
         <td class="pl-2 py-3">Taxable income for normal tax</td>
-        <td class="">
+        <td class="whitespace-nowrap">
           {{ renderCellValue(taxIncomeNormal) }}
         </td>
         <td class="grey lighten-4"></td>
@@ -90,37 +90,37 @@
       </tr>
       <tr class="bg-red-100">
         <td class="pl-2 py-3">IRS</td>
-        <td class="">
+        <td class="whitespace-nowrap">
           {{ renderCellValue(irsPay.year) }}
         </td>
-        <td class="">
+        <td class="whitespace-nowrap">
           {{ renderCellValue(irsPay.month) }}
         </td>
-        <td class="">
+        <td class="whitespace-nowrap">
           {{ renderCellValue(irsPay.day) }}
         </td>
       </tr>
       <tr class="bg-blue-100">
         <td class="pl-2 py-3">Social security</td>
-        <td class="">
+        <td class="whitespace-nowrap">
           {{ renderCellValue(ssPay.year) }}
         </td>
-        <td class="">
+        <td class="whitespace-nowrap">
           {{ renderCellValue(ssPay.month) }}
         </td>
-        <td class="">
+        <td class="whitespace-nowrap">
           {{ renderCellValue(ssPay.day) }}
         </td>
       </tr>
       <tr class="bg-green-100">
         <td class="pl-2 py-3">Net income</td>
-        <td class="">
+        <td class="whitespace-nowrap">
           {{ renderCellValue(netIncome.year) }}
         </td>
-        <td class="">
+        <td class="whitespace-nowrap">
           {{ renderCellValue(netIncome.month) }}
         </td>
-        <td class="">
+        <td class="whitespace-nowrap">
           {{ renderCellValue(netIncome.day) }}
         </td>
       </tr>

@@ -166,7 +166,7 @@
           </p>
           <span class="text-xs text-neutral-500"
             >the maximum required is
-            <span class="font-semibold">{{ asCurrency(expensesNeeded) }}</span>
+            <span class="font-semibold whitespace-nowrap">{{ asCurrency(expensesNeeded) }}</span>
             <span class="text-xs text-neutral-500">/year</span>
           </span>
         </div>

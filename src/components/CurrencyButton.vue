@@ -1,6 +1,6 @@
 <template>
   <button
-    class="bg-neutral-200 rounded-full px-3 py-2 hover:bg-neutral-300"
+    class="bg-neutral-200 rounded-full px-3 py-2 hover:bg-neutral-300 whitespace-nowrap"
     @click="store.setIncome(value)"
   >
     {{ asCurrency(value) }}

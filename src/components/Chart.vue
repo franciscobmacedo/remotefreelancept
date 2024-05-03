@@ -4,7 +4,7 @@
     <div
       class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
     >
-      <p class="text-center font-semibold text-lg text-neutral-600">
+      <p class="text-center font-semibold text-lg text-neutral-600 whitespace-nowrap">
         {{ asCurrency(grossIncome[displayFrequency]) }}
       </p>
       <small class="text-small">gross income</small>
