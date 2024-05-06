@@ -172,7 +172,7 @@
         </div>
         <AdjustCounter
           :value="store.expenses"
-          @update:value="store.setExpenses"
+          @update:value="store.setExpensesManual"
           :min="0"
           :max="grossIncome.year"
           :step="100"
@@ -181,9 +181,19 @@
           data-cy="expenses"
         >
         </AdjustCounter>
-        <InfoButton
-          link="https://www.cgd.pt/Site/Saldo-Positivo/leis-e-impostos/Pages/deducoes-especificas.aspx#:~:text=Empresariais%20e%20Profissionais%20(Categoria%20B)&text=Se%20estiver%20enquadrado%20no%20regime,bruto%20(antes%20dos%20descontos)."
-        />
+        <span class="flex gap-2">
+          <InfoButton
+            class="flex flex-col items-center"
+            link="https://www.cgd.pt/Site/Saldo-Positivo/leis-e-impostos/Pages/deducoes-especificas.aspx#:~:text=Empresariais%20e%20Profissionais%20(Categoria%20B)&text=Se%20estiver%20enquadrado%20no%20regime,bruto%20(antes%20dos%20descontos)."
+          />
+          <button
+            class="text-xs text-neutral-500 flex flex-col items-center transition duration-500"
+            :class="store.expensesAuto ? 'invisible' : 'visible'"
+            @click="store.setExpensesAuto()"
+            id="setExpensesAutoButton"
+          >auto<ArrowPathIcon class="h-3" />
+          </button>
+        </span>
       </div>
       <div class="flex justify-center mt-8">
         <Chart />
@@ -237,6 +247,7 @@ import { storeToRefs } from "pinia";
 import { asCurrency } from "@/utils.js";
 import { FrequencyChoices } from "@/typings";
 import { SUPPORTED_TAX_RANK_YEARS, useTaxesStore } from "@/store";
+import { ArrowPathIcon } from "@heroicons/vue/24/outline";
 
 import Chart from "@/components/Chart.vue";
 import AdjustCounter from "@/components/AdjustCounter.vue";
