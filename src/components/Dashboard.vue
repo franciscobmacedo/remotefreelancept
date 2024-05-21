@@ -23,6 +23,23 @@
         </div>
       </div>
       <div class="flex ml-3 md:ml-0 justify-start items-center mt-2 space-x-4">
+        <p class="text-sm w-fit">Income tax year</p>
+        <div class="w-16">
+          <DropDown
+            :choices="SUPPORTED_TAX_RANK_YEARS"
+            @change="changeCurrentTaxRankYear"
+            :value="getCurrentTaxRankYear.toString()"
+            data-cy="tax-rank-years-dropdown"
+          />
+        </div>
+        <InfoButton>
+          <p class="text-sm w-64 text-center">
+            There are a number of changes between 2023 and 2024, such as the
+            IAS value and the IRS brackets.
+          </p>
+        </InfoButton>
+      </div>
+      <div class="flex ml-3 md:ml-0 justify-start items-center mt-2 space-x-4">
         <p class="text-sm w-fit">Nr. of months to simulate your earnings</p>
         <AdjustCounter
           :value="store.nrMonthsDisplay"
@@ -58,22 +75,6 @@
             You can adjust your income for social security tax calculations with
             a minimum of -25% and a maximum of +25%. This will probably afect
             your retirement pension. Click to see more.
-          </p>
-        </InfoButton>
-      </div>
-      <div class="flex ml-3 md:ml-0 justify-start items-center mt-2 space-x-4">
-        <p class="text-sm w-fit">IRS tax rank year</p>
-        <div class="w-16">
-          <DropDown
-            :choices="SUPPORTED_TAX_RANK_YEARS"
-            @change="changeCurrentTaxRankYear"
-            :value="getCurrentTaxRankYear.toString()"
-            data-cy="tax-rank-years-dropdown"
-          />
-        </div>
-        <InfoButton>
-          <p class="text-sm w-64 text-center">
-            IRS tax rank year that is being simulated
           </p>
         </InfoButton>
       </div>
