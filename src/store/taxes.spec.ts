@@ -141,8 +141,8 @@ describe("Taxes Store", () => {
     test.each([
       { income: 30_000, discount: 0.25 },
       { income: 30_000, discount: -0.25 },])
-    ("Low incomes cannot apply discounts because with the discount," +
-      "the monthly gross income is lower than the minimum SS pay", ({income, discount}) => {
+    ("Low incomes can apply discounts because with the discount," +
+      "the monthly gross income is still lower than the maximum SS pay", ({income, discount}) => {
       taxesStore.setIncome(income);
       taxesStore.setSsDiscount(discount);
 
