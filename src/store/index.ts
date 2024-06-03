@@ -49,7 +49,7 @@ const useTaxesStore = defineStore({
     expenses: 0,
     expensesAuto: true,
     ssTax: 0.214,
-    currentTaxRankYear: 2023,
+    currentTaxRankYear: 2024,
     taxRanks: {
       2023: [
         { id: 1, min: 0, max: 7479, normalTax: 0.145, averageTax: 0.145 },

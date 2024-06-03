@@ -105,10 +105,10 @@ describe("pass expenses through url parameters", () => {
 
 describe("pass currentTaxRankYear through url parameters", () => {
   it("successfully uses currentTaxRankYear from url", () => {
-    cy.visit("/#/?income=50000&currentTaxRankYear=2024"); // change URL to match your dev URL
+    cy.visit("/#/?income=50000&currentTaxRankYear=2023"); // change URL to match your dev URL
     cy.get('[data-cy="tax-rank-years-dropdown"] input:first-of-type').should(
       "have.value",
-      "2024",
+      "2023",
     );
   });
 
@@ -116,7 +116,7 @@ describe("pass currentTaxRankYear through url parameters", () => {
     cy.visit("/#/?income=50000&currentTaxRankYear=2025"); // change URL to match your dev URL
     cy.get('[data-cy="tax-rank-years-dropdown"] input:first-of-type').should(
       "have.value",
-      "2023",
+      "2024",
     );
   });
 
@@ -124,7 +124,7 @@ describe("pass currentTaxRankYear through url parameters", () => {
     cy.visit("/#/?income=50000&currentTaxRankYear=dummyval"); // change URL to match your dev URL
     cy.get('[data-cy="tax-rank-years-dropdown"] input:first-of-type').should(
       "have.value",
-      "2023",
+      "2024",
     );
   });
 });
