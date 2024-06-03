@@ -3,7 +3,6 @@ import { beforeEach, describe, expect, it } from "vitest";
 import { createPinia } from "pinia";
 import {
   MONTH_BUSINESS_DAYS,
-  SS_MAX_MONTH_INCOME,
   SUPPORTED_TAX_RANK_YEARS,
   YEAR_BUSINESS_DAYS,
   useTaxesStore,
@@ -99,39 +98,79 @@ describe("Taxes Store", () => {
       taxesStore.setIncome(newGrossIncome);
 
       expect(taxesStore.ssPay.year).toBe(
-        SS_TAX * SS_MAX_MONTH_INCOME * MONTHS_IN_YEAR,
+        SS_TAX * taxesStore.maxSsIncome * MONTHS_IN_YEAR,
       );
-      expect(taxesStore.ssPay.month).toBe(SS_TAX * SS_MAX_MONTH_INCOME);
+      expect(taxesStore.ssPay.month).toBe(SS_TAX * taxesStore.maxSsIncome);
       expect(taxesStore.ssPay.day).toBe(
-        (SS_TAX * SS_MAX_MONTH_INCOME) / MONTH_BUSINESS_DAYS,
+        (SS_TAX * taxesStore.maxSsIncome) / MONTH_BUSINESS_DAYS,
       );
     });
 
-    it("when higher SS discount is applied", () => {
-      const newGrossIncome = 120_000;
+    it("when the income is lower than max ss pay, positive SS discount is applied", () => {
+      const newGrossIncome = 30_000;
       taxesStore.setIncome(newGrossIncome);
-      taxesStore.setSsDiscount(0.5);
+      taxesStore.setSsDiscount(0.25);
 
-      expect(taxesStore.ssPay.year).toBe(
-        SS_TAX * SS_MAX_MONTH_INCOME * 1.5 * MONTHS_IN_YEAR,
-      );
-      expect(taxesStore.ssPay.month).toBe(SS_TAX * SS_MAX_MONTH_INCOME * 1.5);
+      const monthlySsPay = Math.min(
+        taxesStore.maxSsIncome,
+        taxesStore.grossIncome.month * 0.7 * 1.25);
+
+      expect(taxesStore.ssPay.year).toBe(SS_TAX * monthlySsPay * MONTHS_IN_YEAR);
+      expect(taxesStore.ssPay.month).toBe(SS_TAX * monthlySsPay);
       expect(taxesStore.ssPay.day).toBe(
-        (SS_TAX * SS_MAX_MONTH_INCOME * 1.5) / MONTH_BUSINESS_DAYS,
+        (SS_TAX * monthlySsPay) / MONTH_BUSINESS_DAYS,
       );
     });
 
-    it("when lower SS discount is applied", () => {
-      const newGrossIncome = 120_000;
+    it("when income is lower, negative SS discount is applied", () => {
+      const newGrossIncome = 30_000;
       taxesStore.setIncome(newGrossIncome);
-      taxesStore.setSsDiscount(-0.5);
+      taxesStore.setSsDiscount(-0.25);
+
+      const monthlySsPay = Math.min(
+        taxesStore.maxSsIncome,
+        taxesStore.grossIncome.month * 0.7 * 0.75);
+
+      expect(taxesStore.ssPay.year).toBe(SS_TAX * monthlySsPay * MONTHS_IN_YEAR);
+      expect(taxesStore.ssPay.month).toBe(SS_TAX * monthlySsPay);
+      expect(taxesStore.ssPay.day).toBe(
+        (SS_TAX * monthlySsPay) / MONTH_BUSINESS_DAYS,
+      );
+    });
+
+    test.each([
+      { income: 30_000, discount: 0.25 },
+      { income: 30_000, discount: -0.25 },])
+    ("Low incomes can apply discounts because with the discount," +
+      "the monthly gross income is still lower than the maximum SS pay", ({income, discount}) => {
+      taxesStore.setIncome(income);
+      taxesStore.setSsDiscount(discount);
+
+      const monthlySsPay = Math.min(
+        taxesStore.maxSsIncome,
+        taxesStore.grossIncome.month * 0.7 * (1 + discount));
+
+      expect(taxesStore.ssPay.year).toBe(SS_TAX * monthlySsPay * MONTHS_IN_YEAR);
+      expect(taxesStore.ssPay.month).toBe(SS_TAX * monthlySsPay);
+      expect(taxesStore.ssPay.day).toBe(
+        (SS_TAX * monthlySsPay) / MONTH_BUSINESS_DAYS
+      );
+    });
+
+    test.each([
+      { income: 200_000, discount: 0.25 },
+      { income: 200_000, discount: -0.25 },
+    ])("High incomes cannot apply discounts because even with the discount," +
+      "the monthly gross income is higher than the maximum SS pay", ({income, discount}) => {
+      taxesStore.setIncome(income);
+      taxesStore.setSsDiscount(discount);
 
       expect(taxesStore.ssPay.year).toBe(
-        SS_TAX * SS_MAX_MONTH_INCOME * 0.5 * MONTHS_IN_YEAR,
+        SS_TAX * taxesStore.maxSsIncome * MONTHS_IN_YEAR,
       );
-      expect(taxesStore.ssPay.month).toBe(SS_TAX * SS_MAX_MONTH_INCOME * 0.5);
+      expect(taxesStore.ssPay.month).toBe(SS_TAX * taxesStore.maxSsIncome);
       expect(taxesStore.ssPay.day).toBe(
-        (SS_TAX * SS_MAX_MONTH_INCOME * 0.5) / MONTH_BUSINESS_DAYS,
+        (SS_TAX * taxesStore.maxSsIncome) / MONTH_BUSINESS_DAYS,
       );
     });
   });

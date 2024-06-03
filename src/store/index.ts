@@ -5,7 +5,6 @@ import { updateUrlQuery, clearUrlQuery } from "@/router";
 
 export const YEAR_BUSINESS_DAYS = 248;
 export const MONTH_BUSINESS_DAYS = 22;
-export const SS_MAX_MONTH_INCOME = 5765.16;
 export const SUPPORTED_TAX_RANK_YEARS = [2023, 2024];
 
 interface TaxesState {
@@ -24,6 +23,7 @@ interface TaxesState {
   ssDiscountChoices: number[];
   currentTaxRankYear: (typeof SUPPORTED_TAX_RANK_YEARS)[number];
   taxRanks: { [K in (typeof SUPPORTED_TAX_RANK_YEARS)[number]]: TaxRank[] };
+  iasPerYear: { [K in (typeof SUPPORTED_TAX_RANK_YEARS)[number]]: number };
   colors: Colors;
   rnh: boolean;
   rnhTax: number;
@@ -73,6 +73,10 @@ const useTaxesStore = defineStore({
         { id: 8, min: 51997, max: 81199, normalTax: 0.46, averageTax: 0.359 },
         { id: 9, min: 81199, normalTax: 0.48, max: null, averageTax: null },
       ],
+    },
+    iasPerYear: {
+      2023: 480.43,
+      2024: 509.26,
     },
     rnh: false,
     rnhTax: 0.2,
@@ -127,19 +131,16 @@ const useTaxesStore = defineStore({
           day: 0,
         };
       }
+      // We first calculate 70% of the gross income, with the discount applied,
+      // then we compare it to the maximum SS income, and we take the minimum
       const monthSS =
         this.ssTax *
-        Math.min(SS_MAX_MONTH_INCOME, this.grossIncome.month * 0.7) *
-        (1 + this.ssDiscount);
-      const yearSS =
-        this.ssTax *
-        Math.min(SS_MAX_MONTH_INCOME, this.grossIncome.month * 0.7) *
-        (1 + this.ssDiscount) *
-        12;
+        Math.min(this.maxSsIncome, this.grossIncome.month * 0.7 *
+          (1 + this.ssDiscount));
       return {
-        year: Math.max(yearSS, 20 * 12),
+        year: Math.max(12 * monthSS, 20 * 12),
         month: Math.max(monthSS, 20),
-        day: monthSS / MONTH_BUSINESS_DAYS,
+        day: monthSS / MONTH_BUSINESS_DAYS
       };
     },
     specificDeductions() {
@@ -197,6 +198,9 @@ const useTaxesStore = defineStore({
     },
     getCurrentTaxRankYear(): (typeof SUPPORTED_TAX_RANK_YEARS)[number] {
       return this.currentTaxRankYear;
+    },
+    maxSsIncome() {
+      return 12 * this.iasPerYear[this.currentTaxRankYear];
     },
     taxRankAvg(): TaxRank {
       if (this.taxRank === undefined || this.taxRank.id === 1) {
