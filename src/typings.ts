@@ -23,3 +23,12 @@ export interface Colors {
   irs: string;
   ss: string;
 }
+
+export interface YouthIrsRank {
+  maxDiscountPercentage: number;
+  maxDiscountIasMultiplier: number;
+}
+
+export interface YouthIrs {
+  [key: number] : YouthIrsRank;
+}

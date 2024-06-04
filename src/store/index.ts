@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { FrequencyChoices, GrossIncome, TaxRank, Colors } from "@/typings";
+import { FrequencyChoices, GrossIncome, TaxRank, Colors, YouthIrsRank, YouthIrs } from "@/typings";
 import { asCurrency } from "@/utils.js";
 import { updateUrlQuery, clearUrlQuery } from "@/router";
 
@@ -24,12 +24,15 @@ interface TaxesState {
   currentTaxRankYear: (typeof SUPPORTED_TAX_RANK_YEARS)[number];
   taxRanks: { [K in (typeof SUPPORTED_TAX_RANK_YEARS)[number]]: TaxRank[] };
   iasPerYear: { [K in (typeof SUPPORTED_TAX_RANK_YEARS)[number]]: number };
+  youthIrs: { [K in (typeof SUPPORTED_TAX_RANK_YEARS)[number]]: YouthIrs };
   colors: Colors;
   rnh: boolean;
   rnhTax: number;
   firstYear: boolean;
   secondYear: boolean;
   ssFirstYear: boolean;
+  benefitsOfYouthIrs: boolean;
+  yearOfYouthIrs: 1 | 2 | 3 | 4 | 5;
 }
 const useTaxesStore = defineStore({
   id: "taxes",
@@ -88,6 +91,24 @@ const useTaxesStore = defineStore({
       irs: "#ff6384",
       ss: "#36a2eb",
     },
+    youthIrs: {
+      2023: {
+        1: { maxDiscountPercentage: 0.5, maxDiscountIasMultiplier: 12.5 },
+        2: { maxDiscountPercentage: 0.4, maxDiscountIasMultiplier: 10 },
+        3: { maxDiscountPercentage: 0.3, maxDiscountIasMultiplier: 7.5 },
+        4: { maxDiscountPercentage: 0.3, maxDiscountIasMultiplier: 7.5 },
+        5: { maxDiscountPercentage: 0.2, maxDiscountIasMultiplier: 5 },
+      },
+      2024: {
+        1: { maxDiscountPercentage: 1, maxDiscountIasMultiplier: 40 },
+        2: { maxDiscountPercentage: 0.75, maxDiscountIasMultiplier: 30 },
+        3: { maxDiscountPercentage: 0.5, maxDiscountIasMultiplier: 20 },
+        4: { maxDiscountPercentage: 0.5, maxDiscountIasMultiplier: 20 },
+        5: { maxDiscountPercentage: 0.25, maxDiscountIasMultiplier: 10 },
+      }
+    },
+    benefitsOfYouthIrs: false,
+    yearOfYouthIrs: 1,
   }),
   getters: {
     showDashboard: (state) => {
@@ -174,7 +195,7 @@ const useTaxesStore = defineStore({
 
       return (
         grossIncome *
-          (this.firstYear ? 0.375 : this.secondYear ? 0.5625 : 0.75) +
+        (this.firstYear ? 0.375 : this.secondYear ? 0.5625 : 0.75) +
         expensesMissing
       );
     },
@@ -200,7 +221,10 @@ const useTaxesStore = defineStore({
       return this.currentTaxRankYear;
     },
     maxSsIncome() {
-      return 12 * this.iasPerYear[this.currentTaxRankYear];
+      return 12 * this.currentIas();
+    },
+    currentIas() {
+      return this.iasPerYear[this.currentTaxRankYear];
     },
     taxRankAvg(): TaxRank {
       if (this.taxRank === undefined || this.taxRank.id === 1) {
@@ -234,13 +258,21 @@ const useTaxesStore = defineStore({
       if (this.taxRankAvg === undefined) {
         return {};
       }
-      let yearIRS;
+      let yearIRS: number;
       if (this.rnh) {
         yearIRS = this.taxableIncome * this.rnhTax;
       } else {
         yearIRS =
           this.taxIncomeAvg * this.taxRankAvg.averageTax +
           this.taxIncomeNormal * this.taxRank.normalTax;
+      }
+
+      if (this.benefitsOfYouthIrs) {
+        const youthIrsRank = this.youthIrs[this.currentTaxRankYear][this.yearOfYouthIrs];
+        const maxDiscount = youthIrsRank.maxDiscountPercentage * yearIRS;
+        const maxDiscountIas = youthIrsRank.maxDiscountIasMultiplier * this.currentIas();
+        const youthDiscount = Math.min(maxDiscount, maxDiscountIas);
+        yearIRS = Math.max(yearIRS - youthDiscount, 0);
       }
 
       const monthIRS = Math.max(yearIRS / this.nrMonthsDisplay, 0);
@@ -339,6 +371,12 @@ const useTaxesStore = defineStore({
     setSsFirstYear(value: boolean) {
       this.ssFirstYear = value;
       updateUrlQuery({ ssFirstYear: this.ssFirstYear });
+    },
+    setBenefitsOfYouthIrs(value: boolean) {
+      this.benefitsOfYouthIrs = value;
+    },
+    setYearOfYouthIrs(value: 1 | 2 | 3 | 4 | 5) {
+      this.yearOfYouthIrs = value;
     },
     setFirstYear(value: boolean) {
       console.log("firstYear store", value);
