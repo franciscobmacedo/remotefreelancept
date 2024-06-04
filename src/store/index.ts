@@ -375,9 +375,11 @@ const useTaxesStore = defineStore({
     },
     setBenefitsOfYouthIrs(value: boolean) {
       this.benefitsOfYouthIrs = value;
+      updateUrlQuery({ benefitsOfYouthIrs: this.benefitsOfYouthIrs });
     },
     setYearOfYouthIrs(value: 1 | 2 | 3 | 4 | 5) {
       this.yearOfYouthIrs = value;
+      updateUrlQuery({ yearOfYouthIrs: this.yearOfYouthIrs });
     },
     setFirstYear(value: boolean) {
       console.log("firstYear store", value);
@@ -508,6 +510,8 @@ const useTaxesStore = defineStore({
         null,
       );
       this.setParameterFromUrl(params["rnh"], this.setRnh, booleanParser, null);
+      this.setParameterFromUrl(params["benefitsOfYouthIrs"], this.setBenefitsOfYouthIrs, booleanParser, null);
+      this.setParameterFromUrl(params["yearOfYouthIrs"], this.setYearOfYouthIrs, parseInt, (value: number) => value >= 1 && value <= 5);
     },
     reset() {
       this.setIncome(null);
@@ -521,6 +525,8 @@ const useTaxesStore = defineStore({
       this.setFirstYear(false);
       this.setSecondYear(false);
       this.setRnh(false);
+      this.setBenefitsOfYouthIrs(false);
+      this.setYearOfYouthIrs(1);
       clearUrlQuery();
     },
   },
