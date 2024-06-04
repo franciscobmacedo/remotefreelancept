@@ -96,13 +96,16 @@
             higher education. Click to see more.
           </p>
         </InfoButton>
-        <div v-if="store.benefitsOfYouthIrs" class="w-16">
-          <DropDown
-            :choices="youthIrsYears"
-            @change="changeYouthIrsYear"
-            :value="store.yearOfYouthIrs.toString()"
-            data-cy="tax-rank-years-dropdown"
-          />
+        <div v-if="store.benefitsOfYouthIrs" class="flex items-center gap-x-3">
+          <p class="text-sm w-fit h-fit">Year</p>
+          <div class="w-16">
+            <DropDown
+              :choices="youthIrsYears"
+              @change="changeYouthIrsYear"
+              :value="store.yearOfYouthIrs.toString()"
+              data-cy="tax-rank-years-dropdown"
+            />
+          </div>
         </div>
       </div>
       <div
