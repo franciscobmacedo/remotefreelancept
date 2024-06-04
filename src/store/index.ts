@@ -221,7 +221,7 @@ const useTaxesStore = defineStore({
       return this.currentTaxRankYear;
     },
     maxSsIncome() {
-      return 12 * this.currentIas();
+      return 12 * this.currentIas;
     },
     currentIas() {
       return this.iasPerYear[this.currentTaxRankYear];
@@ -270,9 +270,10 @@ const useTaxesStore = defineStore({
       if (this.benefitsOfYouthIrs) {
         const youthIrsRank = this.youthIrs[this.currentTaxRankYear][this.yearOfYouthIrs];
         const maxDiscount = youthIrsRank.maxDiscountPercentage * yearIRS;
-        const maxDiscountIas = youthIrsRank.maxDiscountIasMultiplier * this.currentIas();
+        const maxDiscountIas = youthIrsRank.maxDiscountIasMultiplier * this.currentIas;
         const youthDiscount = Math.min(maxDiscount, maxDiscountIas);
         yearIRS = Math.max(yearIRS - youthDiscount, 0);
+        console.log("yearIRS", yearIRS, "youthDiscount", youthDiscount);
       }
 
       const monthIRS = Math.max(yearIRS / this.nrMonthsDisplay, 0);

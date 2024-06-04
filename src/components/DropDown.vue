@@ -15,7 +15,7 @@
     />
     <div
       v-if="showDropdown"
-      class="absolute top-5 shadow-lg bg-defaultbg w-full overflow-scroll h-max-64"
+      class="absolute top-5 shadow-lg bg-defaultbg w-full overflow-scroll h-max-64 z-10"
     >
       <button
         v-for="choice in choices"
