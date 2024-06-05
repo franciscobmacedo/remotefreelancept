@@ -194,10 +194,20 @@ const useTaxesStore = defineStore({
           : 0;
 
       return (
-        grossIncome *
+        (grossIncome - this.youthIrsDiscount) *
         (this.firstYear ? 0.375 : this.secondYear ? 0.5625 : 0.75) +
         expensesMissing
       );
+    },
+    youthIrsDiscount() {
+      if (!this.benefitsOfYouthIrs) {
+        return 0;
+      }
+      const youthIrsRank = this.youthIrs[this.currentTaxRankYear][this.yearOfYouthIrs];
+      const maxDiscount = youthIrsRank.maxDiscountPercentage * this.grossIncome.year;
+      const maxDiscountIas = youthIrsRank.maxDiscountIasMultiplier * this.currentIas;
+      console.log("maxDiscount", maxDiscount, "maxDiscountIas", maxDiscountIas);
+      return Math.min(maxDiscount, maxDiscountIas);
     },
     taxRank(): TaxRank {
       return this.taxRanks[this.currentTaxRankYear].filter(
@@ -265,15 +275,6 @@ const useTaxesStore = defineStore({
         yearIRS =
           this.taxIncomeAvg * this.taxRankAvg.averageTax +
           this.taxIncomeNormal * this.taxRank.normalTax;
-      }
-
-      if (this.benefitsOfYouthIrs) {
-        const youthIrsRank = this.youthIrs[this.currentTaxRankYear][this.yearOfYouthIrs];
-        const maxDiscount = youthIrsRank.maxDiscountPercentage * yearIRS;
-        const maxDiscountIas = youthIrsRank.maxDiscountIasMultiplier * this.currentIas;
-        const youthDiscount = Math.min(maxDiscount, maxDiscountIas);
-        yearIRS = Math.max(yearIRS - youthDiscount, 0);
-        console.log("yearIRS", yearIRS, "youthDiscount", youthDiscount);
       }
 
       const monthIRS = Math.max(yearIRS / this.nrMonthsDisplay, 0);
