@@ -27,6 +27,8 @@ interface TaxesState {
   colors: Colors;
   rnh: boolean;
   rnhTax: number;
+  solidarityFee1: number;
+  solidarityFee2: number;
   firstYear: boolean;
   secondYear: boolean;
   ssFirstYear: boolean;
@@ -80,6 +82,8 @@ const useTaxesStore = defineStore({
     },
     rnh: false,
     rnhTax: 0.2,
+    solidarityFee1: 0.025,
+    solidarityFee2: 0.05,
     firstYear: false,
     secondYear: false,
     ssFirstYear: false,
@@ -230,17 +234,29 @@ const useTaxesStore = defineStore({
       return this.taxableIncome - this.taxIncomeAvg;
     },
 
+    solidarityFeeTotal() {
+      if (this.taxableIncome < 80000) {
+        return 0
+      } else if (this.taxableIncome >= 80000 && this.taxableIncome < 250000){
+        return this.taxableIncome * this.solidarityFee1
+      } else if (this.taxableIncome >= 250000){
+        return this.taxableIncome * this.solidarityFee2
+      }
+    },
+
     irsPay() {
       if (this.taxRankAvg === undefined) {
         return {};
       }
       let yearIRS;
+
       if (this.rnh) {
-        yearIRS = this.taxableIncome * this.rnhTax;
+        yearIRS = (this.taxableIncome * this.rnhTax) + this.solidarityFeeTotal;
       } else {
         yearIRS =
-          this.taxIncomeAvg * this.taxRankAvg.averageTax +
-          this.taxIncomeNormal * this.taxRank.normalTax;
+          (this.taxIncomeAvg * this.taxRankAvg.averageTax) +
+          (this.taxIncomeNormal * this.taxRank.normalTax) +
+          + this.solidarityFeeTotal;
       }
 
       const monthIRS = Math.max(yearIRS / this.nrMonthsDisplay, 0);
@@ -250,11 +266,13 @@ const useTaxesStore = defineStore({
         day: monthIRS / MONTH_BUSINESS_DAYS,
       };
     },
+
     taxesDisplay() {
       return asCurrency(
         this.irsPay[this.displayFrequency] + this.ssPay[this.displayFrequency],
       );
     },
+
     netIncome() {
       const monthIncome =
         this.grossIncome.month - this.irsPay.month - this.ssPay.month;
