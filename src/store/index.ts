@@ -206,7 +206,6 @@ const useTaxesStore = defineStore({
       const youthIrsRank = this.youthIrs[this.currentTaxRankYear][this.yearOfYouthIrs];
       const maxDiscount = youthIrsRank.maxDiscountPercentage * this.grossIncome.year;
       const maxDiscountIas = youthIrsRank.maxDiscountIasMultiplier * this.currentIas;
-      console.log("maxDiscount", maxDiscount, "maxDiscountIas", maxDiscountIas);
       return Math.min(maxDiscount, maxDiscountIas);
     },
     taxRank(): TaxRank {
