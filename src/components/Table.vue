@@ -64,6 +64,12 @@
         <td class="grey lighten-4"></td>
         <td class="grey lighten-4"></td>
       </tr>
+      <tr v-if="benefitsOfYouthIrs" class="border-b-2">
+        <td class="pl-2 py-3">Youth IRS Discount</td>
+        <td class="whitespace-nowrap">{{ renderCellValue(youthIrsDiscount) }}</td>
+        <td class="grey lighten-4"></td>
+        <td class="grey lighten-4"></td>
+      </tr>
       <tr class="border-b-2">
         <td class="pl-2 py-3">Taxable income</td>
         <td class="whitespace-nowrap">
@@ -149,6 +155,8 @@ const {
   taxIncomeNormal,
   taxIncomeAvg,
   getTaxRanks,
+  youthIrsDiscount,
+  benefitsOfYouthIrs
 } = storeToRefs(useTaxesStore());
 
 const decimalCases = computed(() => {

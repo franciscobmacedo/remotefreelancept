@@ -79,6 +79,36 @@
         </InfoButton>
       </div>
       <div
+        class="flex h-5 ml-3 md:ml-0 justify-start items-center mt-6 sm:space-x-2 md:space-x-4"
+      >
+        <SwitchButton
+          id="youthIrsSwitchButton"
+          label="Are you eligible for Youth IRS?"
+          :model-value="store.benefitsOfYouthIrs"
+          @update:model-value="store.setBenefitsOfYouthIrs"
+          data-cy="youth-irs"
+        />
+        <InfoButton
+          link="https://www.deco.proteste.pt/dinheiro/impostos/dicas/irs-jovem-como-funciona"
+        >
+          <p class="text-sm w-64 text-center">
+            You can get a discount on your IRS tax if you are under 35 years old and have
+            higher education. Click to see more.
+          </p>
+        </InfoButton>
+        <div v-if="store.benefitsOfYouthIrs" class="flex items-center gap-x-3">
+          <p class="text-sm w-fit h-fit">Year</p>
+          <div class="w-16">
+            <DropDown
+              :choices="youthIrsYears"
+              @change="changeYouthIrsYear"
+              :value="store.yearOfYouthIrs.toString()"
+              data-cy="tax-rank-years-dropdown"
+            />
+          </div>
+        </div>
+      </div>
+      <div
         class="flex ml-3 md:ml-0 justify-start items-center mt-6 sm:space-x-2 md:space-x-4"
       >
         <SwitchButton
@@ -318,4 +348,13 @@ const setSecondYear = (value: boolean) => {
   store.setSecondYear(value);
   firstYearKey.value++;
 };
+
+// youth IRS
+const youthIrsYears = [1, 2, 3, 4, 5];
+const changeYouthIrsYear = (
+  year: 1 | 2 | 3 | 4 | 5,
+) => {
+  store.setYearOfYouthIrs(year);
+};
+
 </script>
