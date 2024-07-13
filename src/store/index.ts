@@ -1,11 +1,19 @@
 import { defineStore } from "pinia";
-import { FrequencyChoices, GrossIncome, TaxRank, Colors, YouthIrsRank, YouthIrs } from "@/typings";
-import { asCurrency } from "@/utils.js";
+import {
+  FrequencyChoices,
+  GrossIncome,
+  TaxRank,
+  Colors,
+  YouthIrsRank,
+  YouthIrs,
+} from "@/typings";
+import { asCurrency, generateUUID } from "@/utils.js";
 import { updateUrlQuery, clearUrlQuery } from "@/router";
 
 export const YEAR_BUSINESS_DAYS = 248;
 export const MONTH_BUSINESS_DAYS = 22;
 export const SUPPORTED_TAX_RANK_YEARS = [2023, 2024];
+const SIMULATIONS_LOCAL_STORE_KEY = "net_income_simulations";
 
 interface TaxesState {
   income: number | null;
@@ -33,6 +41,16 @@ interface TaxesState {
   ssFirstYear: boolean;
   benefitsOfYouthIrs: boolean;
   yearOfYouthIrs: 1 | 2 | 3 | 4 | 5;
+  storedSimulations:
+    | [
+        {
+          id: string;
+          simulationName: string;
+          createdAt: string;
+          parameters: Record<string, string>;
+        },
+      ]
+    | null;
 }
 const useTaxesStore = defineStore({
   id: "taxes",
@@ -105,10 +123,11 @@ const useTaxesStore = defineStore({
         3: { maxDiscountPercentage: 0.5, maxDiscountIasMultiplier: 20 },
         4: { maxDiscountPercentage: 0.5, maxDiscountIasMultiplier: 20 },
         5: { maxDiscountPercentage: 0.25, maxDiscountIasMultiplier: 10 },
-      }
+      },
     },
     benefitsOfYouthIrs: false,
     yearOfYouthIrs: 1,
+    storedSimulations: null,
   }),
   getters: {
     showDashboard: (state) => {
@@ -156,12 +175,14 @@ const useTaxesStore = defineStore({
       // then we compare it to the maximum SS income, and we take the minimum
       const monthSS =
         this.ssTax *
-        Math.min(this.maxSsIncome, this.grossIncome.month * 0.7 *
-          (1 + this.ssDiscount));
+        Math.min(
+          this.maxSsIncome,
+          this.grossIncome.month * 0.7 * (1 + this.ssDiscount),
+        );
       return {
         year: Math.max(12 * monthSS, 20 * 12),
         month: Math.max(monthSS, 20),
-        day: monthSS / MONTH_BUSINESS_DAYS
+        day: monthSS / MONTH_BUSINESS_DAYS,
       };
     },
     specificDeductions() {
@@ -195,7 +216,7 @@ const useTaxesStore = defineStore({
 
       return (
         (grossIncome - this.youthIrsDiscount) *
-        (this.firstYear ? 0.375 : this.secondYear ? 0.5625 : 0.75) +
+          (this.firstYear ? 0.375 : this.secondYear ? 0.5625 : 0.75) +
         expensesMissing
       );
     },
@@ -203,9 +224,12 @@ const useTaxesStore = defineStore({
       if (!this.benefitsOfYouthIrs) {
         return 0;
       }
-      const youthIrsRank = this.youthIrs[this.currentTaxRankYear][this.yearOfYouthIrs];
-      const maxDiscount = youthIrsRank.maxDiscountPercentage * this.grossIncome.year;
-      const maxDiscountIas = youthIrsRank.maxDiscountIasMultiplier * this.currentIas;
+      const youthIrsRank =
+        this.youthIrs[this.currentTaxRankYear][this.yearOfYouthIrs];
+      const maxDiscount =
+        youthIrsRank.maxDiscountPercentage * this.grossIncome.year;
+      const maxDiscountIas =
+        youthIrsRank.maxDiscountIasMultiplier * this.currentIas;
       return Math.min(maxDiscount, maxDiscountIas);
     },
     taxRank(): TaxRank {
@@ -262,7 +286,6 @@ const useTaxesStore = defineStore({
       }
       return this.taxableIncome - this.taxIncomeAvg;
     },
-
     irsPay() {
       if (this.taxRankAvg === undefined) {
         return {};
@@ -314,6 +337,12 @@ const useTaxesStore = defineStore({
     },
     netIncomeDisplay(): string {
       return asCurrency(this.netIncomeFrequency);
+    },
+    hasStoredSimulations() {
+      return this.storedSimulations && this.storedSimulations.length > 0;
+    },
+    storedSimulationsCount() {
+      return this.storedSimulations && this.storedSimulations.length;
     },
   },
   actions: {
@@ -382,7 +411,6 @@ const useTaxesStore = defineStore({
       updateUrlQuery({ yearOfYouthIrs: this.yearOfYouthIrs });
     },
     setFirstYear(value: boolean) {
-      console.log("firstYear store", value);
       this.firstYear = value;
       if (value === true && this.secondYear === true) {
         this.secondYear = false;
@@ -395,7 +423,6 @@ const useTaxesStore = defineStore({
       }
     },
     setSecondYear(value: boolean) {
-      console.log("secondYear store", value);
       this.secondYear = value;
       if (value === true) {
         this.firstYear = false;
@@ -411,7 +438,6 @@ const useTaxesStore = defineStore({
       this.rnh = value;
       updateUrlQuery({ rnh: this.rnh });
     },
-
     setParameterFromUrl(
       value: any,
       setter: CallableFunction,
@@ -510,8 +536,68 @@ const useTaxesStore = defineStore({
         null,
       );
       this.setParameterFromUrl(params["rnh"], this.setRnh, booleanParser, null);
-      this.setParameterFromUrl(params["benefitsOfYouthIrs"], this.setBenefitsOfYouthIrs, booleanParser, null);
-      this.setParameterFromUrl(params["yearOfYouthIrs"], this.setYearOfYouthIrs, parseInt, (value: number) => value >= 1 && value <= 5);
+      this.setParameterFromUrl(
+        params["benefitsOfYouthIrs"],
+        this.setBenefitsOfYouthIrs,
+        booleanParser,
+        null,
+      );
+      this.setParameterFromUrl(
+        params["yearOfYouthIrs"],
+        this.setYearOfYouthIrs,
+        parseInt,
+        (value: number) => value >= 1 && value <= 5,
+      );
+    },
+    getUrlParams() {
+      const urlParams = new URLSearchParams(
+        window.location.hash.split("/?")[1],
+      );
+
+      const params: { [key: string]: string | boolean } = {};
+
+      urlParams.forEach((value, key) => (params[key] = value));
+
+      return params;
+    },
+    setStoredSimulations(storedSimulations) {
+      this.storedSimulations = storedSimulations;
+    },
+    loadSimulations() {
+      if (!this.storedSimulations) {
+        const simulations = localStorage.getItem(SIMULATIONS_LOCAL_STORE_KEY);
+        this.storedSimulations = simulations ? JSON.parse(simulations) : [];
+      }
+    },
+    deleteSimulation(id: string) {
+      const index = this.storedSimulations.findIndex((s) => s.id === id);
+      if (index !== -1) {
+        this.storedSimulations.splice(index, 1);
+
+        this.updateStoredSimulations();
+      }
+    },
+    updateStoredSimulations() {
+      localStorage.setItem(
+        SIMULATIONS_LOCAL_STORE_KEY,
+        JSON.stringify(this.storedSimulations),
+      );
+    },
+    storeSimulation(simulationName: string) {
+      if (!this.storedSimulations) {
+        this.loadSimulations();
+      }
+
+      this.storedSimulations.push({
+        id: generateUUID(),
+        simulationName,
+        createdAt: new Date().toISOString(),
+        parameters: {
+          ...this.getUrlParams(),
+        },
+      });
+
+      this.updateStoredSimulations();
     },
     reset() {
       this.setIncome(null);

@@ -23,3 +23,25 @@ export const reverseCurrency = (num: string) => {
   const result = parseFloat(num.replaceAll(" ", "").replaceAll("€", ""));
   return result <= 0 ? NaN : result;
 };
+
+export const formatISOString = (isoString: string): string => {
+  return new Date(isoString).toLocaleString("en");
+};
+
+export const generateUUID = (): string => {
+  const uuid: string[] = [];
+
+  for (let i = 0; i < 36; i++) {
+    if (i === 8 || i === 13 || i === 18 || i === 23) {
+      uuid[i] = "-";
+    } else if (i === 14) {
+      uuid[i] = "4";
+    } else if (i === 19) {
+      uuid[i] = (Math.floor(Math.random() * 4) + 8).toString(16);
+    } else {
+      uuid[i] = Math.floor(Math.random() * 16).toString(16);
+    }
+  }
+
+  return uuid.join("");
+};
