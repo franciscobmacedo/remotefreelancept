@@ -35,6 +35,7 @@
                 v-model="simulationName"
                 type="text"
                 autocomplete="off"
+                data-cy="simulation-name"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
                 placeholder="Simulation name"
                 required
@@ -43,6 +44,7 @@
             <div class="flex justify-end">
               <button
                 type="submit"
+                data-cy="save-new-simulation-button"
                 class="text-white bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
               >
                 Save

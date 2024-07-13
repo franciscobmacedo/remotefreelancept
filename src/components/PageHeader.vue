@@ -8,6 +8,7 @@
         </router-link>
         <router-link
           v-if="store.hasStoredSimulations"
+          data-cy="simulations-menu"
           class="flex items-center justify-center space-x-3"
           to="/simulations"
         >

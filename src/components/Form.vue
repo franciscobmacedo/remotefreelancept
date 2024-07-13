@@ -104,9 +104,8 @@
             <FrequencyButton />
           </div>
           </div>
-          <div class="inline-flex gap-5">
+          <div v-if="income !== null" class="inline-flex gap-5">
             <button
-            v-if="income !== null"
             class="text-sm hover:text-income hover:font-medium py-5 flex gap-2 items-center"
             @click="store.reset()"
           >
@@ -114,7 +113,6 @@
             <ArrowPathIcon class="h-3" />
           </button>
           <button
-            v-if="income !== null"
             class="text-sm hover:text-secondary hover:font-medium py-5 flex gap-2 items-center"
             @click="share"
           >
@@ -122,7 +120,7 @@
             <ShareIcon class="h-3" />
           </button>
           <button
-            v-if="income !== null"
+            data-cy="save-simulation-button"
             class="text-sm hover:text-tertiary hover:font-medium py-5 flex gap-2 items-center"
             @click="showNewSimulationDialog = true"
           >

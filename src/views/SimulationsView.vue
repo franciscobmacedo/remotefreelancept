@@ -13,10 +13,10 @@ v-for="simulation in storedSimulationsSortedByDate" :key="simulation.id"
             <span class="font-light text-sm">{{ formatISOString(simulation.createdAt) }}</span>
           </div>
           <div class="flex items-center">
-            <router-link :to="{ name: 'Simulator', query: simulation.parameters }" class="inline-flex group p-2">
+            <router-link :to="{ name: 'Simulator', query: simulation.parameters }" class="inline-flex group p-2" data-cy="open-simulation">
               <ArrowRightEndOnRectangleIcon class="w-5 text-gray-500 group-hover:text-gray-900" />
             </router-link>
-            <button class="inline-flex p-2 group" @click="store.deleteSimulation(simulation.id)">
+            <button class="inline-flex p-2 group" @click="store.deleteSimulation(simulation.id)" data-cy="delete-simulation">
               <TrashIcon class="w-5 text-gray-500 group-hover:text-red-600" />
             </button>
           </div>
