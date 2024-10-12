@@ -4,7 +4,7 @@ import path from "path";
 
 export default defineConfig({
   plugins: [vue()],
-  base: "/remotefreelancept/",
+  base: "/remotefreelancept/", //repo name
   server: {
     port: process.env.PORT || null
   },
