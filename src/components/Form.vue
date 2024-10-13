@@ -1,4 +1,18 @@
 <template>
+  <transition
+    enter-active-class="duration-300 ease-out"
+    enter-from-class="transform opacity-0"
+    enter-to-class="opacity-100"
+    leave-active-class="duration-200 ease-in"
+    leave-from-class="opacity-100"
+    leave-to-class="transform opacity-0"
+  >
+    <SaveSimulationDialog
+      v-if="showNewSimulationDialog"
+      @close="showNewSimulationDialog = false"
+      @saved="simulationSaved"
+    />
+  </transition>
   <div
     class="text-center transition delay-5 duration-100 ease-in-out flex"
     :class="{ 'h-screen': validationCount === 0 }"
@@ -6,10 +20,10 @@
     <div class="m-auto container max-w-2xl">
       <div class="relative md:h-44">
         <h4
-          class="font-semibold"
+          class="font-semibold mt-4 md:mt-0"
           :class="
             validationCount > 0
-              ? 'text-lg md:text-xl lg:text-2xl lg:w-[500px]'
+              ? 'text-lg md:text-xl lg:text-2xl'
               : 'text-lg sm:text-xl md:text-2-xl lg:text-3xl xl:text-4xl'
           "
         >
@@ -20,19 +34,19 @@
         >
           simulate your net income
         </p>
-        <div class="flex justify-around items-center">
-          <div
-            class="relative group"
-            :class="income === null ? 'w-7/12' : 'w-6/12'"
+        <div class="flex flex-col justify-around items-center md:flex-row">
+          <div class="flex items-center justify-center w-full">
+            <div
+            class="relative group w-7/12"
           >
             <div class="relative">
               <FormattedNumberInput
                 v-model:value="internalIncome"
                 placeholder="Income"
-                @click="showDropdown = true"
-                @update:value="showDropdown = false"
                 class="pl-7"
                 data-cy="income"
+                @click="showDropdown = true"
+                @update:value="showDropdown = false"
               />
 
               <ChevronDownIcon
@@ -68,10 +82,10 @@
               leave-to-class="transform opacity-0"
             >
               <div
-                v-click-outside="() => (showDropdown = false)"
-                @click="showDropdown = false"
                 v-if="showDropdown"
-                class="transition delay-5 duration-100 pt-5 pb-5 ease-in-out absolute w-full h-fit bg-neutral-100 rounded-md"
+                v-click-outside="() => (showDropdown = false)"
+                class="transition delay-5 duration-100 pt-5 pb-5 ease-in-out absolute w-full h-fit bg-neutral-100 rounded-md drop-shadow-md z-10"
+                @click="showDropdown = false"
               >
                 <div
                   class="flex flex-wrap gap-2 content-center justify-items-center place-items-center place-content-center text-center"
@@ -89,30 +103,35 @@
           <div :class="income === null ? 'w-4/12' : 'w-3/12'">
             <FrequencyButton />
           </div>
-          <button
-            v-if="income !== null"
-            class="text-sm hover:text-income hover:font-medium pl-5 py-5 flex gap-2 items-center"
+          </div>
+          <div v-if="income !== null" class="inline-flex gap-5">
+            <button
+            class="text-sm hover:text-income hover:font-medium py-5 flex gap-2 items-center"
             @click="store.reset()"
           >
             reset
             <ArrowPathIcon class="h-3" />
           </button>
           <button
-            v-if="income !== null"
-            class="text-sm hover:text-secondary hover:font-medium pl-5 py-5 flex gap-2 items-center"
+            class="text-sm hover:text-secondary hover:font-medium py-5 flex gap-2 items-center"
             @click="share"
           >
             share
             <ShareIcon class="h-3" />
           </button>
+          <button
+            data-cy="save-simulation-button"
+            class="text-sm hover:text-tertiary hover:font-medium py-5 flex gap-2 items-center"
+            @click="showNewSimulationDialog = true"
+          >
+            save
+            <BookmarkIcon class="h-3" />
+          </button>
+          </div>
         </div>
       </div>
     </div>
-    <ToastDialog
-      v-if="showToast"
-      text="sharable link copied to clipboard"
-      @close="closeToast"
-    />
+    <ToastDialog v-if="showToast" :text="toastMessage" @close="closeToast" />
   </div>
 </template>
 <script setup lang="ts">
@@ -122,6 +141,7 @@ import {
   ChevronDownIcon,
   ArrowPathIcon,
   ShareIcon,
+  BookmarkIcon,
 } from "@heroicons/vue/24/outline";
 import { storeToRefs } from "pinia";
 import { useTaxesStore } from "@/store";
@@ -130,6 +150,7 @@ import CurrencyButton from "@/components/CurrencyButton.vue";
 import ToastDialog from "@/components/ToastDialog.vue";
 import FormattedNumberInput from "@/components/FormattedNumberInput.vue";
 import FrequencyButton from "@/components/FrequencyButton.vue";
+import SaveSimulationDialog from "@/components/SaveSimulationDialog.vue";
 import { FrequencyChoices } from "@/typings";
 
 const { breakpoint } = useBreakpoint();
@@ -182,11 +203,22 @@ const changeAmount = computed(() => {
 
 // share
 const showToast = ref(false);
+const toastMessage = ref("");
+const showNewSimulationDialog = ref(false);
+
 const closeToast = () => {
   showToast.value = false;
 };
+
 const share = () => {
+  toastMessage.value = "sharable link copied to clipboard";
   navigator.clipboard.writeText(window.location.href);
+  showToast.value = true;
+};
+
+const simulationSaved = () => {
+  showNewSimulationDialog.value = false;
+  toastMessage.value = "Simulation saved";
   showToast.value = true;
 };
 </script>

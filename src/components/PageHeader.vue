@@ -6,6 +6,14 @@
           <img src="@/assets/world.svg" class="h-7" />
           <span> simulator </span>
         </router-link>
+        <router-link
+          v-if="store.hasStoredSimulations"
+          data-cy="simulations-menu"
+          class="flex items-center justify-center space-x-3"
+          to="/simulations"
+        >
+          <span> simulations ({{ store.storedSimulationsCount }}) </span>
+        </router-link>
         <router-link class="flex items-center justify-center" to="/about">
           about
         </router-link>
@@ -24,6 +32,10 @@
   </header>
 </template>
 <script lang="ts" setup>
+import { useTaxesStore } from "@/store";
 import { useBreakpoint } from "@/composables/breakpoints";
 const { breakpoint } = useBreakpoint();
+
+const store = useTaxesStore();
+store.loadSimulations();
 </script>
