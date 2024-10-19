@@ -358,8 +358,8 @@ describe("Taxes Store", () => {
     expect(taxesStore.getTaxRanks[3].max).toEqual(21321);
     expect(taxesStore.getTaxRanks[4].max).toEqual(27146);
     expect(taxesStore.getTaxRanks[5].max).toEqual(39791);
-    expect(taxesStore.getTaxRanks[6].max).toEqual(51997);
-    expect(taxesStore.getTaxRanks[7].max).toEqual(81199);
+    expect(taxesStore.getTaxRanks[6].max).toEqual(43000);
+    expect(taxesStore.getTaxRanks[7].max).toEqual(80000);
     expect(taxesStore.getTaxRanks[8].max).toBeFalsy();
 
     taxesStore.setCurrentTaxRankYear(2023);
