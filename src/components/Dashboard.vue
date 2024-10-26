@@ -24,7 +24,7 @@
       </div>
       <div class="flex ml-3 md:ml-0 justify-start items-center mt-2 space-x-4">
         <p class="text-sm w-fit">Income tax year</p>
-        <div class="w-16">
+        <div class="w-20">
           <DropDown
             :choices="SUPPORTED_TAX_RANK_YEARS"
             @change="changeCurrentTaxRankYear"

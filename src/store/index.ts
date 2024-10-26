@@ -12,7 +12,7 @@ import { updateUrlQuery, clearUrlQuery } from "@/router";
 
 export const YEAR_BUSINESS_DAYS = 248;
 export const MONTH_BUSINESS_DAYS = 22;
-export const SUPPORTED_TAX_RANK_YEARS = [2023, 2024];
+export const SUPPORTED_TAX_RANK_YEARS = ([2023, 2024]).sort((a, b) => b - a);
 const SIMULATIONS_LOCAL_STORE_KEY = "net_income_simulations";
 
 interface TaxesState {
@@ -606,7 +606,7 @@ const useTaxesStore = defineStore({
       this.setNrMonthsDisplay(12);
       this.setSsDiscount(0);
       this.setExpenses(0);
-      this.setCurrentTaxRankYear(2023);
+      this.setCurrentTaxRankYear( SUPPORTED_TAX_RANK_YEARS[0] );
       this.setSsFirstYear(false);
       this.setFirstYear(false);
       this.setSecondYear(false);
