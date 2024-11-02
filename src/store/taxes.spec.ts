@@ -47,7 +47,7 @@ describe("Taxes Store", () => {
     expect(taxesStore.grossIncome.year).toBe(newGrossIncome * MONTHS_IN_YEAR);
     expect(taxesStore.grossIncome.month).toBe(newGrossIncome);
     expect(taxesStore.grossIncome.day).toBe(
-      newGrossIncome / MONTH_BUSINESS_DAYS,
+      taxesStore.grossIncome.year / YEAR_BUSINESS_DAYS,
     );
   });
 
@@ -61,7 +61,7 @@ describe("Taxes Store", () => {
       newGrossIncome * YEAR_BUSINESS_DAYS,
     );
     expect(taxesStore.grossIncome.month).toBe(
-      newGrossIncome * MONTH_BUSINESS_DAYS,
+      taxesStore.grossIncome.year / MONTHS_IN_YEAR,
     );
     expect(taxesStore.grossIncome.day).toBe(newGrossIncome);
   });
