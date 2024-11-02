@@ -59,6 +59,27 @@
       </div>
 
       <div class="flex ml-3 md:ml-0 justify-start items-center mt-2 space-x-4">
+        <p class="text-sm w-fit">Number of days off taken in a year</p>
+        <!-- This input field accepts negative values, with a minimum limit that ensures the total number of working days in a year does not exceed 365.  -->
+        <AdjustCounter
+          :value="store.nrDaysOff"
+          @update:value="store.setNrDaysOff"
+          :min="YEAR_BUSINESS_DAYS - 365" 
+          :max="YEAR_BUSINESS_DAYS - 1"
+          unit="days"
+          data-cy="nr-days-off"
+        /> 
+        <InfoButton>
+          <p class="text-sm w-64 text-center">
+            Set the number of unpaid days off or unpaid vacation days you plan to 
+            take during the year. These days will be deducted from the annual 
+            income calculation.
+            This simulation assumes that one year consists of {{YEAR_BUSINESS_DAYS}} working days.
+          </p>
+        </InfoButton>
+      </div>
+
+      <div class="flex ml-3 md:ml-0 justify-start items-center mt-2 space-x-4">
         <p class="text-sm w-fit">Adjust your contribution to social security</p>
         <AdjustCounter
           v-model:value="ssDiscountPosition"
@@ -277,7 +298,7 @@ import { storeToRefs } from "pinia";
 
 import { asCurrency } from "@/utils.js";
 import { FrequencyChoices } from "@/typings";
-import { SUPPORTED_TAX_RANK_YEARS, useTaxesStore } from "@/store";
+import { SUPPORTED_TAX_RANK_YEARS, useTaxesStore, YEAR_BUSINESS_DAYS } from "@/store";
 import { ArrowPathIcon } from "@heroicons/vue/24/outline";
 
 import Chart from "@/components/Chart.vue";
@@ -294,6 +315,7 @@ const {
   taxesDisplay,
   ssDisplay,
   nrMonthsDisplay,
+  nrDaysOff,
   irsDisplay,
   expensesNeeded,
   grossIncome,
