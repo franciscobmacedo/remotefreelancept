@@ -64,7 +64,7 @@
         <AdjustCounter
           :value="store.nrDaysOff"
           @update:value="store.setNrDaysOff"
-          :min="YEAR_BUSINESS_DAYS - 365" 
+          :min="0" 
           :max="YEAR_BUSINESS_DAYS - 1"
           unit="days"
           data-cy="nr-days-off"
