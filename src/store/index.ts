@@ -9,7 +9,6 @@ import {
 } from "@/typings";
 import { asCurrency, generateUUID } from "@/utils.js";
 import { updateUrlQuery, clearUrlQuery } from "@/router";
-import { ssrExportAllKey } from "vite/runtime";
 
 export const YEAR_BUSINESS_DAYS = 248;
 //export const MONTH_BUSINESS_DAYS = 22; // No longer used by this simulator, only year business days are taken into account
@@ -303,10 +302,11 @@ const useTaxesStore = defineStore({
       }
 
       const monthIRS = Math.max(yearIRS / this.nrMonthsDisplay, 0);
+      const yearIrsPay = Math.max(yearIRS, 0);
       return {
-        year: Math.max(yearIRS, 0),
+        year: yearIrsPay,
         month: monthIRS,
-        day: Math.max(yearIRS, 0) / (YEAR_BUSINESS_DAYS - this.nrDaysOff),
+        day: yearIrsPay / (YEAR_BUSINESS_DAYS - this.nrDaysOff),
       };
     },
     taxesDisplay() {
@@ -315,13 +315,12 @@ const useTaxesStore = defineStore({
       );
     },
     netIncome() {
-      const monthIncome =
-        this.grossIncome.month - this.irsPay.month - this.ssPay.month;
+      const monthIncome = this.grossIncome.month - this.irsPay.month - this.ssPay.month;
+      const yearIncome = this.grossIncome.year - this.irsPay.year - this.ssPay.year;
       return {
-        year: this.grossIncome.year - this.irsPay.year - this.ssPay.year,
+        year: yearIncome,
         month: monthIncome,
-        day: (this.grossIncome.year - this.irsPay.year - this.ssPay.year) / 
-        (YEAR_BUSINESS_DAYS - this.nrDaysOff),
+        day: yearIncome / (YEAR_BUSINESS_DAYS - this.nrDaysOff),
       };
     },
     irsFrequency() {
