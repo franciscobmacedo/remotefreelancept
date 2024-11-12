@@ -36,8 +36,7 @@
             <XMarkIcon class="w-5 h-5" />
           </button>
           <div class="text-xs">
-            *Assuming 248 business days in a year and 22 business days in a
-            month.
+            *Assuming {{ YEAR_BUSINESS_DAYS }} business days in a year.
           </div>
           <div class="text-xs">
             This is only valid for independent workers with green receipts
@@ -63,7 +62,10 @@
 </template>
 <script lang="ts" setup>
 import { storeToRefs } from "pinia";
-import { useTaxesStore } from "@/store";
+import { 
+  useTaxesStore,
+  YEAR_BUSINESS_DAYS
+ } from "@/store";
 import { useBreakpoint } from "@/composables/breakpoints";
 import { XMarkIcon } from "@heroicons/vue/24/outline";
 import { ref } from "vue";

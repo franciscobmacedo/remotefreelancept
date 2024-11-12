@@ -11,8 +11,8 @@ import { asCurrency, generateUUID } from "@/utils.js";
 import { updateUrlQuery, clearUrlQuery } from "@/router";
 
 export const YEAR_BUSINESS_DAYS = 248;
-export const MONTH_BUSINESS_DAYS = 22;
-export const SUPPORTED_TAX_RANK_YEARS = [2023, 2024];
+//export const MONTH_BUSINESS_DAYS = 22; // No longer used by this simulator, only year business days are taken into account
+export const SUPPORTED_TAX_RANK_YEARS = ([2023, 2024]).sort((a, b) => b - a);
 const SIMULATIONS_LOCAL_STORE_KEY = "net_income_simulations";
 
 interface TaxesState {
@@ -22,6 +22,7 @@ interface TaxesState {
   incomeFrequency: FrequencyChoices;
   displayFrequency: FrequencyChoices;
   nrMonthsDisplay: number;
+  nrDaysOff: number;
   ssTax: number;
   expensesTax: number;
   maxExpensesTax: number;
@@ -61,6 +62,7 @@ const useTaxesStore = defineStore({
     incomeFrequency: FrequencyChoices.Year,
     displayFrequency: FrequencyChoices.Month,
     nrMonthsDisplay: 12,
+    nrDaysOff: 0,
     ssDiscount: 0,
     ssDiscountChoices: [
       -0.25, -0.2, -0.15, -0.1, -0.05, 0, +0.05, +0.1, +0.15, +0.2, +0.25,
@@ -70,7 +72,7 @@ const useTaxesStore = defineStore({
     expenses: 0,
     expensesAuto: true,
     ssTax: 0.214,
-    currentTaxRankYear: 2024,
+    currentTaxRankYear: SUPPORTED_TAX_RANK_YEARS[0], //This array should be sorted in descending order
     taxRanks: {
       2023: [
         { id: 1, min: 0, max: 7479, normalTax: 0.145, averageTax: 0.145 },
@@ -147,17 +149,16 @@ const useTaxesStore = defineStore({
           case FrequencyChoices.Year:
             result.year = state.income;
             result.month = state.income / state.nrMonthsDisplay;
-            result.day = state.income / YEAR_BUSINESS_DAYS;
+            result.day = state.income / (YEAR_BUSINESS_DAYS - state.nrDaysOff);
             break;
           case FrequencyChoices.Month:
             result.year = state.income * state.nrMonthsDisplay;
             result.month = state.income;
-            result.day = state.income / MONTH_BUSINESS_DAYS;
+            result.day = result.year / (YEAR_BUSINESS_DAYS - state.nrDaysOff);
             break;
           case FrequencyChoices.Day:
-            result.year = state.income * YEAR_BUSINESS_DAYS;
-            result.month =
-              (state.income * MONTH_BUSINESS_DAYS * 12) / state.nrMonthsDisplay;
+            result.year = state.income * (YEAR_BUSINESS_DAYS - state.nrDaysOff);
+            result.month = result.year / state.nrMonthsDisplay;
             result.day = state.income;
         }
       }
@@ -179,10 +180,11 @@ const useTaxesStore = defineStore({
           this.maxSsIncome,
           this.grossIncome.month * 0.7 * (1 + this.ssDiscount),
         );
+      const yearSSPay = Math.max(12 * monthSS, 20 * 12);
       return {
-        year: Math.max(12 * monthSS, 20 * 12),
+        year: yearSSPay,
         month: Math.max(monthSS, 20),
-        day: monthSS / MONTH_BUSINESS_DAYS,
+        day: yearSSPay / (YEAR_BUSINESS_DAYS - this.nrDaysOff),
       };
     },
     specificDeductions() {
@@ -300,10 +302,11 @@ const useTaxesStore = defineStore({
       }
 
       const monthIRS = Math.max(yearIRS / this.nrMonthsDisplay, 0);
+      const yearIrsPay = Math.max(yearIRS, 0);
       return {
-        year: Math.max(yearIRS, 0),
+        year: yearIrsPay,
         month: monthIRS,
-        day: monthIRS / MONTH_BUSINESS_DAYS,
+        day: yearIrsPay / (YEAR_BUSINESS_DAYS - this.nrDaysOff),
       };
     },
     taxesDisplay() {
@@ -312,12 +315,12 @@ const useTaxesStore = defineStore({
       );
     },
     netIncome() {
-      const monthIncome =
-        this.grossIncome.month - this.irsPay.month - this.ssPay.month;
+      const monthIncome = this.grossIncome.month - this.irsPay.month - this.ssPay.month;
+      const yearIncome = this.grossIncome.year - this.irsPay.year - this.ssPay.year;
       return {
-        year: this.grossIncome.year - this.irsPay.year - this.ssPay.year,
+        year: yearIncome,
         month: monthIncome,
-        day: monthIncome / MONTH_BUSINESS_DAYS,
+        day: yearIncome / (YEAR_BUSINESS_DAYS - this.nrDaysOff),
       };
     },
     irsFrequency() {
@@ -372,6 +375,10 @@ const useTaxesStore = defineStore({
     setNrMonthsDisplay(nrMonthsDisplay: number) {
       this.nrMonthsDisplay = nrMonthsDisplay;
       updateUrlQuery({ nrMonthsDisplay: this.nrMonthsDisplay });
+    },
+    setNrDaysOff(nrDaysOff: number) {
+      this.nrDaysOff = nrDaysOff;
+      updateUrlQuery({ nrDaysOff: this.nrDaysOff });
     },
     setCurrentTaxRankYear(
       taxRankYear: (typeof SUPPORTED_TAX_RANK_YEARS)[number],
@@ -500,6 +507,12 @@ const useTaxesStore = defineStore({
         (value: number) => value > 0,
       );
       this.setParameterFromUrl(
+        params["nrDaysOff"],
+        this.setNrDaysOff,
+        parseInt,
+        (value: number) => value >= 0,
+      );
+      this.setParameterFromUrl(
         params["ssDiscount"],
         this.setSsDiscount,
         parseFloat,
@@ -604,9 +617,10 @@ const useTaxesStore = defineStore({
       this.setIncomeFrequency(FrequencyChoices.Year);
       this.setDisplayFrequency(FrequencyChoices.Month);
       this.setNrMonthsDisplay(12);
+      this.setNrDaysOff(0);
       this.setSsDiscount(0);
       this.setExpenses(0);
-      this.setCurrentTaxRankYear(2023);
+      this.setCurrentTaxRankYear( SUPPORTED_TAX_RANK_YEARS[0] );
       this.setSsFirstYear(false);
       this.setFirstYear(false);
       this.setSecondYear(false);
