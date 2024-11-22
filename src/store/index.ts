@@ -12,7 +12,7 @@ import { updateUrlQuery, clearUrlQuery } from "@/router";
 
 export const YEAR_BUSINESS_DAYS = 248;
 //export const MONTH_BUSINESS_DAYS = 22; // No longer used by this simulator, only year business days are taken into account
-export const SUPPORTED_TAX_RANK_YEARS = ([2023, 2024]).sort((a, b) => b - a);
+export const SUPPORTED_TAX_RANK_YEARS = [2023, 2024].sort((a, b) => b - a);
 const SIMULATIONS_LOCAL_STORE_KEY = "net_income_simulations";
 
 interface TaxesState {
@@ -92,7 +92,13 @@ const useTaxesStore = defineStore({
         { id: 4, min: 16472, max: 21321, normalTax: 0.25, averageTax: 0.18419 },
         { id: 5, min: 21321, max: 27146, normalTax: 0.32, averageTax: 0.21334 },
         { id: 6, min: 27146, max: 39791, normalTax: 0.35, averageTax: 0.25835 },
-        { id: 7, min: 39791, max: 43000, normalTax: 0.435, averageTax: 0.27154 },
+        {
+          id: 7,
+          min: 39791,
+          max: 43000,
+          normalTax: 0.435,
+          averageTax: 0.27154,
+        },
         { id: 8, min: 43000, max: 80000, normalTax: 0.45, averageTax: 0.35408 },
         { id: 9, min: 80000, normalTax: 0.48, max: null, averageTax: null },
       ],
@@ -239,7 +245,7 @@ const useTaxesStore = defineStore({
         (taxRank: TaxRank, index: number) => {
           const isLastRank =
             index === this.taxRanks[this.currentTaxRankYear].length - 1;
-          const isBiggerThanMin = taxRank.min < this.taxableIncome;
+          const isBiggerThanMin = taxRank.min <= this.taxableIncome;
           const isSmallerThanMax = taxRank.max >= this.taxableIncome;
 
           if (isLastRank && isBiggerThanMin) {
@@ -315,8 +321,10 @@ const useTaxesStore = defineStore({
       );
     },
     netIncome() {
-      const monthIncome = this.grossIncome.month - this.irsPay.month - this.ssPay.month;
-      const yearIncome = this.grossIncome.year - this.irsPay.year - this.ssPay.year;
+      const monthIncome =
+        this.grossIncome.month - this.irsPay.month - this.ssPay.month;
+      const yearIncome =
+        this.grossIncome.year - this.irsPay.year - this.ssPay.year;
       return {
         year: yearIncome,
         month: monthIncome,
@@ -620,7 +628,7 @@ const useTaxesStore = defineStore({
       this.setNrDaysOff(0);
       this.setSsDiscount(0);
       this.setExpenses(0);
-      this.setCurrentTaxRankYear( SUPPORTED_TAX_RANK_YEARS[0] );
+      this.setCurrentTaxRankYear(SUPPORTED_TAX_RANK_YEARS[0]);
       this.setSsFirstYear(false);
       this.setFirstYear(false);
       this.setSecondYear(false);
