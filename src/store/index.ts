@@ -478,7 +478,13 @@ const useTaxesStore = defineStore({
           value as (typeof SUPPORTED_TAX_RANK_YEARS)[number],
         );
 
-      const incomeResult = this.setParameterFromUrl(
+        this.setParameterFromUrl(
+          params["incomeFrequency"],
+          this.setIncomeFrequency,
+          null,
+          frequencyChoicesValidator,
+        );
+        const incomeResult = this.setParameterFromUrl(
         params["income"],
         this.setIncome,
         parseInt,
@@ -487,13 +493,6 @@ const useTaxesStore = defineStore({
       if (incomeResult) {
         this.validationCount++;
       }
-
-      this.setParameterFromUrl(
-        params["incomeFrequency"],
-        this.setIncomeFrequency,
-        null,
-        frequencyChoicesValidator,
-      );
       this.setParameterFromUrl(
         params["displayFrequency"],
         this.setDisplayFrequency,
