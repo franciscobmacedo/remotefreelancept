@@ -4,7 +4,6 @@ import {
   GrossIncome,
   TaxRank,
   Colors,
-  YouthIrsRank,
   YouthIrs,
 } from "@/typings";
 import { asCurrency, generateUUID } from "@/utils.js";
@@ -33,6 +32,9 @@ interface TaxesState {
   currentTaxRankYear: (typeof SUPPORTED_TAX_RANK_YEARS)[number];
   taxRanks: { [K in (typeof SUPPORTED_TAX_RANK_YEARS)[number]]: TaxRank[] };
   iasPerYear: { [K in (typeof SUPPORTED_TAX_RANK_YEARS)[number]]: number };
+  minimumExistencePerYear: {
+    [K in (typeof SUPPORTED_TAX_RANK_YEARS)[number]]: number;
+  };
   youthIrs: { [K in (typeof SUPPORTED_TAX_RANK_YEARS)[number]]: YouthIrs };
   colors: Colors;
   rnh: boolean;
@@ -100,6 +102,10 @@ const useTaxesStore = defineStore({
     iasPerYear: {
       2023: 480.43,
       2024: 509.26,
+    },
+    minimumExistencePerYear: {
+      2023: 10_640,
+      2024: 11_480,
     },
     rnh: false,
     rnhTax: 0.2,
@@ -215,6 +221,9 @@ const useTaxesStore = defineStore({
         this.expensesNeeded > this.expenses
           ? this.expensesNeeded - this.expenses
           : 0;
+
+      if (grossIncome <= this.minimumExistence) return 0;
+      //TODO: calculate L to have some % not taxable  -> (grossIncome > this.minimumExistence) && (grossIncome <= L)
 
       return (
         (grossIncome - this.youthIrsDiscount) *
@@ -346,6 +355,12 @@ const useTaxesStore = defineStore({
     },
     storedSimulationsCount() {
       return this.storedSimulations && this.storedSimulations.length;
+    },
+    minimumExistence() {
+      return Math.max(
+        1.5 * 14 * this.iasPerYear[this.currentTaxRankYear],
+        this.minimumExistencePerYear[this.currentTaxRankYear],
+      );
     },
   },
   actions: {
