@@ -124,7 +124,7 @@
               :choices="youthIrsYears"
               @change="changeYouthIrsYear"
               :value="store.yearOfYouthIrs.toString()"
-              data-cy="tax-rank-years-dropdown"
+              data-cy="youth-irs-years-dropdown"
             />
           </div>
         </div>
@@ -357,6 +357,14 @@ watch(
     store.setSsDiscount(ssDiscountChoices[newPosition]);
   },
 );
+watch(
+  () => store.currentTaxRankYear,
+  (newYear, oldYear) => {
+    if (store.benefitsOfYouthIrs) {
+      store.setYearOfYouthIrs(1);
+    }
+  }
+);
 const ssDiscountDisplay = computed(() => {
   return `${store.ssDiscount > 0 ? "+" : ""}${store.ssDiscount * 100}%`;
 });
@@ -372,7 +380,12 @@ const setSecondYear = (value: boolean) => {
 };
 
 // youth IRS
-const youthIrsYears = [1, 2, 3, 4, 5];
+const youthIrsYears = computed(() => {
+  const currentYear = store.currentTaxRankYear;
+  const validRange = currentYear === 2025 ? 10 : 5;
+  return Array.from({ length: validRange }, (_, index) => index + 1);
+});
+
 const changeYouthIrsYear = (
   year: 1 | 2 | 3 | 4 | 5,
 ) => {
