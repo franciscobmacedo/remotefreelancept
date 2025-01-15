@@ -102,7 +102,7 @@ const useTaxesStore = defineStore({
         { id: 3, min: 12160, max: 17233, normalTax: 0.22, averageTax: 0.16482 },
         { id: 4, min: 17233, max: 22306, normalTax: 0.25, averageTax: 0.18419 },
         { id: 5, min: 22306, max: 28400, normalTax: 0.32, averageTax: 0.21334 },
-        { id: 6, min: 28400, max: 41629, normalTax: 0.35, averageTax: 0.25835 },
+        { id: 6, min: 28400, max: 41629, normalTax: 0.355, averageTax: 0.25835 },
         { id: 7, min: 41629, max: 44987, normalTax: 0.435, averageTax: 0.27154 },
         { id: 8, min: 44987, max: 83696, normalTax: 0.45, averageTax: 0.35408 },
         { id: 9, min: 83696, normalTax: 0.48, max: null, averageTax: null },
