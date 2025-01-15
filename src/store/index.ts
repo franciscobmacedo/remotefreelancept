@@ -441,7 +441,7 @@ const useTaxesStore = defineStore({
       updateUrlQuery({ benefitsOfYouthIrs: this.benefitsOfYouthIrs });
     },
     setYearOfYouthIrs(year: number) {
-      if (this.validateYearOfYouthIrsValidator(year)) {
+      if (this.isYearOfYouthIrsValid(year)) {
         this.yearOfYouthIrs = year;
         updateUrlQuery({ yearOfYouthIrs: this.yearOfYouthIrs });
       }
@@ -587,7 +587,7 @@ const useTaxesStore = defineStore({
         params["yearOfYouthIrs"],
         this.setYearOfYouthIrs,
         parseInt,
-        this.validateYearOfYouthIrsValidator,
+        this.isYearOfYouthIrsValid,
       );
     },
     getUrlParams() {
@@ -640,7 +640,7 @@ const useTaxesStore = defineStore({
 
       this.updateStoredSimulations();
     },
-    validateYearOfYouthIrsValidator (value: number)  {
+    isYearOfYouthIrsValid (value: number)  {
       const validRange = this.currentTaxRankYear === 2025 ? 10 : 5;
       return value >= 1 && value <= validRange;
     },
