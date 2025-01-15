@@ -381,13 +381,12 @@ const setSecondYear = (value: boolean) => {
 
 // youth IRS
 const youthIrsYears = computed(() => {
-  const currentYear = store.currentTaxRankYear;
-  const validRange = currentYear === 2025 ? 10 : 5;
+  const validRange = store.youthIrsRange;
   return Array.from({ length: validRange }, (_, index) => index + 1);
 });
 
 const changeYouthIrsYear = (
-  year: 1 | 2 | 3 | 4 | 5,
+  year: number,
 ) => {
   store.setYearOfYouthIrs(year);
 };
