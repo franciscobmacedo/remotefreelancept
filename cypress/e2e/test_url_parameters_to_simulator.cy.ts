@@ -113,10 +113,10 @@ describe("pass currentTaxRankYear through url parameters", () => {
   });
 
   it("doesn't update currentTaxRankYear if invalid year from url", () => {
-    cy.visit("/#/?income=50000&currentTaxRankYear=2025"); // change URL to match your dev URL
+    cy.visit("/#/?income=50000&currentTaxRankYear=2026"); // change URL to match your dev URL
     cy.get('[data-cy="tax-rank-years-dropdown"] input:first-of-type').should(
       "have.value",
-      "2024",
+      "2025",
     );
   });
 
@@ -124,7 +124,7 @@ describe("pass currentTaxRankYear through url parameters", () => {
     cy.visit("/#/?income=50000&currentTaxRankYear=dummyval"); // change URL to match your dev URL
     cy.get('[data-cy="tax-rank-years-dropdown"] input:first-of-type').should(
       "have.value",
-      "2024",
+      "2025",
     );
   });
 });
@@ -250,5 +250,37 @@ describe("pass rnh through url parameters", () => {
   it("doesn't update rnh if number type from url", () => {
     cy.visit("/#/?income=50000&rnh=1"); // change URL to match your dev URL
     cy.get('[data-cy="rnh"] input:first-of-type').should("have.value", "false");
+  });
+});
+
+describe("pass youth irs through url parameters", () => {
+  it("successfully uses youth irs year from url 2025", () => {
+    cy.visit("/#/?income=50000&benefitsOfYouthIrs=true&yearOfYouthIrs=8&currentTaxRankYear=2025"); 
+    cy.get('[data-cy="youth-irs"] input[type="checkbox"]').should("have.value", "true");
+    cy.get('[data-cy="youth-irs-years-dropdown"] input:first-of-type').should("have.value", "8");
+    
+  });
+
+  it("doesn't update youth irs year if incorrect from url 2025", () => {
+    cy.visit("/#/?income=50000&benefitsOfYouthIrs=true&yearOfYouthIrs=15&currentTaxRankYear=2025"); 
+    cy.get('[data-cy="youth-irs"] input[type="checkbox"]').should("be.checked");
+    cy.get('[data-cy="youth-irs-years-dropdown"] input:first-of-type').should("have.value", "1");
+  });
+
+  it("successfully uses youth irs year from url 2024", () => {
+    cy.visit("/#/?income=50000&benefitsOfYouthIrs=true&yearOfYouthIrs=5&currentTaxRankYear=2024"); 
+    cy.get('[data-cy="youth-irs"] input[type="checkbox"]').should("be.checked");
+    cy.get('[data-cy="youth-irs-years-dropdown"] input:first-of-type').should("have.value", "5");
+  });
+
+  it("doesn't update youth irs year if incorrect from url 2024", () => {
+    cy.visit("/#/?income=50000&benefitsOfYouthIrs=true&yearOfYouthIrs=10&currentTaxRankYear=2024"); 
+    cy.get('[data-cy="youth-irs"] input[type="checkbox"]').should("be.checked");
+    cy.get('[data-cy="youth-irs-years-dropdown"] input:first-of-type').should("have.value", "1"); 
+  });
+
+  it("doesn't update youth irs year if it is not selected", () => {
+    cy.visit("/#/?income=50000"); 
+    cy.get('[data-cy="youth-irs"] input[type="checkbox"]').should("not.be.checked");
   });
 });

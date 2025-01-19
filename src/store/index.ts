@@ -12,7 +12,7 @@ import { updateUrlQuery, clearUrlQuery } from "@/router";
 
 export const YEAR_BUSINESS_DAYS = 248;
 //export const MONTH_BUSINESS_DAYS = 22; // No longer used by this simulator, only year business days are taken into account
-export const SUPPORTED_TAX_RANK_YEARS = ([2023, 2024]).sort((a, b) => b - a);
+export const SUPPORTED_TAX_RANK_YEARS = ([2023, 2024, 2025]).sort((a, b) => b - a);
 const SIMULATIONS_LOCAL_STORE_KEY = "net_income_simulations";
 
 interface TaxesState {
@@ -41,7 +41,7 @@ interface TaxesState {
   secondYear: boolean;
   ssFirstYear: boolean;
   benefitsOfYouthIrs: boolean;
-  yearOfYouthIrs: 1 | 2 | 3 | 4 | 5;
+  yearOfYouthIrs: number;
   storedSimulations:
     | [
         {
@@ -96,10 +96,22 @@ const useTaxesStore = defineStore({
         { id: 8, min: 43000, max: 80000, normalTax: 0.45, averageTax: 0.35408 },
         { id: 9, min: 80000, normalTax: 0.48, max: null, averageTax: null },
       ],
+      2025: [
+        { id: 1, min: 0, max: 8059, normalTax: 0.13, averageTax: 0.13 },
+        { id: 2, min: 8059, max: 12160, normalTax: 0.165, averageTax: 0.1418 },
+        { id: 3, min: 12160, max: 17233, normalTax: 0.22, averageTax: 0.16482 },
+        { id: 4, min: 17233, max: 22306, normalTax: 0.25, averageTax: 0.18419 },
+        { id: 5, min: 22306, max: 28400, normalTax: 0.32, averageTax: 0.21334 },
+        { id: 6, min: 28400, max: 41629, normalTax: 0.355, averageTax: 0.25835 },
+        { id: 7, min: 41629, max: 44987, normalTax: 0.435, averageTax: 0.27154 },
+        { id: 8, min: 44987, max: 83696, normalTax: 0.45, averageTax: 0.35408 },
+        { id: 9, min: 83696, normalTax: 0.48, max: null, averageTax: null },
+      ],
     },
     iasPerYear: {
       2023: 480.43,
       2024: 509.26,
+      2025: 522.50,
     },
     rnh: false,
     rnhTax: 0.2,
@@ -125,6 +137,18 @@ const useTaxesStore = defineStore({
         3: { maxDiscountPercentage: 0.5, maxDiscountIasMultiplier: 20 },
         4: { maxDiscountPercentage: 0.5, maxDiscountIasMultiplier: 20 },
         5: { maxDiscountPercentage: 0.25, maxDiscountIasMultiplier: 10 },
+      },
+      2025: {
+        1: { maxDiscountPercentage: 1, maxDiscountIasMultiplier: 55 },
+        2: { maxDiscountPercentage: 0.75, maxDiscountIasMultiplier: 55 },
+        3: { maxDiscountPercentage: 0.75, maxDiscountIasMultiplier: 55 },
+        4: { maxDiscountPercentage: 0.75, maxDiscountIasMultiplier: 55 },
+        5: { maxDiscountPercentage: 0.50, maxDiscountIasMultiplier: 55 },
+        6: { maxDiscountPercentage: 0.50, maxDiscountIasMultiplier: 55 },
+        7: { maxDiscountPercentage: 0.50, maxDiscountIasMultiplier: 55 },
+        8: { maxDiscountPercentage: 0.25, maxDiscountIasMultiplier: 55 },
+        9: { maxDiscountPercentage: 0.25, maxDiscountIasMultiplier: 55 },
+        10: { maxDiscountPercentage: 0.25, maxDiscountIasMultiplier: 55 },
       },
     },
     benefitsOfYouthIrs: false,
@@ -233,6 +257,9 @@ const useTaxesStore = defineStore({
       const maxDiscountIas =
         youthIrsRank.maxDiscountIasMultiplier * this.currentIas;
       return Math.min(maxDiscount, maxDiscountIas);
+    },
+    youthIrsRange() {
+      return this.currentTaxRankYear === 2025 ? 10 : 5;
     },
     taxRank(): TaxRank {
       return this.taxRanks[this.currentTaxRankYear].filter(
@@ -413,9 +440,11 @@ const useTaxesStore = defineStore({
       this.benefitsOfYouthIrs = value;
       updateUrlQuery({ benefitsOfYouthIrs: this.benefitsOfYouthIrs });
     },
-    setYearOfYouthIrs(value: 1 | 2 | 3 | 4 | 5) {
-      this.yearOfYouthIrs = value;
-      updateUrlQuery({ yearOfYouthIrs: this.yearOfYouthIrs });
+    setYearOfYouthIrs(year: number) {
+      if (this.isYearOfYouthIrsValid(year)) {
+        this.yearOfYouthIrs = year;
+        updateUrlQuery({ yearOfYouthIrs: this.yearOfYouthIrs });
+      }
     },
     setFirstYear(value: boolean) {
       this.firstYear = value;
@@ -558,7 +587,7 @@ const useTaxesStore = defineStore({
         params["yearOfYouthIrs"],
         this.setYearOfYouthIrs,
         parseInt,
-        (value: number) => value >= 1 && value <= 5,
+        this.isYearOfYouthIrsValid,
       );
     },
     getUrlParams() {
@@ -610,6 +639,10 @@ const useTaxesStore = defineStore({
       });
 
       this.updateStoredSimulations();
+    },
+    isYearOfYouthIrsValid (value: number)  {
+      const validRange = this.currentTaxRankYear === 2025 ? 10 : 5;
+      return value >= 1 && value <= validRange;
     },
     reset() {
       this.setIncome(null);

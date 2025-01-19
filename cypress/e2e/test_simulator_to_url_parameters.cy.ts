@@ -186,3 +186,21 @@ describe("pass rnh to url parameters", () => {
     cy.url().should("include", "rnh=false");
   });
 });
+
+describe("pass youth irs to url parameters", () => {
+  it("successfully uses true youth irs from simulator", () => {
+    cy.visit("/#/?income=50000"); 
+    cy.get('[data-cy="youth-irs"] input[type="checkbox"]').click();
+    cy.get('[data-cy="youth-irs-years-dropdown"]>input').click();
+    cy.contains("2").click();
+    cy.url().should("include", "benefitsOfYouthIrs=true");
+    cy.url().should("include", "yearOfYouthIrs=2");
+  });
+
+  it("successfully uses false youth irs from simulator", () => {
+    cy.visit("/#/?income=50000");
+    cy.get('[data-cy="youth-irs"] input[type="checkbox"]').click().click();
+    cy.url().should("include", "benefitsOfYouthIrs=false");
+  });
+});
+
