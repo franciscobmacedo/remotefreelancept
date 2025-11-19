@@ -27,12 +27,12 @@
               : 'text-lg sm:text-xl md:text-2-xl lg:text-3xl xl:text-4xl'
           "
         >
-          Remote freelancer from Portugal 🇵🇹
+          {{ t.formTitle }}
         </h4>
         <p
           class="md:mt-3 md:mb-5 text-sm md:text-xl text-neutral-600 font-light"
         >
-          simulate your net income
+          {{ t.simulateNetIncome }}
         </p>
         <div class="flex flex-col justify-around items-center md:flex-row">
           <div class="flex items-center justify-center w-full">
@@ -42,8 +42,8 @@
             <div class="relative">
               <FormattedNumberInput
                 v-model:value="internalIncome"
-                placeholder="Income"
-                class="pl-7"
+                :placeholder="t.incomePlaceholder"
+                custom-class="pl-7"
                 data-cy="income"
                 @click="showDropdown = true"
                 @update:value="showDropdown = false"
@@ -109,14 +109,14 @@
             class="text-sm hover:text-income hover:font-medium py-5 flex gap-2 items-center"
             @click="store.reset()"
           >
-            reset
+            {{ t.reset }}
             <ArrowPathIcon class="h-3" />
           </button>
           <button
             class="text-sm hover:text-secondary hover:font-medium py-5 flex gap-2 items-center"
             @click="share"
           >
-            share
+            {{ t.share }}
             <ShareIcon class="h-3" />
           </button>
           <button
@@ -124,7 +124,7 @@
             class="text-sm hover:text-tertiary hover:font-medium py-5 flex gap-2 items-center"
             @click="showNewSimulationDialog = true"
           >
-            save
+            {{ t.saveAction }}
             <BookmarkIcon class="h-3" />
           </button>
           </div>
@@ -152,8 +152,10 @@ import FormattedNumberInput from "@/components/FormattedNumberInput.vue";
 import FrequencyButton from "@/components/FrequencyButton.vue";
 import SaveSimulationDialog from "@/components/SaveSimulationDialog.vue";
 import { FrequencyChoices } from "@/typings";
+import { useI18n } from "@/i18n";
 
 const { breakpoint } = useBreakpoint();
+const { t } = useI18n();
 
 // store
 const { validationCount, incomeFrequency, income } =
@@ -211,14 +213,14 @@ const closeToast = () => {
 };
 
 const share = () => {
-  toastMessage.value = "sharable link copied to clipboard";
+  toastMessage.value = t.value.linkCopied;
   navigator.clipboard.writeText(window.location.href);
   showToast.value = true;
 };
 
 const simulationSaved = () => {
   showNewSimulationDialog.value = false;
-  toastMessage.value = "Simulation saved";
+  toastMessage.value = t.value.simulationSaved;
   showToast.value = true;
 };
 </script>

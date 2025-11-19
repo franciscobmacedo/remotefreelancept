@@ -2,9 +2,14 @@
   <input
     v-model="internalValue"
     type="text"
-    class="z-0 inline-flex w-full justify-start py-2 placeholder:text-neutral-400 bg-inherit border-b-[1px] border-neutral-600 relative focus:outline-none focus:border-primary"
-    :class="class"
+    class="z-0 inline-flex w-full justify-start py-2 placeholder:text-neutral-400 bg-inherit relative focus:outline-none"
+    :class="[
+      noBorder ? 'border-0' : 'border-b-[1px] border-neutral-600 focus:border-primary',
+      customClass,
+      { 'opacity-50 cursor-not-allowed': disabled }
+    ]"
     :placeholder="placeholder"
+    :disabled="disabled"
   />
 </template>
 <script setup lang="ts">
@@ -17,13 +22,21 @@ const props = defineProps({
     type: Number,
     required: false,
   },
-  class: {
+  customClass: {
     type: String,
     default: "",
   },
   placeholder: {
     type: String,
     default: "",
+  },
+  noBorder: {
+    type: Boolean,
+    default: false,
+  },
+  disabled: {
+    type: Boolean,
+    default: false,
   },
 });
 

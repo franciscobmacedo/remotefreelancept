@@ -11,10 +11,10 @@
         type="button"
         class="ms-auto -mx-1.5 -my-1.5 text-neutral-400 hover:text-neutral-600 rounded-lg p-1.5 inline-flex items-center justify-center h-8 w-8"
         data-dismiss-target="#toast-default"
-        aria-label="Close"
+        :aria-label="t.close"
         @click="close()"
       >
-        <span class="sr-only">Close</span>
+        <span class="sr-only">{{ t.close }}</span>
         <XMarkIcon />
       </button>
     </div>
@@ -23,7 +23,9 @@
 
 <script lang="ts" setup>
 import { XMarkIcon } from "@heroicons/vue/24/outline";
+import { useI18n } from "@/i18n";
 // store
+const { t } = useI18n();
 const emits = defineEmits(["close"]);
 defineProps({
   text: {

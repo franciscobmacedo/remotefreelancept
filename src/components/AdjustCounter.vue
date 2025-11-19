@@ -12,7 +12,7 @@
       <slot>
         <FormattedNumberInput
           v-model:value="counterDisplay"
-          class="text-center"
+          custom-class="text-center"
         />
       </slot>
     </span>

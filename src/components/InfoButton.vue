@@ -25,7 +25,7 @@
       >
         <div class="relative">
           <div class="">
-            <slot><p class="text-sm w-32 text-center">What is this?</p></slot>
+            <slot><p class="text-sm w-32 text-center">{{ t.whatIsThis }}</p></slot>
           </div>
         </div>
       </div>
@@ -36,7 +36,9 @@
 import { QuestionMarkCircleIcon } from "@heroicons/vue/24/outline";
 import { ref, computed } from "vue";
 import { useBreakpoint } from "@/composables/breakpoints";
+import { useI18n } from "@/i18n";
 const { breakpoint } = useBreakpoint();
+const { t } = useI18n();
 
 defineProps({
   link: {

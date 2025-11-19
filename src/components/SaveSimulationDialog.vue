@@ -13,7 +13,7 @@
         <!-- Modal header -->
         <div class="flex items-start justify-between p-4 border-b rounded-t">
           <h3 class="text-xl font-semibold text-gray-900">
-            Save this simulation
+            {{ t.saveSimulationTitle }}
           </h3>
           <button
             type="button"
@@ -22,7 +22,7 @@
             @click="$emit('close')"
           >
             <XMarkIcon class="w-5 h-5" />
-            <span class="sr-only">Close modal</span>
+            <span class="sr-only">{{ t.closeModal }}</span>
           </button>
         </div>
 
@@ -37,7 +37,7 @@
                 autocomplete="off"
                 data-cy="simulation-name"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
-                placeholder="Simulation name"
+                :placeholder="t.simulationNamePlaceholder"
                 required
               />
             </div>
@@ -47,7 +47,7 @@
                 data-cy="save-new-simulation-button"
                 class="text-white bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
               >
-                Save
+                {{ t.save }}
               </button>
             </div>
           </form>
@@ -61,9 +61,11 @@
 import { ref } from "vue";
 import { useTaxesStore } from "@/store";
 import { XMarkIcon } from "@heroicons/vue/24/outline";
+import { useI18n } from "@/i18n";
 
 // store
 const store = useTaxesStore();
+const { t } = useI18n();
 const simulationName = ref("");
 
 const emit = defineEmits(["close", "saved"]);
