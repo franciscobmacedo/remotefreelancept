@@ -5,7 +5,7 @@
       <div
         class="flex items-baseline justify-center md:justify-start flex-wrap"
       >
-        <p class="text-sm text-neutral-600 mr-2 w-12/12">Show income per</p>
+        <p class="text-sm text-neutral-600 mr-2 w-12/12">{{ t.showIncomePer }}</p>
         <div class="flex justify-center items-center">
           <button
             v-for="frequencyChoice in Object.keys(FrequencyChoices)"
@@ -23,7 +23,7 @@
         </div>
       </div>
       <div class="flex ml-3 md:ml-0 justify-start items-center mt-2 space-x-4">
-        <p class="text-sm w-fit">Income tax year</p>
+        <p class="text-sm w-fit">{{ t.incomeTaxYear }}</p>
         <div class="w-16">
           <DropDown
             :choices="SUPPORTED_TAX_RANK_YEARS"
@@ -34,13 +34,12 @@
         </div>
         <InfoButton>
           <p class="text-sm w-64 text-center">
-            There are a number of changes between 2023 and 2024, such as the
-            IAS value and the IRS brackets.
+            {{ t.legalWarningText }}
           </p>
         </InfoButton>
       </div>
       <div class="flex ml-3 md:ml-0 justify-start items-center mt-2 space-x-4">
-        <p class="text-sm w-fit">Nr. of months to simulate your earnings</p>
+        <p class="text-sm w-fit">{{ t.nrMonthsSimulate }}</p>
         <AdjustCounter
           :value="store.nrMonthsDisplay"
           @update:value="store.setNrMonthsDisplay"
@@ -50,16 +49,13 @@
         />
         <InfoButton>
           <p class="text-sm w-64 text-center">
-            In a portuguese company, you can get payed 2 extra months per year
-            (for holidays and christmas). If you want to compare your remote
-            salary with some local company, you should change this field to 14
-            months.
+            {{ t.nrMonthsSimulateTooltip }}
           </p>
         </InfoButton>
       </div>
 
       <div class="flex ml-3 md:ml-0 justify-start items-center mt-2 space-x-4">
-        <p class="text-sm w-fit">Number of days off taken in a year</p>
+        <p class="text-sm w-fit">{{ t.nrDaysOff }}</p>
         <!-- This input field accepts negative values, with a minimum limit that ensures the total number of working days in a year does not exceed 365.  -->
         <AdjustCounter
           :value="store.nrDaysOff"
@@ -71,16 +67,13 @@
         /> 
         <InfoButton>
           <p class="text-sm w-64 text-center">
-            Set the number of unpaid days off or unpaid vacation days you plan to 
-            take during the year. These days will be deducted from the annual 
-            income calculation.
-            This simulation assumes that one year consists of {{YEAR_BUSINESS_DAYS}} working days.
+            {{ t.nrDaysOffTooltip.replace('{days}', YEAR_BUSINESS_DAYS) }}
           </p>
         </InfoButton>
       </div>
 
       <div class="flex ml-3 md:ml-0 justify-start items-center mt-2 space-x-4">
-        <p class="text-sm w-fit">Adjust your contribution to social security</p>
+        <p class="text-sm w-fit">{{ t.adjustSS }}</p>
         <AdjustCounter
           v-model:value="ssDiscountPosition"
           :min="0"
@@ -93,9 +86,7 @@
           link="https://www.seg-social.pt/documents/10152/15974914/1009%20Trabalhador%20independente%20-%20novo%20regime/87b6e00c-523d-4718-8a88-942ea804c18a"
         >
           <p class="text-sm w-64 text-center">
-            You can adjust your income for social security tax calculations with
-            a minimum of -25% and a maximum of +25%. This will probably afect
-            your retirement pension. Click to see more.
+            {{ t.adjustSSTooltip }}
           </p>
         </InfoButton>
       </div>
@@ -104,7 +95,7 @@
       >
         <SwitchButton
           id="youthIrsSwitchButton"
-          label="Are you eligible for Youth IRS?"
+          :label="t.eligibleYouthIRS"
           :model-value="store.benefitsOfYouthIrs"
           @update:model-value="store.setBenefitsOfYouthIrs"
           data-cy="youth-irs"
@@ -113,12 +104,11 @@
           link="https://www.deco.proteste.pt/dinheiro/impostos/dicas/irs-jovem-como-funciona"
         >
           <p class="text-sm w-64 text-center">
-            You can get a discount on your IRS tax if you are under 35 years old and have
-            higher education. Click to see more.
+            {{ t.eligibleYouthIRSTooltip }}
           </p>
         </InfoButton>
         <div v-if="store.benefitsOfYouthIrs" class="flex items-center gap-x-3">
-          <p class="text-sm w-fit h-fit">Year</p>
+          <p class="text-sm w-fit h-fit">{{ t.year }}</p>
           <div class="w-16">
             <DropDown
               :choices="youthIrsYears"
@@ -134,7 +124,7 @@
       >
         <SwitchButton
           id="ssExemptSwitchButton"
-          label="Are you within the first 12 months of starting your activity?"
+          :label="t.first12Months"
           :model-value="store.ssFirstYear"
           @update:model-value="store.setSsFirstYear"
           data-cy="ss-first-year"
@@ -143,8 +133,7 @@
           link="https://www.montepio.org/ei/pessoal/emprego-e-formacao/seguranca-social-guia-com-as-regras-para-os-trabalhadores-independentes#"
         >
           <p class="text-sm w-64 text-center">
-            You are exempt from paying social security in your first 12 months
-            as a freelancer in Portugal. Click to see more.
+            {{ t.first12MonthsTooltip }}
           </p>
         </InfoButton>
       </div>
@@ -153,7 +142,7 @@
       >
         <SwitchButton
           id="firstYearSwitchButton"
-          label="Are you in your first fiscal year of activity?"
+          :label="t.firstFiscalYear"
           :model-value="store.firstYear"
           @update:model-value="setFirstYear"
           :key="firstYearKey"
@@ -163,9 +152,7 @@
           link="https://www.cgd.pt/Site/Saldo-Positivo/leis-e-impostos/Pages/irs-trabalhadores-independentes.aspx"
         >
           <p class="text-sm w-64 text-center">
-            You get a 50% discount on your taxable income (IRS), on your first
-            year of activity. This could be less than 12 months if you start
-            your activity after the month January. Click to see more.
+            {{ t.firstFiscalYearTooltip }}
           </p>
         </InfoButton>
       </div>
@@ -174,7 +161,7 @@
       >
         <SwitchButton
           id="secondYearSwitchButton"
-          label="Are you in your second fiscal year of activity?"
+          :label="t.secondFiscalYear"
           :model-value="secondYear"
           @update:model-value="setSecondYear"
           :key="secondYearKey"
@@ -184,8 +171,7 @@
           link="https://www.cgd.pt/Site/Saldo-Positivo/leis-e-impostos/Pages/irs-trabalhadores-independentes.aspx"
         >
           <p class="text-sm w-64 text-center">
-            You get a 25% discount on your taxable income (IRS), on your second
-            year of activity. Click to see more.
+            {{ t.secondFiscalYearTooltip }}
           </p>
         </InfoButton>
       </div>
@@ -194,7 +180,7 @@
       >
         <SwitchButton
           id="nrmElegibleSwitchButton"
-          label="Are you eligible to be in the NHR/RNH?"
+          :label="t.eligibleNHR"
           :model-value="store.rnh"
           @update:model-value="store.setRnh"
           data-cy="rnh"
@@ -203,8 +189,7 @@
           link="https://info.portaldasfinancas.gov.pt/pt/apoio_contribuinte/Folhetos_informativos/Documents/Non_habitual_residents_Tax_regime.pdf"
         >
           <p class="text-sm w-64 text-center">
-            <b>NHR</b> (non-habitual residents) have a fixed IRS tax of
-            {{ rnhTax }}. click for more information.
+            <span v-html="t.eligibleNHRTooltip.replace('{tax}', rnhTax)"></span>
           </p>
         </InfoButton>
       </div>
@@ -214,12 +199,12 @@
       >
         <div>
           <p class="text-sm w-fit">
-            How much can you justify as professional related expenses?
+            {{ t.justifyExpenses }}
           </p>
           <span class="text-xs text-neutral-500"
-            >the maximum required is
+            >{{ t.maxRequired }}
             <span class="font-semibold whitespace-nowrap">{{ asCurrency(expensesNeeded) }}</span>
-            <span class="text-xs text-neutral-500">/year</span>
+            <span class="text-xs text-neutral-500">/{{ t.year.toLowerCase() }}</span>
           </span>
         </div>
         <AdjustCounter
@@ -263,7 +248,7 @@
           >
 
           <div class="uppercase text-xs mt-2 tracking-widest text-green-700">
-            Net income
+            {{ t.netIncome }}
           </div>
         </div>
         <div
@@ -274,7 +259,7 @@
             / {{ displayFrequency }}*</small
           >
           <div class="uppercase text-xs mt-2 tracking-widest text-red-700">
-            Taxes
+            {{ t.taxes }}
           </div>
           <div
             class="mt-2 flex justify-between text-neutral-500 uppercase tracking-wide"
@@ -300,6 +285,7 @@ import { asCurrency } from "@/utils.js";
 import { FrequencyChoices } from "@/typings";
 import { SUPPORTED_TAX_RANK_YEARS, useTaxesStore, YEAR_BUSINESS_DAYS } from "@/store";
 import { ArrowPathIcon } from "@heroicons/vue/24/outline";
+import { useI18n } from "@/i18n";
 
 import Chart from "@/components/Chart.vue";
 import AdjustCounter from "@/components/AdjustCounter.vue";
@@ -329,6 +315,7 @@ const {
 } = storeToRefs(useTaxesStore());
 
 const store = useTaxesStore();
+const { t } = useI18n();
 const firstYearKey = ref(0);
 const secondYearKey = ref(0);
 

@@ -12,7 +12,7 @@
       <div class="relative bg-neutral-200 rounded-lg shadow">
         <!-- Modal header -->
         <div class="flex items-start justify-between p-4 border-b rounded-t">
-          <h3 class="text-xl font-semibold text-gray-900">Tax Ranks</h3>
+          <h3 class="text-xl font-semibold text-gray-900">{{ t.taxRanksTitle }}</h3>
           <button
             type="button"
             class="text-gray-400 bg-transparent hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
@@ -20,16 +20,13 @@
             @click="$emit('close')"
           >
             <XMarkIcon class="w-5 h-5" />
-            <span class="sr-only">Close modal</span>
+            <span class="sr-only">{{ t.closeModal }}</span>
           </button>
         </div>
 
         <!-- Modal body -->
         <div class="p-6 space-y-6">
-          Your taxable income (<span class="text-income whitespace-nowrap">{{
-            asCurrency(taxableIncome)
-          }}</span
-          >) is in level
+          {{ t.yourTaxableIncomeInLevel.replace('{income}', asCurrency(taxableIncome)) }}
           <span class="text-red-500">{{ taxRank.id }}</span>
           <span class="text-sm" v-html="taxRankMinText"></span
           ><span class="text-sm" v-html="taxRankMaxText"></span>.
@@ -37,11 +34,11 @@
           <table class="w-full text-sm text-left text-gray-700 table-auto">
             <thead class="text-xs text-gray-700 uppercase border-b-2">
               <tr>
-                <th class="text-center">Level</th>
-                <th class="text-center">Minimum</th>
-                <th class="text-center">Maximum</th>
-                <th class="text-center">Normal Tax</th>
-                <th class="text-center">Average Tax</th>
+                <th class="text-center">{{ t.level }}</th>
+                <th class="text-center">{{ t.minimum }}</th>
+                <th class="text-center">{{ t.maximum }}</th>
+                <th class="text-center">{{ t.normalTax }}</th>
+                <th class="text-center">{{ t.averageTax }}</th>
               </tr>
             </thead>
             <tbody>
@@ -79,23 +76,21 @@ import { asCurrency, asPercentage } from "@/utils";
 import { computed } from "vue";
 import { storeToRefs } from "pinia";
 import { XMarkIcon } from "@heroicons/vue/24/outline";
+import { useI18n } from "@/i18n";
 // store
 const { getTaxRanks, taxRank, taxableIncome } = storeToRefs(useTaxesStore());
+const { t } = useI18n();
 
 // taxRank
 const taxRankMinText = computed(() => {
   return taxRank.value.min
-    ? ` (bigger than <span class="text-neutral-600">${asCurrency(
-        taxRank.value.min,
-      )}</span>`
+    ? t.value.biggerThan.replace('{value}', `<span class="text-neutral-600">${asCurrency(taxRank.value.min)}</span>`)
     : null;
 });
 const taxRankMaxText = computed(() => {
-  const preText = taxRankMinText.value ? " and" : " (";
+  const preText = taxRankMinText.value ? t.value.andLowerThan : t.value.lowerThan;
   return taxRank.value.max
-    ? `${preText} lower than <span class="text-neutral-600">${asCurrency(
-        taxRank.value.max,
-      )})</span>`
+    ? preText.replace('{value}', `<span class="text-neutral-600">${asCurrency(taxRank.value.max)}</span>`)
     : ")";
 });
 </script>

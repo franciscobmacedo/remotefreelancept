@@ -7,7 +7,7 @@
       <p class="text-center font-semibold text-lg text-neutral-600 whitespace-nowrap">
         {{ asCurrency(grossIncome[displayFrequency]) }}
       </p>
-      <small class="text-small">gross income</small>
+      <small class="text-small">{{ t.chartGrossIncome }}</small>
     </div>
   </div>
 </template>
@@ -21,9 +21,11 @@ import { asCurrency, asPercentage } from "@/utils.js";
 
 import { useTaxesStore } from "@/store";
 import ChartDataLabels from "chartjs-plugin-datalabels";
+import { useI18n } from "@/i18n";
 
 const { grossIncome, netIncome, irsPay, ssPay, colors, displayFrequency } =
   storeToRefs(useTaxesStore());
+const { t } = useI18n();
 
 Chart.register(...registerables);
 Chart.register(ChartDataLabels);
@@ -35,7 +37,7 @@ onMounted(() => {
 
 const chartData = computed(() => {
   return {
-    labels: ["Net Income", "IRS", "SS"],
+    labels: [t.value.chartNetIncome, t.value.chartIrs, t.value.chartSs],
     datasets: [
       {
         data: [
@@ -89,6 +91,7 @@ watch(
     newData.datasets.forEach((d, i) => {
       chart.data.datasets[i].data = d.data;
     });
+    chart.data.labels = newData.labels;
     chart.update();
   },
 );

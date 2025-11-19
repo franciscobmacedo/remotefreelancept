@@ -9,7 +9,7 @@
         class="underline text-xs w-full h-full"
         @click="showFooterNotes = !showFooterNotes"
       >
-        notes
+        {{ t.footerNotes }}
       </button>
       <transition
         enter-active-class="duration-300 ease-out"
@@ -36,14 +36,13 @@
             <XMarkIcon class="w-5 h-5" />
           </button>
           <div class="text-xs">
-            *Assuming {{ YEAR_BUSINESS_DAYS }} business days in a year.
+            *{{ t.businessDays.replace('{days}', YEAR_BUSINESS_DAYS) }}
           </div>
           <div class="text-xs">
-            This is only valid for independent workers with green receipts
-            (trabalhadores independentes com recibos verdes).
+            {{ t.validFor }}
           </div>
           <div class="text-xs">
-            VAT (IVA) is ignored (only for foreign clients).
+            {{ t.vatIgnored }}
           </div>
           <div class="flex justify-center">
             <a
@@ -69,9 +68,11 @@ import {
 import { useBreakpoint } from "@/composables/breakpoints";
 import { XMarkIcon } from "@heroicons/vue/24/outline";
 import { ref } from "vue";
+import { useI18n } from "@/i18n";
 
 const { showDashboard } = storeToRefs(useTaxesStore());
 const { breakpoint } = useBreakpoint();
+const { t } = useI18n();
 
 const showFooterNotes = ref(false);
 </script>
