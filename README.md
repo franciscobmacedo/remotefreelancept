@@ -7,7 +7,7 @@
 > - **App:** https://quantofica.pt
 > - **Calculation library (open source):** https://github.com/franciscobmacedo/saldo
 
-The original Vue app lives on in this repo's history for reference. Issues and PRs are closed; please open them on [`saldo`](https://github.com/franciscobmacedo/saldo) (logic) or contact me directly for [quantofica.pt](https://quantofica.pt) (UI).
+The original Vue app lives on in this repo's history for reference. Issues and PRs are closed; please open them on [`saldo`](https://github.com/franciscobmacedo/saldo) (logic) or [contact me directly](https://fmacedo.com/about/) for [quantofica.pt](https://quantofica.pt) (UI).
 
 ## Original description
 
