@@ -8,11 +8,31 @@
       name="description"
       content="O simulador de freelancer em Portugal mudou-se para quantofica.pt."
     />
-    <meta http-equiv="refresh" content="6; url=https://quantofica.pt" />
+    <meta http-equiv="refresh" content="15; url=https://quantofica.pt" />
     <link rel="canonical" href="https://quantofica.pt" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
     <style>
       :root {
         color-scheme: light dark;
+        --background: oklch(1 0 0);
+        --foreground: oklch(0.1448 0 0);
+        --border: oklch(0.9219 0 0);
+        --muted: oklch(0.5555 0 0);
+        --accent: oklch(0.97 0 0);
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --background: oklch(0.1448 0 0);
+          --foreground: oklch(0.9851 0 0);
+          --border: oklch(0.3407 0 0);
+          --muted: oklch(0.6 0 0);
+          --accent: oklch(0.22 0 0);
+        }
       }
       * {
         box-sizing: border-box;
@@ -28,75 +48,68 @@
         place-items: center;
         padding: 2rem;
         font:
-          16px/1.6 -apple-system,
-          BlinkMacSystemFont,
-          "Segoe UI",
-          Roboto,
-          sans-serif;
-        background: #fafafa;
-        color: #111;
+          15px/1.6 "Geist Mono",
+          ui-monospace,
+          SFMono-Regular,
+          Menlo,
+          Consolas,
+          monospace;
+        background: var(--background);
+        color: var(--foreground);
       }
       main {
         max-width: 560px;
         text-align: center;
       }
       h1 {
-        font-size: 1.75rem;
-        margin: 0 0 0.75rem;
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin: 0 0 1rem;
+        letter-spacing: -0.01em;
       }
       p {
         margin: 0.75rem 0;
       }
       a.cta {
         display: inline-block;
-        margin-top: 1.25rem;
-        padding: 0.85rem 1.5rem;
-        background: #111;
-        color: #fff;
+        margin-top: 1.5rem;
+        padding: 0.85rem 1.75rem;
+        background: var(--background);
+        color: var(--foreground);
+        border: 1px solid var(--border);
+        border-radius: 0;
         text-decoration: none;
-        border-radius: 8px;
-        font-weight: 600;
+        font: inherit;
+        font-weight: 500;
+        transition: background-color 0.15s ease;
       }
-      a.cta:hover {
-        background: #333;
+      a.cta:hover,
+      a.cta:focus-visible {
+        background: var(--accent);
+        outline: none;
       }
       .muted {
-        color: #666;
-        font-size: 0.875rem;
+        color: var(--muted);
+        font-size: 0.8125rem;
+        margin-top: 1rem;
       }
       hr {
         border: 0;
-        border-top: 1px solid #ddd;
-        margin: 2rem 0;
+        border-top: 1px solid var(--border);
+        margin: 2.25rem 0;
       }
       .lang {
-        font-size: 0.75rem;
+        font-size: 0.6875rem;
         text-transform: uppercase;
-        letter-spacing: 0.08em;
-        color: #888;
+        letter-spacing: 0.12em;
+        color: var(--muted);
         margin-bottom: 0.5rem;
       }
       a {
         color: inherit;
       }
-      @media (prefers-color-scheme: dark) {
-        body {
-          background: #0a0a0a;
-          color: #f0f0f0;
-        }
-        a.cta {
-          background: #f0f0f0;
-          color: #0a0a0a;
-        }
-        a.cta:hover {
-          background: #fff;
-        }
-        .muted {
-          color: #999;
-        }
-        hr {
-          border-top-color: #222;
-        }
+      #count {
+        font-variant-numeric: tabular-nums;
       }
     </style>
   </head>
@@ -111,7 +124,9 @@
       <a class="cta" href="https://quantofica.pt"
         >Ir para quantofica.pt &rarr;</a
       >
-      <p class="muted">Vais ser redirecionado automaticamente.</p>
+      <p class="muted">
+        Redireciono automaticamente em <span id="count">15</span>s.
+      </p>
 
       <hr />
 
@@ -123,5 +138,19 @@
         <a href="https://github.com/franciscobmacedo/saldo">saldo</a> library.
       </p>
     </main>
+    <script>
+      (function () {
+        var n = 15;
+        var el = document.getElementById("count");
+        var t = setInterval(function () {
+          n -= 1;
+          if (el) el.textContent = n;
+          if (n <= 0) {
+            clearInterval(t);
+            window.location.href = "https://quantofica.pt";
+          }
+        }, 1000);
+      })();
+    </script>
   </body>
 </html>
