@@ -1,73 +1,20 @@
 # Remote Freelancer from Portugal 🇵🇹
 
-Simulate your earnings (year, month or day) and breakdown how much taxes you're going to pay as a freelancer working from Portugal.
+> **Archived — moved to [quantofica.pt](https://quantofica.pt).**
+>
+> This simulator has been rebuilt as **Quanto Fica**, with a redesigned UI and broader coverage (now also for dependent workers).
+>
+> - **App:** https://quantofica.pt
+> - **Calculation library (open source):** https://github.com/franciscobmacedo/saldo
 
-live at https://freelancept.fmacedo.com/
+The original Vue app lives on in this repo's history for reference. Issues and PRs are closed; please open them on [`saldo`](https://github.com/franciscobmacedo/saldo) (logic) or contact me directly for [quantofica.pt](https://quantofica.pt) (UI).
+
+## Original description
+
+Simulator for freelancers working for foreign companies while living in Portugal. Estimate your net income and taxes to pay.
 
 ![preview](img/preview.gif)
 
-## Contributing
+## License
 
-Contributions are welcome. Although I enjoy helping people with their financial burdens, I do have limited time to work on this. Feel free to open an issue or submit a pull request. If you're not sure where to start, mention me in the comments!
-
-## Local setup (with node)
-
-### Instal dependencies
-
-```
-npm install
-```
-
-### Compiles and hot-reloads for development
-
-```
-npm run dev
-```
-
-### Compiles and minifies for production
-
-```
-npm run build
-```
-
-### Tests
-
-**vitest**
-
-```
-npm run vitest
-```
-
-**cypress end to end**
-
-open:
-
-```
-npm run cy:e2e:open
-```
-
-run:
-
-```
-npm run cy:e2e:run
-```
-
-## Local setup (with docker)
-
-run as dev (with auto-reload):
-
-```
-docker compose up --build -V
-```
-
-build a production image (image named as `remotefreelancept:latest`) (listening on `:80`):
-
-```
-docker build -t remotefreelancept:latest .
-```
-
-Run tests (vitest):
-
-```
-docker build -t remotefreelancept:test --target=test .
-```
+MIT — see [LICENSE](LICENSE).
