@@ -64,15 +64,15 @@
         <AdjustCounter
           :value="store.nrDaysOff"
           @update:value="store.setNrDaysOff"
-          :min="0" 
+          :min="0"
           :max="YEAR_BUSINESS_DAYS - 1"
           unit="days"
           data-cy="nr-days-off"
-        /> 
+        />
         <InfoButton>
           <p class="text-sm w-64 text-center">
-            Set the number of unpaid days off or unpaid vacation days you plan to 
-            take during the year. These days will be deducted from the annual 
+            Set the number of unpaid days off or unpaid vacation days you plan to
+            take during the year. These days will be deducted from the annual
             income calculation.
             This simulation assumes that one year consists of {{YEAR_BUSINESS_DAYS}} working days.
           </p>
@@ -205,6 +205,24 @@
           <p class="text-sm w-64 text-center">
             <b>NHR</b> (non-habitual residents) have a fixed IRS tax of
             {{ rnhTax }}. click for more information.
+          </p>
+        </InfoButton>
+      </div>
+      <div
+        class="flex ml-3 md:ml-0 justify-start items-center mt-6 sm:space-x-2 md:space-x-4"
+      >
+        <SwitchButton
+          id="disabilitySwitchButton"
+          label="I have a disability of 60% or more"
+          :model-value="store.disability"
+          @update:model-value="store.setDisability"
+          data-cy="disability"
+        />
+        <InfoButton
+          link="https://info.portaldasfinancas.gov.pt/pt/informacao_fiscal/codigos_tributarios/cirs_rep/Pages/irs56a.aspx"
+        >
+          <p class="text-sm w-64 text-center">
+            If you have a disability of 60% or more, you are entitled to a 15% reduction in the taxable income, up to 2500€.
           </p>
         </InfoButton>
       </div>
